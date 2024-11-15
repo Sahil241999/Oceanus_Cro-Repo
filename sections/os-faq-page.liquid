@@ -1,0 +1,243 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+}
+
+#{{ section.id }} .os-section-top {
+  align-items: {{ section.settings.top_alignment }};
+  margin-bottom: 3rem;
+}
+
+#{{ section.id }} .os-faq-wrapper {
+  width: {{ section.settings.container_width }}%;
+  margin: 0px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+#{{ section.id }} .os-faq-heading {
+  margin: 1rem 0rem 0rem 0rem;
+}
+
+#{{ section.id }} .os-faq-block {
+  display: flex;
+  width: 100%;
+  transition: all 1s ease-in-out;
+  max-height: 70px;
+	overflow: hidden;
+}
+
+#{{ section.id }} .os-faq-block[open] {
+  max-height: 1000px;
+}
+
+#{{ section.id }} .os-faq-block-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#{{ section.id }} .os-faq-block-question span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s ease;
+}
+
+#{{ section.id }} .os-faq-block-question span.active {
+  transform: rotate(180deg);
+}
+
+#{{ section.id }} .os-faq-block-question span svg {
+  width: 1rem;
+  position: static;
+  height: auto;
+}
+
+#{{ section.id }} .os-faq-block-answer {
+  margin: 0.5rem 0rem 0.5rem 0rem;
+}
+
+@media (max-width: 989px) {
+  #{{ section.id }} .os-faq-wrapper {
+    width: 100%;
+  }
+}
+ @media (max-width: 720px) {
+  #{{ section.id }} {
+  padding-top: {{ section.settings.padding_top1 }}rem;
+  padding-bottom: {{ section.settings.padding_bottom1 }}rem;
+}
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    {% if section.settings.heading != empty %}
+      <div class="os-section-top">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        <div>{{ section.settings.subheading }}</div>
+      </div>
+    {% endif %}
+    <div class="os-faq-wrapper mid-text">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'FAQ' %}
+            {% if block.settings.faq_heading != empty %}
+              <h2 class="os-faq-heading">{{ block.settings.faq_heading }}</h2>
+            {% else %}
+              <details class="os-faq-block">
+                <summary class="os-faq-block-question">
+                  <h3>{{ block.settings.faq_question }}</h3>
+                  <span>{% render 'icon-caret' %}</span>
+                </summary>
+                <div class="os-faq-block-answer">{{ block.settings.faq_answer }}</div>
+              </details>
+            {% endif %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<script>
+  document.querySelectorAll(".os-faq-block summary").forEach(faq => {
+    faq.addEventListener("click", () => {
+      faq.querySelector("span").classList.toggle("active");
+    });
+  });
+</script>
+
+
+{% schema %}
+  {
+    "name": "OS FAQs",
+    "blocks": [
+      {
+        "name": "FAQ",
+        "type": "FAQ",
+        "limit": 50,
+        "settings": [
+          {
+            "type": "text",
+            "id": "faq_heading",
+            "label": "FAQ heading",
+            "info": "Adds in a heading in the FAQ block section"
+          },
+          {
+            "type": "text",
+            "id": "faq_question",
+            "label": "FAQ question",
+            "default": "HOW CAN I CONTACT YOU?"
+          },
+          {
+            "type": "richtext",
+            "id": "faq_answer",
+            "label": "FAQ answer",
+            "default": "<p>'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare.'</p>"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Trusted by the best"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "<p>My paragraph</p>"
+      },
+      {
+        "type": "select",
+        "id": "top_alignment",
+        "label": "Top Alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "flex-start",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "flex-end",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "container_width",
+        "label": "Container width",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 60,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_top1",
+        "label": "Mobile Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom1",
+        "label": "Mobile Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS FAQs"
+      }
+    ]
+  }
+{% endschema %}

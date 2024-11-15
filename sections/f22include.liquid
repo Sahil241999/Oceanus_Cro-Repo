@@ -1,0 +1,97 @@
+<style>
+  .f22-include {
+    font-size: 2.53rem;
+    text-align: center;
+    background: black;
+    color: white;
+  }
+  .f22-include-mobile{
+    display:none;
+  }
+  .f22-include a {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .f22-include:hover {
+       .f22-hov{ 
+            font-style: italic;
+            text-decoration: underline;
+       }
+  }
+   @media (max-width: 1359px) {
+        .f22-include {
+              font-size: 2.12rem;
+        }     
+    } 
+   @media (max-width: 1060px) {
+        .f22-include {
+              font-size: 1.88rem;
+        }     
+    } 
+   @media (max-width: 930px) {
+        .f22-include {
+              font-size: 1.55rem;
+        }     
+    } 
+    @media (max-width: 710px) {
+      .f22-include {
+      display: none;
+    }
+    .f22-include-mobile {
+        display: revert;
+        text-align: center;
+        background: black;
+        font-size: 1.55rem;
+   }
+  }
+
+   @media (max-width: 518px) {
+      .f22-include-mobile p {
+       font-size: 1.33rem;
+    }
+   }
+
+   @media (max-width: 470px) {
+     .f22-include-mobile p {
+      font-size: 1.03rem !important;
+   }
+   }
+
+   @media (max-width: 360px) {
+      .f22-include-mobile p {
+       font-size: 0.9rem !important;
+   } 
+   }
+
+</style>
+
+<a href="https://forms.gle/p9DLH8sCEFwVuzgZ7" target="_blank">
+  <div class="f22-include">
+    <p style="margin-bottom: 0.3em; margin-top: 0.3em; color:white;">Want your brand listed on this gift guide? <span class="f22-hov"><b> Contact Us!</b></span></p>
+  </div>
+   <div class="f22-include-mobile">
+    <p style="margin-bottom: 0.3em; margin-top: 0.3em; color:white;">Want your brand listed on this gift guide? <br><span class="f22-hov"><b> Contact Us!</b></span></p>
+  </div>
+</a>
+
+{% schema %}
+{
+  "name": "f22lab-include",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "F22lab Include",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

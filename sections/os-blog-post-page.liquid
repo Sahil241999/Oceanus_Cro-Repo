@@ -1,0 +1,124 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+}
+
+#{{ section.id }} .os-bpp-top {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+#{{ section.id }} .os-bpp-title {
+  margin-bottom: 1rem;
+}
+
+#{{ section.id }} .os-bpp-title-things {
+  display: flex;
+  gap: 1rem;
+}
+
+#{{ section.id }} .os-bpp-content {
+  width: {{ section.settings.content_width }}%;
+  margin: 0 auto;
+  font-size: 1.2rem !important;
+  font-weight: normal !important;
+}
+
+#{{ section.id }} a {
+  color: #000;
+  text-decoration: underline;
+}
+
+@media screen and (max-width:990px) {
+  #{{ section.id }} {
+  padding-top: {{ section.settings.mobile_padding_top }}rem;
+  }
+}
+
+@media screen and (max-width:768px) {
+  #{{ section.id }} .os-bpp-content {
+    font-size: 1rem !important;
+  }
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    <div class="os-bpp-top">
+      <h1 class="os-bpp-title">{{ article.title }}</h1>
+      <div class="os-bpp-title-things">
+        {% if section.settings.show_blog_date == true %}<div>{{ article.published_at | date: "%a, %b %d, %y" }}</div>{% endif %}
+        {% if section.settings.show_author == true %}<div>{{ article.author }}</div>{% endif %}
+      </div>
+    </div>
+    <div class="os-bpp-content">{{ article.content }}</div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Blog Post Page",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_blog_date",
+        "label": "Show blog date",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_author",
+        "label": "Show author",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "content_width",
+        "label": "Content width",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 60,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+       {
+        "type": "range",
+        "id": "mobile_padding_top",
+        "label": "Mobile Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+    ]
+  }
+{% endschema %}

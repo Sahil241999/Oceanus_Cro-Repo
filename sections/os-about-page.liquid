@@ -1,0 +1,368 @@
+{% style %}
+#{{ section.id }} {
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#{{ section.id }} .os-ap-banner {
+  width: 100%;
+  position: relative;
+}
+
+#{{ section.id }} .os-ap-image,
+#{{ section.id }} .os-ap-image__mobile {
+  width: 100%;
+}
+
+#{{ section.id }} .os-ap-image__mobile {
+  display:none;
+}
+
+#{{ section.id }} .os-ap-side-image {
+  width: 300px;
+}
+
+#{{ section.id }} .os-ap-side-image1 {
+  position: absolute;
+  left: -6%;
+  bottom: -20%;
+  pointer-events: none;
+}
+
+#{{ section.id }} .os-ap-side-image2 {
+  position: absolute;
+  right: -3%;
+  bottom: -12%;
+  pointer-events: none;
+}
+
+#{{ section.id }} .os-ap-wrapper {
+  padding-top: {{ section.settings.padding_top }}rem;
+  width: {{ section.settings.container_width }}%;
+  margin: 0px auto;
+  min-height: 80vh;
+}
+
+#{{ section.id }} .os-ap-wrapper > .rte {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#{{ section.id }} .os-ap-side-image3 {
+  position: absolute;
+  left: 90%;
+  top: 50%;
+  pointer-events: none;
+}
+
+#{{ section.id }} .os-ap-side-image4 {
+  position: absolute;
+  right: 90%;
+  top: 55%;
+  pointer-events: none;
+}
+
+#{{ section.id }} .os-ap-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#{{ section.id }} .os-ap-brands {
+  display: flex;
+  row-gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#{{ section.id }} .os-ap-brand-each {
+  flex: 0 0 calc(25%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#{{ section.id }} .about-logo {
+  position: absolute;
+  top: 2%;
+  left: 10%;
+}
+
+#{{ section.id }} .os-ap-brand-each > img {
+  width: 80%;
+}
+
+#{{ section.id }} .about-content > p {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  max-width: 1000px;
+}
+
+#{{ section.id }} .about-content > img {
+  width:100%;
+}
+
+#{{ section.id }} .paragraph-image-right,
+#{{ section.id }} .paragraph-image-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+#{{ section.id }} .paragraph-image-left {
+  flex-direction: row-reverse;
+}
+
+#{{ section.id }} .about-sign {
+  display: block;
+  margin-top: 1rem;
+}
+
+
+@media (max-width: {{ settings.breakpoint2 }}px) {
+  #{{ section.id }} .os-ap-side-image {
+    width: 200px;
+  }
+
+  #{{ section.id }} .os-ap-brand-each {
+    flex: 0 0 calc(33.3%);
+  }
+
+  #{{ section.id }} .about-logo {
+    width: 42%;
+    top: 1%;
+    left: 5%;
+  }
+
+  #{{ section.id }} .about-sign {
+    margin: 1rem auto 0 auto;
+  }
+
+  #{{ section.id }} .about-content > p {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    max-width: 700px;
+  }
+
+  #{{ section.id }} .os-ap-side-image3 {
+    left: 90%;
+    top: 55%;
+  }
+
+  #{{ section.id }} .os-ap-side-image4 {
+    position: absolute;
+    right: 85%;
+    top: 60%;
+    pointer-events: none;
+  }
+
+  {% if section.settings.mobile_image %}
+    #{{ section.id }} .os-ap-image {
+      display:none;
+    }
+
+    #{{ section.id }} .os-ap-image__mobile {
+      display:block;
+    }
+  {% endif %}
+}
+
+@media (max-width: {{ settings.breakpoint3 }}px) {
+  #{{ section.id }} .os-ap-side-image {
+    width: 150px;
+  }
+
+  #{{ section.id }} .os-ap-wrapper {
+    min-height: unset;
+  }
+
+  #{{ section.id }} {
+    padding-bottom: 3rem;
+  }
+}
+
+@media (max-width: {{ settings.breakpoint4 }}px) {
+  #{{ section.id }} .os-ap-side-image {
+    width: 100px;
+  }
+  
+  #{{ section.id }} .os-ap-side-image1 {
+    left: -10%;
+    bottom: -25%;
+  }
+
+  #{{ section.id }} .os-ap-side-image2 {
+    right: -5%;
+    bottom: -20%;
+  }
+
+  #{{ section.id }} .os-ap-brands {
+    row-gap: 1rem;
+  }
+
+  #{{ section.id }} .os-ap-side-image3 {
+    top: 39%;
+    left: 86%;
+  }
+
+  #{{ section.id }} .os-ap-side-image4 {
+    top: 65%;
+  }
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="os-ap-banner">
+    {% if section.settings.image %}
+      {{ section.settings.image | image_url: width: 2500 | image_tag: loading: 'eager', height: 'auto', class: 'os-ap-image' }}
+    {% endif %}
+    {% if section.settings.mobile_image %}
+      {{ section.settings.mobile_image | image_url: width: 2000 | image_tag: loading: 'eager', height: 'auto', class: 'os-ap-image__mobile' }}
+    {% endif %}
+    {% if section.settings.side_image1 %}
+      {{ section.settings.side_image1 | image_url: width: 400 | image_tag: loading: 'lazy', height: 'auto', class: 'os-ap-side-image os-ap-side-image1' }}
+    {% endif %}
+    {% if section.settings.side_image2 %}
+      {{ section.settings.side_image2 | image_url: width: 400 | image_tag: loading: 'lazy', height: 'auto', class: 'os-ap-side-image os-ap-side-image2' }}
+    {% endif %}
+  </div>
+  {% if section.settings.side_image3 %}
+    {{ section.settings.side_image3 | image_url: width: 400 | image_tag: loading: 'lazy', height: 'auto', class: 'os-ap-side-image os-ap-side-image3' }}
+  {% endif %}
+  {% if section.settings.side_image4 %}
+    {{ section.settings.side_image4 | image_url: width: 800 | image_tag: loading: 'lazy', height: 'auto', class: 'os-ap-side-image os-ap-side-image4' }}
+  {% endif %}
+    <div class="os-ap-wrapper">
+      <div class="rte about-content">{{ page.content }}</div>
+      <div class="os-ap-bottom">
+        {% if section.settings.heading != empty %}
+          <h2 class="">{{ section.settings.heading }}</h2>
+        {% endif %}
+        <div class="os-ap-brands page-width">
+          {% for block in section.blocks %}
+            <div class="os-ap-brand-each" style="
+              padding-left: {{ block.settings.block_padding }}rem;
+              padding-right: {{ block.settings.block_padding }}rem;
+              ">
+              {{ block.settings.block_image | image_url: width: 400 | image_tag: loading: 'lazy', height: 'auto' }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS About Page",
+    "blocks": [
+      {
+        "type": "logo",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "block_image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "block_padding",
+            "label": "Block Padding",
+            "min": 0,
+            "max": 10,
+            "step": 0.2,
+            "default": 0,
+            "unit": "rem"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "side_image1",
+        "label": "Side image1"
+      },
+      {
+        "type": "image_picker",
+        "id": "side_image2",
+        "label": "Side image2"
+      },
+      {
+        "type": "image_picker",
+        "id": "side_image3",
+        "label": "Side image3"
+      },
+      {
+        "type": "image_picker",
+        "id": "side_image4",
+        "label": "Side image4"
+      },
+      {
+        "type": "range",
+        "id": "container_width",
+        "label": "Container width",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 80,
+        "unit": "%"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "In the Press"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS About Page"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,235 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  background-color: {{ section.settings.bg_color }};
+}
+
+#{{ section.id }} .os-ig-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.os-ig-grid > * {
+  display: flex;
+  justify-content: space-between;
+}
+
+#{{ section.id }} .os-image-grid-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  width: 32%;
+}
+
+#{{ section.id }} .os-ig-grid-left {
+  gap: 1.5rem;
+}
+
+#{{ section.id }} .os-ig-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  /*aspect-ratio: 3/1;*/
+  transition: all 0.3s ease;
+}
+
+#{{ section.id }} .os-image-grid-link:hover .os-ig-img {
+  transform: scale(1.05);
+}
+
+#{{ section.id }} .os-ig-content {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#{{ section.id }} .os-ig-content-inner {
+  position: absolute;
+  left: 0rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#{{ section.id }} .os-ig-heading {
+  margin-bottom: 0.25rem;
+}
+
+@media (max-width: {{ settings.breakpoint4 }}px) {
+  #{{ section.id }} .os-ig-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #{{ section.id }} .os-ig-grid-left {
+    flex-direction: column;
+  }
+
+  #{{ section.id }} .os-image-grid-link {
+    width: 100%;
+  }
+}
+
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    <div class="os-ig-grid">
+      <div class="os-ig-grid-left">
+        {% for block in section.blocks limit: 3 %}
+          <a href="{{ block.settings.url }}" class="os-image-grid-link">
+            {% if block.settings.video %}
+              {{ block.settings.video | media_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'os-ig-img' }}
+            {% else %}
+              {{ block.settings.image | image_url: width: 700 | image_tag: height: 'auto', class: 'os-ig-img', loading: 'lazy', widths: '400, 500, 600, 700', sizes: '(max-width: 750px) 400px, (max-width: 1000px) 500px, (max-width: 1300px) 600px, (min-width: 1301px) 700px' }}
+            {% endif %}
+
+            <div class="os-ig-content" style="
+              box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, {{ block.settings.overlay }});
+            ">
+              <div class="os-ig-content-inner" style="top: {{ block.settings.top_position }}%;">
+                <h2 class="os-ig-heading text-white">{{ block.settings.title }}</h2>
+                <p class="os-button">{{ block.settings.button }}<span>{% render 'icon-caret' %}</span></p>
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+      {% comment %} <div class="os-ig-grid-right">
+        {% for block in section.blocks limit: 1 offset: 2 %}
+          <a href="{{ block.settings.url }}" class="os-image-grid-link">
+            {% if block.settings.video %}
+              {{ block.settings.video | media_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'os-ig-img' }}
+            {% else %}
+              {{ block.settings.image | image_url: width: 700 | image_tag: height: 'auto', class: 'os-ig-img', loading: 'lazy', widths: '400, 500, 600, 700', sizes: '(max-width: 750px) 400px, (max-width: 1000px) 500px, (max-width: 1300px) 600px, (min-width: 1301px) 700px' }}
+            {% endif %}
+            <div class="os-ig-content" style="
+              box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, {{ block.settings.overlay }});
+            ">
+              <div class="os-ig-content-inner" style="top: {{ block.settings.top_position }}%;">
+                <h2 class="os-ig-heading text-white">{{ block.settings.title }}</h2>
+                <p class="os-button">{{ block.settings.button }}<span>{% render 'icon-caret' %}</span></p>
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      </div> {% endcomment %}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Image Grid",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "blocks": [
+      {
+        "type": "Item",
+        "name": "Item",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "video",
+            "id": "video",
+            "label": "Video Upload"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "button",
+            "label": "Buttom text",
+            "default": "On sale now"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Url"
+          },
+          {
+            "type": "range",
+            "id": "top_position",
+            "min": 10,
+            "max": 90,
+            "step": 5,
+            "unit": "%",
+            "default": 50,
+            "label":"Top position"
+          },
+          {
+            "type": "range",
+            "id": "overlay",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "unit": "%",
+            "default": 0.1,
+            "label":"Overlay Opacity"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Image Grid"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,378 @@
+<style>
+    .desk-container {
+      max-width: 1440px;
+      margin: 3.35rem auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .mobile-container {
+        display: none;
+    }
+
+    .gift-heading {
+        margin-right: 4rem;
+        font-size: 4vw;
+        font-weight: 300;
+        line-height: 1.2;
+        letter-spacing: 0.1em; 
+        margin-bottom: 2rem;
+    }
+
+    .gift-container {
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        justify-content: space-between;
+    }
+    .gift-container > div{
+        width: 49%;
+    }
+    .text-prod {
+        display: flex;
+        line-height: normal;
+        flex-direction: column;
+    }
+      .text-prod-p{
+        font-size: 1.375rem;
+        line-height: normal;
+    }
+    .gift-img img{
+            height: 50rem;
+            width: 100%;
+    }
+
+    gift-img-flex img{
+            object-fit: cover; 
+    }
+  
+    .gift-product {
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    .gift-img-flex {
+        display: flex;
+        gap: 0.35rem;
+    }
+
+    .img-link-text{
+           margin-top: 0.5rem; 
+           text-align: center;
+            word-wrap: break-word;
+           font-size: 0.73rem;
+    }
+  
+     @media (max-width: 1290px) {
+       .gift-img img{
+         height: 40rem;
+       }
+     }
+     @media (max-width: 1213px) {
+        .text-prod-p{
+          font-size: 1.225rem;
+        }
+     }
+     @media (max-width: 1080px) {
+       .gift-img img{
+         height: 37rem;
+       }
+       .text-prod-p{
+        font-size: 1.125rem;
+    }
+     }
+     @media (max-width: 950px) {
+        .gift-container {
+        gap: 0.88rem;
+    }
+       .gift-img img{
+         height: 35rem;
+       }
+       .text-prod-p{
+        font-size: 1.075rem;
+    }
+     }
+    @media (max-width: 900px) {
+        .desk-container {
+            display: none;
+        }
+          .gift-container > div{
+        width: 100%;
+    }
+         .gift-heading {
+        margin-bottom: 1rem;
+       }
+        .mobile-container {
+            display: block;
+            margin: 3rem 1rem 3rem 1rem;
+        }
+         .gift-img-flex img{
+            object-fit: cover; 
+            width: 120%;
+            height: 20rem;
+        }
+         .gift-container {
+            flex-direction: column;
+            gap: 1rem;
+        } 
+
+        .gift-img img{
+            width: 100%;
+            height: 39rem;
+            object-fit: cover; 
+         }
+         
+        .text-prod {
+            width: 100%;
+        }
+         .text-prod-p{
+        font-size: 1.275rem;
+         }
+        .gift-heading {
+            font-size: 7vw;
+        }
+
+    }
+    @media (max-width: 550px) {
+      
+        .this_will_hideinMobile{
+              display: none;
+        }
+        .gift-img img{
+            width: 100%;
+            height: 33rem;
+            object-fit: cover; 
+         }
+         .gift-img-flex img{
+            object-fit: cover; 
+            width: 150%;
+            height: 19.88rem;
+        }
+        .text-prod {
+            font-size: 2.9vw;
+            width: 100%;
+        }
+       .gift-product {
+        margin-top: auto;
+        width: 100%;
+    }
+       .gift-heading {
+            font-size: 6vw;
+        }
+   }
+   @media (max-width: 470px) {
+         .gift-img img{
+            width: 100%;
+            height: 30rem;
+            object-fit: cover; 
+         }
+         .gift-img-flex img{
+            object-fit: cover; 
+            width: 130%;
+            height: 17.88rem;
+        }
+        .text-prod-p{
+        font-size: 1rem;
+    }
+   }
+   @media (max-width: 390px) {
+      .gift-img img{
+            width: 100%;
+            height: 27rem;
+            object-fit: cover; 
+         }
+         .gift-img-flex img{
+            object-fit: cover; 
+            width: 140%;
+            height: 15.88rem;
+        }
+        .text-prod-p{
+        font-size: 1rem;
+    }
+   }
+</style>
+
+<div class="desk-container">
+  <a href="{{ section.settings.link_url_3 }}" target="_blank">  <h2 class="gift-heading" style="text-align: left; font-size: 4vw !important;">{{ section.settings.gift_heading }}</h2> </a>
+    <div class="gift-container">
+        <div class="text-prod">
+            <div class="text-prod-p"><p style="margin-bottom: 0em;"> {{ section.settings.gift_description }} </p></div>
+            <div class="gift-product">
+                <a href="{{ section.settings.link_url_3 }}" target="_blank"> <p style="margin-bottom:1rem; margin-top:0.5rem;"><u>Shop Bestsellers from {{ section.settings.Websiteheading }}</u></p> </a>
+                <div class="gift-img-flex">
+                    <div>
+                        <a href="{{ section.settings.link_url }}" target="_blank">
+                        <img alt="{{ section.settings.alt_tag-1 }}" src="{{ section.settings.image_1_url | img_url: 'master' }}" width="181px">
+                        <p class="img-link-text"><u>{{ section.settings.link_text }}</u></p>
+                        </a>
+                    </div>
+                   <div>
+                        <a href="{{ section.settings.link_url_1 }}" target="_blank">
+                        <img alt="{{ section.settings.alt_tag-2 }}" src="{{ section.settings.image_2_url | img_url: 'master' }}" width="181px">
+                        <p class="img-link-text"><u>{{ section.settings.link_text_1 }}</u></p>
+                        </a>
+                    </div>
+                   {% if section.settings.image_3_url != blank %}
+                    <div>
+                        <a href="{{ section.settings.link_url_2 }}" target="_blank">
+                        <img alt="{{ section.settings.alt_tag-3 }}" src="{{ section.settings.image_3_url | img_url: 'master' }}" width="181px">
+                        <p class="img-link-text"><u>{{ section.settings.link_text_2 }}</u></p>
+                        </a>
+                    </div>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="gift-img">
+       <a href="{{ section.settings.link_url_3 }}" target="_blank"> <img alt="{{ section.settings.alt_tag-main }}" src="{{ section.settings.main_image_url | img_url: 'master' }}" width="500px" height="569px"> </a>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-container">
+  <a href="{{ section.settings.link_url_3 }}" target="_blank">  <h2 class="gift-heading" style="text-align: left; margin-bottom: 0.90rem; font-size: 4vw !important;">{{ section.settings.gift_heading }}</h2> </a>
+    <div class="gift-container">
+        <div class="gift-img">
+          <a href="{{ section.settings.link_url_3 }}" target="_blank">  <img alt="{{ section.settings.alt_tag-main }}" src="{{ section.settings.main_image_url | img_url: 'master' }}" width="500px" height="569px"> </a>
+        </div>
+        <div class="text-flex">
+            <div class="text-prod">
+                <div class="text-prod-p"><p style="margin-bottom: 0em;"> {{ section.settings.gift_description }} </p></div>
+                <div class="gift-product">
+                    <a href="{{ section.settings.link_url_3 }}" target="_blank"> <p style="margin-bottom:0.5rem; margin-top:0.9rem;"><u>Shop Bestsellers from {{ section.settings.Websiteheading }}</u></p> </a>
+                    <div class="gift-img-flex">
+                        <div>
+                            <a href="{{ section.settings.link_url }}" target="_blank">
+                            <img alt="{{ section.settings.alt_tag-1 }}" src="{{ section.settings.image_1_url | img_url: 'master' }}" width="180px">
+                            <p class="img-link-text"><u>{{ section.settings.link_text }}</u></p>
+                            </a>
+                        </div>
+                         <div>
+                            <a href="{{ section.settings.link_url_1 }}" target="_blank">
+                            <img alt="{{ section.settings.alt_tag-2 }}" src="{{ section.settings.image_2_url | img_url: 'master' }}" width="180px">
+                            <p class="img-link-text"><u>{{ section.settings.link_text_1 }}</u></p>
+                            </a>
+                         </div>
+                    {% if section.settings.image_3_url != blank %} 
+                    <div class="this_will_hideinMobile">
+                        <a href="{{ section.settings.link_url_2 }}" target="_blank">
+                        <img alt="{{ section.settings.alt_tag-3 }}" src="{{ section.settings.image_3_url | img_url: 'master' }}" width="180px">
+                        <p class="img-link-text"><u>{{ section.settings.link_text_2 }}</u></p>
+                        </a>
+                    </div>
+                  {% endif %} 
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Page Section Left",
+  "settings": [
+     {
+      "type": "text",
+      "id": "Websiteheading",
+      "label": "Enter Website Name"
+    },
+     {
+      "type": "url",
+      "id": "link_url_3",
+      "label": "Enter Website URL"
+    },
+    {
+      "type": "text",
+      "id": "gift_heading",
+      "label": "Add Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "gift_description",
+      "label": "Add Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image_url",
+      "label": "Add Main Image"
+    },
+      {
+      "type": "text",
+      "id": "alt_tag-main",
+      "label": "Alt Tag MainImg"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_url",
+      "label": "Add First Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2_url",
+      "label": "Add Second Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3_url",
+      "label": "Add Third Image"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Enter URL Product-1"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Enter Text Product-1"
+    },
+    {
+      "type": "text",
+      "id": "alt_tag-1",
+      "label": "Alt Tag ProductImg-1"
+    },
+    {
+      "type": "url",
+      "id": "link_url_1",
+      "label": "Enter URL Product-2"
+    },
+    {
+      "type": "text",
+      "id": "link_text_1",
+      "label": "Enter Text Product-2"
+    },
+     {
+      "type": "text",
+      "id": "alt_tag-2",
+      "label": "Alt Tag ProductImg-2"
+    },
+    {
+      "type": "url",
+      "id": "link_url_2",
+      "label": "Enter URL Product-3"
+    },
+     {
+      "type": "text",
+      "id": "link_text_2",
+      "label": "Enter Text Product-3"
+    },
+    {
+      "type": "text",
+      "id": "alt_tag-3",
+      "label": "Alt Tag ProductImg-3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Section Left"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

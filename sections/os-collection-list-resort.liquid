@@ -1,0 +1,174 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  background-color: {{ section.settings.bg_color }};
+}
+
+.os-clp-top {
+  background: url("{{ section.settings.banner_image | image_url }}") no-repeat center center;
+  background-size: cover;
+  padding-bottom: 2rem;
+}
+
+.os-clp-top .page-width {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  height: 100%;
+  min-height: 30vh;
+}
+
+.os-clp-heading {
+  color: {{ section.settings.heading_color }};
+}
+
+.os-clp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 1rem;
+  row-gap: 2rem;
+  margin: 2rem 0rem 3rem 0rem;
+}
+
+.os-clp-card {
+  display: flex;
+}
+
+.os-clp-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 1rem;
+}
+
+.os-clp-image-div {
+  display: flex;
+  background-color: {{ settings.os_pc_bg_color }};
+}
+
+.os-clp-each-image {
+  object-fit: {{ settings.os_pc_object_fit }};
+  aspect-ratio: {{ settings.os_pc_ratio }};
+}
+
+.os-clp-content {
+  display: flex;
+}
+
+.os-clp-card-heading {
+  color: var(--body-text);
+  font-weight: 700;
+}
+
+@media (max-width: {{ settings.breakpoint2 }}px) {
+  .os-clp-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: {{ settings.breakpoint4 }}px) {
+  .os-clp-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="">
+    <div class="os-clp-top">
+      <div class="page-width">
+        <h1 class="os-clp-heading">{{ section.settings.heading }}</h1>
+      </div>
+    </div>
+    <div class="page-width">
+
+        <div class="os-clp-grid">
+         {% for collection in collections %}
+     {% if collection.title == "Partywear"
+         or collection.title == "Sarong"
+         or collection.title == "Playsuits & Jumpsuits"
+         or collection.title == "Swimsuits"
+       %}
+      <div class="os-clp-card">
+      <a class="os-clp-link" href="{{ collection.url }}">
+        <div class="os-clp-image-div">
+          {% if collection.featured_image %}
+            <img width="auto" height="auto" src="{{ collection.featured_image | image_url }}" class="os-clp-each-image">
+          {% else %}
+            <img width="auto" height="auto" src="{{ section.settings.blank_image | image_url }}" class="os-clp-each-image">
+          {% endif %}
+        </div>
+        <div class="os-clp-content">
+          <p class="os-clp-card-heading">{{ collection.title }}</p>
+        </div>
+      </a>
+    </div>
+  {% endif %}
+{% endfor %}
+
+        </div>
+       
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "OS Collection List Resort",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "All Collections"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#fff"
+      },
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "blank_image",
+        "label": "Blank Image"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,95 @@
+<style>
+  #{{ section.id }} .os-cp-top {
+  padding: 2rem 0rem;
+}
+
+@media (max-width: {{ settings.breakpoint3 }}px) {
+  
+  #{{ section.id }} .os-cp-top {
+     padding: 0.44rem 0rem;
+    padding-bottom: 0rem;
+  }
+  
+  #{{ section.id }} .logo-container-img{
+    margin-top: 1rem;
+     width: 150px;
+   }
+}
+</style>
+
+<section id="{{ section.id }}">
+<div class="os-cp-top">
+    <div class="page-width">
+       {% if section.settings.show_logo %}
+      <div style="display:flex; align-items: center; justify-content: center;">
+      {% if collection.handle == 'crochet' %}
+      <div class="logo-container">
+        <img class="logo-container-img" src="{{ section.settings.logo1 | img_url: 'master' }}" alt="Logo 1" width="200px">
+      </div>
+      {% else %}
+          <h1 class="collection-title h2">{{ collection.title }}</h1>
+      {% endif %}
+      </div>
+    {% else %}
+      <h1 class="collection-title h2">{{ collection.title }}</h1>
+    {% endif %}
+      {% if section.settings.show_description %}
+        <p>{{ collection.description }}</p>
+      {% endif %}
+      
+      {% comment %}
+      <p class="collection-product__count">{{ collection.all_products_count }} products</p>
+      
+      <div class="os-cp-grid-top">
+          <p id="os-cp-filters-trigger">Filter<span>{% render 'icon-caret' %}</span></p>
+          <div>
+            <div class="c-cg-sorting">
+              <p>Sort By:</p>
+              <select class="os-cp-sorting-select c-select" id="sort-by">
+                {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+              
+                {% for option in collection.sort_options %}
+                  <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+                    {{ option.name | replace: '-', ' to ' | replace: ',', ' -' }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        
+          <div class="os-cp-top-right">
+            <span id="os-cp-grid-view">{% render 'icon-arrow' %}{% render 'icon-arrow' %}</span>
+          </div>
+    
+          <div class="os-cp-mfilters">
+            <p id="os-cp-mfilters-trigger">Filter<span>{% render 'icon-plus' %}</span></p>
+          </div>
+        </div>
+      {% endcomment %}
+    </div>
+</div>
+</section>
+
+{% schema %}
+  {
+    "name": "OS Collection Title",
+    "settings": [
+       {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show Logos",
+      "default": false
+    },
+        {
+      "type": "image_picker",
+      "id": "logo1",
+      "label": "Logo 1"
+    }
+    ],
+    "presets": [
+      {
+        "name": "OS Collection Title"
+      }
+    ]
+  }
+{% endschema %}

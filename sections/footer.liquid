@@ -1,0 +1,242 @@
+{% style %}
+  footer * {
+    color: var(--bs-white);
+  }
+  .footer_top {
+    padding: 60px 0;
+  }
+  .footer_bottom {
+    padding: 20px 0;
+    border-top: 0.5px solid var(--bs-dark);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: var(--bs-white);
+    text-transform: uppercase;
+  }
+  .footer_bottom p {
+    margin-bottom: 0;
+  }
+  .footer__payment ul {
+    gap: 8px;
+  }
+  .footer_newsletter_block_content h4 {
+    margin-bottom: 16px;
+  }
+  .footer_newsletter_block_content {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .newsletter_form {
+    margin-top: 32px;
+  }
+  .newsletter_form_btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--bs-secondary);
+  }
+  .newsletter_form_btn svg * {
+    stroke: var(--bs-secondary);
+  }
+  .newsletter_form .inline_form .form-control,
+  .newsletter_form .inline_form .form-control:focus {
+    padding: 0 0 12px;
+    flex: 1;
+  }
+  .footer_block_title {
+    margin-bottom: 16px;
+  }
+  .footer_links_list_item,
+  .footer_contact_list_item {
+    line-height: 20px;
+    padding-bottom: 11px;
+  }
+  .footer_links_block .footer_link {
+    text-transform: uppercase;
+  }
+  .footer_link {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .footer_contact_list_item {
+    display: flex;
+    gap: 8px;
+  }
+  .footer_social {
+    gap: 16px;
+    margin-top: 5px;
+  }
+{% endstyle %}
+
+
+<footer class="bg-black">
+  <div class="footer_top">
+    <div class="page-width">
+      <div class="row">
+        <div class="col-xl-4 col-12">
+          <div class="footer_newsletter_block">
+            <div class="footer_newsletter_block_content">
+              <h4 class="text-white">Unlock 10% off</h4>
+              <p>Sign up to our emails and get 10% off full price styles in your next order.</p>
+            </div>
+            {%- form 'customer'
+              , id: 'ContactFooter'
+              , class: 'newsletter_form' -%}
+              <input
+                type="hidden"
+                name="contact[tags]"
+                value="newsletter">
+              <div class="newsletter-form__field-wrapper">
+                <div class="inline_form inline_form_white">
+                  <input
+                    id="NewsletterForm--{{ section.id }}"
+                    type="email"
+                    name="contact[email]"
+                    class="form-control"
+                    value="{{ form.email }}"
+                    aria-required="true"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    autocomplete="email"
+                    {% if form.errors %}
+                    autofocus
+                    aria-invalid="true"
+                    aria-describedby="ContactFooter-error"
+                    {% elsif form.posted_successfully? %}
+                    aria-describedby="ContactFooter-success"
+                    {% endif %}
+                    placeholder="Email Address"
+                    required>
+                  <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">
+                    Email Address
+                  </label>
+                  <button
+                    type="submit"
+                    class="newsletter_form_btn inline_form_icon_btn"
+                    name="commit"
+                    id="Subscribe"
+                    aria-label="Email Address">
+                    Subscribe {% render 'icon-arrow' %}
+                  </button>
+                </div>
+                {%- if form.errors -%}
+                  <small class="newsletter-form__message form__message" id="ContactFooter-error">{% render 'icon-error' %}{{ form.errors.translated_fields['email']| capitalize }} {{ form.errors.messages['email'] }}</small>
+                {%- endif -%}
+              </div>
+              {%- if form.posted_successfully? -%}
+                <h3
+                  class="newsletter-form__message newsletter-form__message--success form__message"
+                  id="ContactFooter-success"
+                  tabindex="-1"
+                  autofocus>{% render 'icon-success' %}{{ 'newsletter.success' | t }}</h3>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+        </div>
+        <div class="col-xl-8 col-12">
+          <div class="footer_info_wrapper">
+            <div class="row gx-xxl-5">
+              <div class="col-md-4 col-sm-6 col-12">
+                <div class="footer_links_block">
+                  <h6 class="fw-semibold footer_block_title">Our Fav Products</h6>
+                  <ul class="list-unstyled footer_links_list">
+                    <li class="footer_links_list_item">
+                      <a href="#" class="footer_link">Dress</a>
+                    </li>
+                    <li class="footer_links_list_item">
+                      <a href="#" class="footer_link">Bikini</a>
+                    </li>
+                    <li class="footer_links_list_item">
+                      <a href="#" class="footer_link">Collection</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 col-12">
+                <div class="footer_links_block">
+                  <h6 class="fw-semibold footer_block_title">Customer service</h6>
+                  <ul class="list-unstyled footer_links_list">
+                    <li class="footer_links_list_item">
+                      <a href="#" class="footer_link">Contact us</a>
+                    </li>
+                    <li class="footer_links_list_item">
+                      <a href="#" class="footer_link">FAQs</a>
+                    </li>
+                    <li class="footer_links_list_item">
+                      <a href="#" class="footer_link">size guide</a>
+                    </li>
+                    <li class="footer_links_list_item">
+                      <a href="#" class="footer_link">Delivery</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 col-12">
+                <div class="footer_contact_block">
+                  <h6 class="fw-semibold footer_block_title">Get in Touch</h6>
+                  <ul class="list-unstyled footer_contact_list">
+                    <li class="footer_contact_list_item">
+                      <span class="footer_contact_list_item_icon">
+                        {% render 'os-icon-email' %}</span>
+                      <a href="mailto:hello@oceanusswimwear.com" class="footer_link">hello@oceanusswimwear.com</a>
+                    </li>
+                    <li class="footer_contact_list_item">
+                      <span class="footer_contact_list_item_icon">
+                        {% render 'os-icon-mappin' %}</span>
+                      <a href="#" class="footer_link">Studio 302, Battersea, London</a>
+                    </li>
+                  </ul>
+                  <ul class="list-unstyled footer_social d-flex align-items-center">
+                    <li>
+                      <a href="#">{% render 'os-icon-facebook' %}</a>
+                    </li>
+                    <li>
+                      <a href="#">{% render 'os-icon-instagram' %}</a>
+                    </li>
+                    <li>
+                      <a href="#">{% render 'os-icon-twitter' %}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer_bottom">
+    <div class="page-width">
+      <div class="row justify-content-between align-items-center gap-3">
+        <div class="col-auto">
+          <div class="copyright_text">
+            <p>©
+              <script>new Date().getFullYear()>1111&&document.write(new Date().getFullYear());</script> OCEANUS, TM & PLAYBOY, ENTERPRISE INTERNATIONAL, INC. ALL RIGHTS RESERVED | Website By <a href="https://www.chudigital.com/" target="_blank">CHU Digital</a> & <a href="https://www.pega.agency/" target="_blank">Pega</a></p>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="footer__payment text-end">
+              <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+              <ul class="list-unstyled d-flex align-items-center justify-content-end" role="list">
+                {%- for type in shop.enabled_payment_types -%}
+                  <li>
+                    {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  {% schema %}
+    {
+      "name": "t:sections.footer.name",
+      "settings": []
+    }
+  {% endschema %}

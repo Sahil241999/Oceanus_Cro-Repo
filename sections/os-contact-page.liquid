@@ -1,0 +1,186 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+}
+
+#{{ section.id }} .os-cp-wrapper {
+  width: {{ section.settings.container_width }}%;
+  margin: 0px auto;
+  display: flex;
+}
+
+#{{ section.id }} .os-cp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+#{{ section.id }} .os-cp-form-names {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+#{{ section.id }} .os-cp-input-div {
+  display: flex;
+}
+
+#{{ section.id }} .os-cp-input-container {
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: transparent;
+  color: var(--body-text);
+  padding: 1.5rem 2rem;
+  width: 100%;
+}
+
+#{{ section.id }} .os-cp-input-container::placeholder {
+  color: rgba(0,0,0,0.5);
+  font-style: italic;
+}
+
+#{{ section.id }} .os-cp-input-container:focus {
+  border-color: rgba(0,0,0,1);
+}
+
+#{{ section.id }} .os-cp-submit {
+  background-color: var(--os-ac1);
+  padding: 1rem 1rem;
+}
+
+@media (max-width: 989px) {
+  #{{ section.id }} .os-cp-wrapper {
+    width: 100%;
+  }
+
+  #{{ section.id }} .os-cp-form-names {
+    grid-template-columns: 1fr;
+  }
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    <div class="os-cp-wrapper">
+      {% form 'contact', class: 'os-cp-form' %}
+        {% if form.posted_successfully? %}
+          <p class="os-cp-form-success">{{ section.settings.success_message }}</p>
+        {% else %}
+          {{ form.errors | default_errors }}
+        {% endif %}
+        <div class="os-cp-form-names">
+          <input class="os-cp-input-container" name="contact[first-name]" tpye="text" required="required" placeholder="{{ section.settings.placeholder1 }}">
+          <input class="os-cp-input-container" name="contact[last-name]" tpye="text" required="required" placeholder="{{ section.settings.placeholder2 }}">
+        </div>
+        <div class="os-cp-input-div">
+          <input class="os-cp-input-container" name="contact[email]" type="email" required="required" placeholder="{{ section.settings.placeholder3 }}">
+        </div>
+        <div class="os-cp-input-div">
+          <input class="os-cp-input-container" name="contact[phone-number]" type="text" required="required" placeholder="{{ section.settings.placeholder4 }}">
+        </div>
+         <div class="os-cp-input-div">
+          <input class="os-cp-input-container" name="contact[body]" type="text" required="required" placeholder="{{ section.settings.placeholder5 }}">
+        </div>
+        <div class="os-cp-form-bottom">
+          <button class="os-button os-cp-submit" type="submit" value="Create">{{ section.settings.button_text }}<span>{% render 'icon-caret' %}</span></button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Contact Page",
+    "settings": [
+      {
+        "type": "text",
+        "id": "success_message",
+        "label": "Success Message",
+        "default": "Thank you! We'll be in touch soon."
+      },
+      {
+        "type": "range",
+        "id": "container_width",
+        "label": "Container width",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text",
+        "default": "Submit"
+      },
+      {
+        "type": "header",
+        "content": "Placeholders"
+      },
+      {
+        "type": "text",
+        "id": "placeholder1",
+        "label": "First Name Placeholder",
+        "default": "First name"
+      },
+      {
+        "type": "text",
+        "id": "placeholder2",
+        "label": "Last Name Placeholder",
+        "default": "Surname"
+      },
+      {
+        "type": "text",
+        "id": "placeholder3",
+        "label": "Email Placeholder",
+        "default": "Email"
+      },
+      {
+        "type": "text",
+        "id": "placeholder4",
+        "label": "Phone Number Placeholder",
+        "default": "Phone number"
+      },
+       {
+        "type": "text",
+        "id": "placeholder5",
+        "label": "Phone Number Placeholder",
+        "default": "Message"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Contact Page"
+      }
+    ]
+  }
+{% endschema %}

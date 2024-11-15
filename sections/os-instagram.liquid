@@ -1,0 +1,171 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  background-color: {{ section.settings.bg_color }};
+}
+
+#{{ section.id }} .os-i-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 5px;
+}
+
+#{{ section.id }} .os-i-grid-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+  background-color: var(--os-ac1);
+  color: {{ section.settings.text_color }};
+}
+
+#{{ section.id }} .os-i-grid-left p {
+  margin: 0.5rem 0rem 1rem 0rem;
+}
+
+#{{ section.id }} .os-i-block-wrapper {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+#{{ section.id }} .os-i-block img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+#{{ section.id }} .os-button {
+  background-color: var(--body-text);
+}
+
+#{{ section.id }} .os-i-button {
+  background-color: {{ section.settings.button_bg_color }};
+}
+
+@media (max-width: {{ settings.breakpoint3 }}px) {
+  #{{ section.id }} .os-i-grid {
+    grid-template-columns: 1fr;
+  }
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="">
+    <div class="os-i-grid">
+      <div class="os-i-grid-left">
+        <h2>{{ section.settings.title }}</h2>
+        <p>{{ section.settings.description }}</p>
+        {% if section.settings.button_text %}
+          <a href="{{ section.settings.button_url }}" class="os-button os-i-button">{{ section.settings.button_text }}<span>{% render 'icon-caret' %}</span></a>
+        {% endif %}
+      </div>
+      <div class="os-i-block-wrapper">
+        {% for block in section.blocks %}
+          <div class="os-i-block">
+            {{ block.settings.insta_image | image_url: width: 400 | image_tag: height: 'auto', class: 'os-ic-item-img', loading: 'lazy', widths: '175, 200, 250, 300, 400', sizes: '(max-width: 400px) 175px, (max-width: 500px) 200px, (max-width: 600px) 250px, (max-width: 768px) 300px, (min-width: 1300px) 400px' }}
+            {% comment %} <img width="400" height="auto" src="{{ block.settings.insta_image | image_url: width: 400 }}" alt="{{ block.settings.insta_image.alt }}"> {% endcomment %}
+          </div>
+        {% endfor %}
+    </div>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Instagram",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "blocks": [
+      {
+        "type": "Image",
+        "name": "Image",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "insta_image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "default": "Title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "description",
+        "label": "Description"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "default": "Button Text",
+        "label": "Button Text"
+      },
+      {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button Link"
+      },
+      {
+        "type": "color",
+        "id": "button_bg_color",
+        "label": "Button background color",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Instagram"
+      }
+    ]
+  }
+{% endschema %}

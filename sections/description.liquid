@@ -1,0 +1,112 @@
+<style>
+  .des_text_seoPage{
+      text-align: center;
+      max-width: 1540px;
+      margin: 2.45rem auto;
+      padding-left: 20px;
+      padding-right: 20px;
+  }
+  .des_heading_seoPage{
+     font-size: 2.25rem;
+     line-height: normal;
+  }
+  .des_descript_seoPage{
+     font-size: 1.65rem;
+    line-height: normal;
+  }
+   @media (max-width: 1490px) {
+     .des_heading_seoPage{
+     font-size: 2.5rem;
+  }
+  .des_descript_seoPage{
+     font-size: 1.45rem;
+  }
+   }
+  @media (max-width: 1270px) {
+     .des_heading_seoPage{
+     font-size: 2.2rem;
+  }
+  .des_descript_seoPage{
+     font-size: 1.25rem;
+  }
+   }
+   @media (max-width: 1110px) {
+     .des_heading_seoPage{
+     font-size: 2rem;
+  }
+  .des_descript_seoPage{
+     font-size: 1.2rem;
+  }
+   }
+  @media (max-width: 1026px) {
+     .des_heading_seoPage{
+     font-size: 1.79rem;
+  }
+  .des_descript_seoPage{
+     font-size: 1.2rem;
+  }
+   }
+   @media (max-width: 909px) {
+     .des_heading_seoPage{
+     font-size: 1.39rem;
+  }
+  .des_descript_seoPage{
+     font-size: 1.2rem;
+  }
+   }
+    @media (max-width: 720px) {
+     .des_heading_seoPage{
+     font-size: 1.33rem;
+  }
+  .des_descript_seoPage{
+     font-size: 1.2rem;
+  }
+   }
+   @media (max-width: 420px) {
+     .des_heading_seoPage{
+     font-size: 1.13rem;
+  }
+  .des_descript_seoPage{
+     font-size: 1rem;
+  }
+   }
+   @media (max-width: 398px) {
+     .des_heading_seoPage{
+     font-size: 1.03rem;
+  }
+  .des_descript_seoPage{
+     font-size: 0.98rem;
+  }
+   }
+</style>
+<div class="des_text_seoPage">
+  <h1 class="des_heading_seoPage">{{ section.settings.heading_1 }}</h1>
+  <div class="des_descript_seoPage">{{ section.settings.description_1 }}</div>
+</div>
+{% schema %}
+  {
+    "name": "Description Text",
+    "settings": [ 
+       {
+      "type": "text",
+      "id": "heading_1",
+      "label": "Add Heading"
+      },
+      {
+      "type": "richtext",
+      "id": "description_1",
+      "label": "Add Description"
+    }],
+  "presets": [
+    {
+      "name": "Add Description Text"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

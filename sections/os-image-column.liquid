@@ -1,0 +1,273 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  background-color: {{ section.settings.bg_color }};
+}
+
+#{{ section.id }} .os-ic-top {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  /* text-align: center; */
+  flex-direction: column;
+}
+
+#{{ section.id }} .os-ic-grid {
+  display: grid;
+  grid-template-columns:{% for i in (1..section.settings.columns) %} 1fr{% endfor %};
+  gap: 1rem;
+}
+
+#{{ section.id }} .os-image-grid-link {
+  position: relative;
+  display: flex;
+}
+
+#{{ section.id }} .os-ic-item-img {
+  width: 100%;
+  object-fit: cover;
+  min-height: 480px;
+}
+
+#{{ section.id }} .os-ic-item-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.os-ic-item-content h3 {
+  font-size: 1.3rem;
+  font-family: var(--font-body-family);
+}
+
+@media (max-width: {{ settings.breakpoint3 }}px) {
+  #{{ section.id }} .os-fc-top {
+    margin-bottom: 1.5rem;
+  }
+
+  #{{ section.id }} .os-ic-grid {
+    grid-template-columns: 1fr;
+  }
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width2">
+    <div class="os-ic-top">
+      <h2 class="section-title">{{ section.settings.section_heading }}</h2>
+      <p>{{ section.settings.subtitle }}</p>
+    </div>
+    <div class="os-ic-grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.button_url }}" class="os-image-grid-link">
+          {% if block.settings.video %}
+            {{ block.settings.video | media_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'os-ic-item-img' }}
+          {% else %}
+            {{ block.settings.image | image_url: width: 900 | image_tag: height: 'auto', class: 'os-ic-item-img', loading: 'lazy', widths: '350, 450, 550, 750', sizes: '(max-width: 400px) 350px, (max-width: 500px) 450px, (max-width: 600px) 550px, (max-width: 768px) 750px, (min-width: 1300px) 600px' }}
+          {% endif %}
+          <div class="os-ic-item-content" style="
+              align-items: {{ block.settings.x_position }};
+              justify-content: {{ block.settings.y_position }};
+              text-align: {{ block.settings.text_alignment }};
+              box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, {{ block.settings.overlay }});
+            ">
+            <h3 style="
+                color: {{ block.settings.title_color }};
+              ">{{ block.settings.title }}</h3>
+            {% if block.settings.button_text %}
+              <p class="os-button">{{ block.settings.button_text }}<span>{% render 'icon-caret' %}</span></p>
+            {% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Image column",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "blocks": [
+      {
+        "type": "Item",
+        "name": "Item",
+        "limit": 6,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "video",
+            "id": "video",
+            "label": "Video Upload"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Title"
+          },
+          {
+            "type": "color",
+            "id": "title_color",
+            "label": "Title color",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button text",
+            "default": "Button text"
+          },
+          {
+            "type": "url",
+            "id": "button_url",
+            "label": "Button link"
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text Alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "select",
+            "id": "x_position",
+            "label": "Content X Position",
+            "options": [
+              {
+                "value": "flex-start",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "flex-end",
+                "label": "Right"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "select",
+            "id": "y_position",
+            "label": "Content Y Position",
+            "options": [
+              {
+                "value": "flex-start",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Middle"
+              },
+              {
+                "value": "flex-end",
+                "label": "Bottom"
+              }
+            ],
+            "default": "flex-end"
+          },
+          {
+            "type": "range",
+            "id": "overlay",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "unit": "%",
+            "default": 0.1,
+            "label":"Overlay Opacity"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type":"text",
+        "id": "section_heading",
+        "label": "Heading",
+        "default": "Our Bestsellers"
+      },
+      {
+        "type":"text",
+        "id": "subtitle",
+        "label": "Sub Title",
+        "default": "New In"
+      },
+      {
+        "type": "range",
+        "id": "columns",
+        "label": "Columns",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 2
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Image Column"
+      }
+    ]
+  }
+{% endschema %}

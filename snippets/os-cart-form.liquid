@@ -1,0 +1,260 @@
+<div id="osc-main" data-money-format="{{ shop.money_format }}">
+  <div class="osc-icon-div">
+    <h3 class="osc-heading">Your Cart</h3>
+    <span id="osc-icon-span">{% render 'icon-close' %}</span>
+  </div>
+  {% if cart.empty? %}
+    <div class="osc-empty__wrapper">
+      <h3 class="osc-empty-heading osc-empty-heading__margin">Your Cart is Empty</h3>
+      <a class="osc-empty-link os-pp-atc" href="/collections/all">Shop All</a>
+      <div class="osc-empty__recommendations">
+        <h3 class="osc-empty-heading">You may like these</h3>
+        <div class="osc-empty__recommendations-wrapper">
+          {% for product in settings.cart_drawer_product_list %}
+            {% render 'os-product-card'
+              , os_product: product %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div id="osc-empty-cart"></div>
+    <div id="osc-active-cart">
+       <div id="osc-progress-bar">
+        <div class="progress-bar__label"></div>
+        <div class="progress-bar">
+        <div class="progress-bar__inner">
+        </div>
+        </div>
+      </div> 
+      <div class="osc-headingContainer">
+      <h3 class="osc-heading">{{ settings.osc_heading }}</h3>
+       <div>
+           <div id="maincart_arrowicon" style="gap: 0.50rem;">
+           <div style=" cursor: pointer;">
+            <img class="slider-arrow-prev" src="{{ 'slick-prev.svg' | asset_url }}" width="40" height="auto">
+           </div>
+           <div style=" cursor: pointer;">
+             <img class="slider-arrow-next" src="{{ 'slick-next.svg' | asset_url }}" width="40" height="auto">
+           </div>
+           </div>
+       </div>
+      </div>
+      <form action="{{ routes.cart_url }}" method="post">
+        <div id="osc-cart-items">
+          {% for item in cart.items %}
+            <div class="osc-cart-item" data-key="{{ item.variant_id }}">
+              <div class="osc-ci-left">
+                <a class="" href="{{ item.url }}">
+                  {% if item.variant.featured_image %}
+                    {{ item.variant.featured_image | image_url: width: 350 | image_tag: loading: 'lazy', height: 'auto' }}
+                  {% else %}
+                    {{ item.product.featured_image | image_url: width: 350 | image_tag: loading: 'lazy', height: 'auto' }}
+                  {% endif %}
+                </a>
+              </div>
+              <div class="osc-ci-right">
+                <a class="osc-ci-link" href="{{ item.url }}">
+                  <p class="osc-item-title">{{ item.product.title }}</p>
+                  {% for option in item.options_with_values %}
+                    {% if option.name != 'Title' %}
+                      <p class="sb-cd-options">{{ option.name }}: {{ option.value }}</p>
+                    {% endif %}
+                  {% endfor %}
+                </a>
+                <div class="osc-ci-bottom">
+                  <div class="osc-quantity" data-variant-qty="{{ item.variant.inventory_quantity }}">
+                    <span class="osc-quantity-button osc-quantity-minus">{% render 'icon-minus' %}</span>
+                    <span class="osc-quantity-middle">{{ item.quantity }}</span>
+                    <span class="osc-quantity-button osc-quantity-plus">{% render 'icon-plus' %}</span>
+                  </div>
+                  <div>
+                    <p class="osc-line-price">{{ item.original_line_price | money }}</p>
+                  </div>
+                </div>
+                <div class="osc-update-error"></div>
+                <span class="osc-ci-close">Remove</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="osc-prices-atc">
+        <div id="best-sellers-container" style="background: #FFFFFF;">
+        <div class="best-sellers-heading">
+         <h3 class="osc-heading">Best Sellers we Recommend</h3>
+          <div class="bs-arrowSlider" style="display:flex; gap: 0.50rem;">
+           <div style=" cursor: pointer;">
+             <img class="bs-arrow-prev" src="{{ 'slick-prev.svg' | asset_url }}" width="40" height="auto">
+           </div>
+           <div style=" cursor: pointer;">
+             <img class="bs-arrow-next" src="{{ 'slick-next.svg' | asset_url }}" width="40" height="auto">
+           </div>
+           </div>
+        </div>
+         <div id="bs-scroll-div">
+            <div class="bs-formContainer">  
+             <div id="form1"></div>
+            </div>
+            <div class="bs-formContainer">                    
+            <div id="form2"></div>
+        </div>
+         </div>
+        </div>
+          {%- if settings.show_cart_note -%}
+            <details id="Details-CartDrawer" style="padding: 0 1rem;">
+              <summary style="padding: 1rem 0 0 0;">
+                <span class="summary__title">
+                  Order note
+                  {% render 'icon-caret' %}
+                </span>
+              </summary>
+              <cart-note class="cart__note field">
+                <label class="visually-hidden" for="CartDrawer-Note">{{ 'sections.cart.note' | t }}</label>
+                <textarea
+                  id="CartDrawer-Note"
+                  class="text-area text-area--resize-vertical field__input"
+                  name="note"
+                  placeholder="{{ 'sections.cart.note' | t }}">{{ cart.note }}</textarea>
+              </cart-note>
+            </details>
+          {%- endif -%}
+          <div class="osc-prices">
+            <div class="osc-price-div">
+              <p class="osc-price-heading">Estimated Total</p>
+              <span
+                id="osc-total"
+                class="osc-price-amount"
+                data-total-price="{{ cart.total_price }}">{{ cart.total_price | money }}</span>
+            </div>
+          </div>
+          
+          <!-- Route Code Edited 07/02/2024-->
+          <div class="route-div" desktop-align="center"></div>
+          <style>
+            .pw-route-protection{
+              padding:0px !important;
+            }
+          </style>
+          <!-- End Route Code -->
+          
+          <div class="bottom-continer-div">
+          <button
+            type="submit"
+            name="checkout"
+            class="os-button osc-checkout-button">{{ settings.osc_checkout_button }}<span>{% render 'icon-caret' %}</span>
+          </button>
+          <div class="osc-price-div">
+            <p class="osc-price-heading">
+              <span class="osc-ph-brackets"><br>Shipping and taxes calculated at checkout.</span>
+            </p>
+          </div>
+         </div>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+</div>
+
+
+<script>
+ document.addEventListener("DOMContentLoaded", function() {
+    function initializeSlider() {
+        const bsslider = document.getElementById('bs-scroll-div');
+        const bsleftArrow = document.querySelector('.bs-arrow-prev');
+        const bsrightArrow = document.querySelector('.bs-arrow-next');
+
+        if (!bsslider || !bsleftArrow || !bsrightArrow) {
+            return; // Exit if elements are not found
+        }
+
+        let bsscrollAmount = 0;
+        const bsscrollStep = 325;
+
+        bsleftArrow.addEventListener('click', function() {
+            bsscrollAmount -= bsscrollStep;
+            bsslider.scrollTo({
+                top: 0,
+                left: bsscrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        bsrightArrow.addEventListener('click', function() {
+            bsscrollAmount += bsscrollStep;
+            bsslider.scrollTo({
+                top: 0,
+                left: bsscrollAmount,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    initializeSlider(); // Initial call to setup slider
+
+    // MutationObserver to watch for changes in the DOM
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            // Reinitialize the slider if needed
+            initializeSlider();
+        });
+    });
+
+    // Observe the entire document for changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
+</script>
+
+
+<script>
+ document.addEventListener("DOMContentLoaded", function() {
+    function initializeSlider() {
+        const slider = document.getElementById('osc-cart-items');
+        const leftArrow = document.querySelector('.slider-arrow-prev');
+        const rightArrow = document.querySelector('.slider-arrow-next');
+
+        if (!slider || !leftArrow || !rightArrow) {
+            return; // Exit if elements are not found
+        }
+
+        let scrollAmount = 0;
+        const scrollStep = 325;
+
+        leftArrow.addEventListener('click', function() {
+            scrollAmount -= scrollStep;
+            slider.scrollTo({
+                top: 0,
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        rightArrow.addEventListener('click', function() {
+            scrollAmount += scrollStep;
+            slider.scrollTo({
+                top: 0,
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    initializeSlider(); // Initial call to setup slider
+
+    // MutationObserver to watch for changes in the DOM
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            // Reinitialize the slider if needed
+            initializeSlider();
+        });
+    });
+
+    // Observe the entire document for changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
+</script>

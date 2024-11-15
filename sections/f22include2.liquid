@@ -1,0 +1,64 @@
+<style>
+  .f22-include2 {
+    height: 35px;
+    font-size: 1.5vw;
+    background: black;
+    color: white !importnat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .f22-include2 img {
+    display: inline;
+    max-width: auto;
+    height: auto;
+    vertical-align: middle; /* Adjust the alignment */
+  }
+   .f22-include2:hover {
+       .f22-hov{ 
+            font-style: italic;
+            text-decoration: underline;
+       }
+  }
+  @media (max-width: 1359px) {
+        .f22-include2 {
+              font-size: 1.3rem;
+        }     
+    } 
+  @media (max-width: 660px) {
+        .f22-include2 {
+              font-size: 1.1rem;
+        }     
+    } 
+   @media (max-width: 530px) {
+        .f22-include2 {
+              font-size: 0.9rem;
+        }     
+    } 
+   @media (max-width: 425px) {
+        .f22-include2 {
+              font-size: 0.7rem;
+        }     
+    } 
+</style>
+
+<div class="f22-include2">
+  <a href="https://www.decodehouse.com/contact" target="_blank">  
+  <p style="margin-bottom: 0em ; color: white;">Gift Guide designed and developed by DecodeHouse</p>
+  </a>
+  <!-- <span class="f22-hov">(Hire Shopify Developers)</span> <img src="{{ 'F22.svg' | asset_url }}" > -->
+</div>
+
+{% schema %}
+{
+  "name": "f22lab-include2",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "F22lab Include2",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

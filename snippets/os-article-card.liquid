@@ -1,0 +1,17 @@
+<div class="os-bp-card-wrapper">
+  <a class="os-bp-card" href="{{ os_article.url }}">
+    {% if settings.os_ac_show_image == true %}
+      <div class="os-bp-image-div">
+        <img width="500" height="auto" alt="{{ os_article.image.alt | escape }}" src="{{ os_article.image | image_url: width: 500 }}"  class="os-bp-image">
+      </div>
+    {% endif %}
+    <div>
+      <p class="os-bp-title">{{ os_article.title }}</p>
+      {% if os_article.excerpt %}<div>{{ os_article.excerpt | truncate: 20 }}</div>{% endif %}
+      <div class="os-bp-title-things">
+        {% if settings.os_ac_show_blog_date == true %}<div>{{ os_article.published_at | date: "%a, %b %d, %y" }}</div>{% endif %}
+        {% if settings.os_ac_show_author == true %}<div>{{ os_article.author }}</div>{% endif %}
+      </div>
+    </div>
+  </a>
+</div>

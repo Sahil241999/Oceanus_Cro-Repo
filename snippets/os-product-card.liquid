@@ -1,0 +1,233 @@
+<style>
+ .os-pc-title, .os-pc-prices-div {
+  font-family: "Moniqa-Condensed";
+  font-size: 17pt;
+  font-weight: normal;
+}
+
+.os-pc-price {
+  font-family: "Gill Sans";
+  font-size: 11pt;
+  font-weight: normal;
+}
+  
+  @media (max-width: 760px) {
+  .os-pc-title{
+      font-size: 11.5pt; 
+    }
+    
+  .os-pc-price {
+    font-size: 9.5pt !important;
+   }
+    
+   }
+</style>
+
+{% assign percentage = 0 %}
+{% for variant in os_product.variants %}
+  {% assign saving = variant.compare_at_price
+    | minus: variant.price
+    | times: 100
+    | divided_by: variant.compare_at_price
+    | round
+  %}
+  {% assign percentage = saving | at_least: percentage %}
+{% endfor %}
+
+{% assign varNum = 0 %}
+{% comment %} {% assign invPolicy = 'deny' %} {% endcomment %}
+{% for variant in os_product.variants %}
+  {% assign varNum = varNum | plus: variant.inventory_quantity %}
+  {% comment %}
+    {% if variant.inventory_policy == 'continue' %}
+      {% assign invPolicy = variant.inventory_policy %}
+    {% endif %}
+  {% endcomment %}
+{% endfor %}
+
+
+  <div class="os-pc-product {% if os_product.images.size > 1 %}has-hover{% endif %}">
+    <div class="os-pc-product__wishlist">
+      {% render 'hulkapps-wishlist-collection-btn',
+        productId: os_product.id,
+        variantId: os_product.selected_or_first_available_variant.id
+      %}
+    </div>
+    <a class="os-pc-product-link" href="{{ os_product.url }}">
+      <div class="os-pc-image-div">
+        {% if percentage != 0 %}
+          <div class="os-pc-discount">-{{ percentage }}%</div>
+        {% endif %}
+        <div class="os-pc-badge-div">
+          {% for tag in os_product.tags %}
+            {% assign tag_name = tag | downcase %}
+            {% if tag_name == 'bestseller' %}
+              <div class="os-pc-bestseller" style="font-family: 'CornerStoreJF' !important;">
+                {% render 'icon-tablet' %}
+                <span>Bestseller</span>
+              </div>
+            {% elsif tag_name == 'new' %}
+              <div class="os-pc-new-in" style="font-family: 'CornerStoreJF' !important;">
+                {% render 'icon-new-label' %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% comment %}
+          {{ os_product.featured_image | image_url: width: 550 | image_tag: height: 'auto', class: 'os-pc-image os-pc-image__main', loading: 'eager', widths: '200px, 400px, 550px', sizes: '((min-width: 1px) and (max-width: 420px)) 200px, ((min-width: 420px) and (max-width: 1300px)) 400px, (min-width: 1300px) 550px' }}
+          {% if os_product.images.size > 1 %}
+            {{ os_product.images[1]| image_url: width: 550 | image_tag: height: 'auto', class: 'os-pc-image os-pc-image__second', loading: 'eager', widths: '200px, 400px, 550px', sizes: '((min-width: 1px) and (max-width: 420px)) 200px, ((min-width: 420px) and (max-width: 1300px)) 400px, (min-width: 1300px) 550px' }}
+          {% endif %}
+        {% endcomment %}
+        {% if os_product.featured_image %}
+          {{
+            os_product.featured_image
+            | image_url: width: 550
+            | image_tag:
+              height: 'auto',
+              class: 'os-pc-image os-pc-image__main',
+              loading: 'eager',
+              widths: '200px, 400px, 550px',
+              sizes: '((min-width: 1px) and (max-width: 420px)) 200px, ((min-width: 420px) and (max-width: 1300px)) 400px, (min-width: 1300px) 550px'
+          }}
+        {% elsif os_product.featured_image == '' %}
+          {{
+            os_product.media[0].preview_image.src
+            | image_url: width: 550
+            | image_tag:
+              height: 'auto',
+              class: 'os-pc-image os-pc-image__main',
+              loading: 'eager',
+              widths: '200px, 400px, 550px',
+              sizes: '((min-width: 1px) and (max-width: 420px)) 200px, ((min-width: 420px) and (max-width: 1300px)) 400px, (min-width: 1300px) 550px'
+          }}
+        {% endif %}
+
+        {% if os_product.images.size > 1 %}
+          {{
+            os_product.images[1]
+            | image_url: width: 550
+            | image_tag:
+              height: 'auto',
+              class: 'os-pc-image os-pc-image__second',
+              loading: 'eager',
+              widths: '200px, 400px, 550px',
+              sizes: '((min-width: 1px) and (max-width: 420px)) 200px, ((min-width: 420px) and (max-width: 1300px)) 400px, (min-width: 1300px) 550px'
+          }}
+        {% endif %}
+        {% if os_product.available %}
+          <div class="os-pc-quick-atc">
+            <div class="os-pc-quick-atc-text">Quick Add</div>
+      <div class="os-pc-quick-atc-variants {%if os_product.has_only_default_variant %}no-transition{%endif%}">
+        {% if os_product.has_only_default_variant %}
+          <div class="os-pc-quick-atc-variant" data-variant-id="{{ os_product.first_available_variant.id }}">
+            Quick Add
+          </div>
+        {% else %}
+           <span class="os-pc-quick-prev">&lt;</span>
+          <div class="os-pc-quick-variant-container">
+            {% for variant in os_product.variants %}
+              {% if variant.available %}
+                <div class="os-pc-quick-atc-variant" data-variant-id="{{ variant.id }}">{{ variant.title }}</div>
+              {% endif %}
+            {% endfor %}
+          </div>      
+            <span class="os-pc-quick-next">&gt;</span>
+        {% endif %}
+      </div>
+          </div>
+        {% endif %}
+      </div>
+    </a>
+    <div class="os-pc-text-div">
+      <p class="os-pc-title">{{ os_product.title }}</p>
+      <div class="os-pc-bottom">
+        <div class="os-pc-prices-div">
+          <p class="os-pc-price">{{ os_product.price | money_without_trailing_zeros }}</p>
+          {% if os_product.compare_at_price_max > os_product.price %}
+            <p class="os-pc-price compare">{{ os_product.compare_at_price_max | money_without_trailing_zeros }}</p>
+          {% endif %}
+        </div>
+        <div style="margin-top: 5px; display: flex; overflow: auto; width: 100%; gap: 0.5rem;">
+          {% for option in os_product.options_with_values %}
+            {% if option.name == 'Color' %}
+              {% for value in option.values %}
+                {% for variant in os_product.variants %}
+                  {% if variant.option1 == 'S' and variant.option2 == value %}
+                    <a href="/products/{{ os_product.handle }}?variant={{ variant.id }}">
+                      <label class="swatches-label">
+                        <span
+                          class="custm-swtch"
+                          style="display: flex; align-items: center; justify-content: center; width: 19px; height: 19px; border-radius: 50%; color: white; font-size: 5px; {% case value %} {% when 'Light Blue' %} background-color:#dffaff; {% when 'Light Green' %} background-color:#E0F2CF; {% when 'Saphire' %} background-color:#1C299D; {% when 'Light Pink' %} background-color:#ffe6ee; {% when 'Light Brown' %} background-color:#ffe7c9; {% when 'Crimson Green' %} background-color:#D3F8D3; {% when 'Green' %} background-color:#92ada4; {% when 'Peach' %} background-color: #f3e9ea; {% when 'Mint Green' %} background-color: #b9cca8; {% when 'Blue' %}{% if os_product.handle == 'new-york-top' %}  background-color: #00259a; {% elsif os_product.handle == 'new-york-skirt' %} background-color: #00259a; {% else %} background-color:#c6d9e7; {% endif %}   {% when 'Purple' %} background-color: #c5a6e2; {% when 'White' %} background-color: #f7f7f7; {% when 'Yellow' %} background-color: #faeebe;{% when 'Pink' %} background-color: #f2bae1; {% when 'Lilac' %} background-color: #c59de4; {% when 'Cobalt Blue' %} background-color: #1a39a5; {% when 'Cobalt blue' %} background-color: #1a39a5; {% when 'Baby Blue' %} background-color: #9acce7; {% when 'Mint' %} background-color: #a9e4e0; {% when 'Mint green' %} background-color: #a6d297; {% when 'Mint blue' %} background-color: #a2d5cc; {% when 'Deep Red' %} background-color: #a43345; {% when 'Black' %} background-color: #433f3c; {% when 'Dark Blue' %} background-color: #1a39a5; {% when 'Pastel' %} background-color: #e4e403; {% when 'Olive' %} background-color: #9b9b03; {% when 'Violet' %} background-color: #b2aec9; {% else %} background-color: {{ value }}; {% endcase %}"
+                        >
+                        </span>
+                      </label>
+                    </a>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% if varNum == 1 %}
+          {% comment %} <p style="color: red;">Only {{ varNum }} left</p> {% endcomment %}
+        {% elsif os_product.available == false %}
+          <p style="color: red;">Get notified</p>
+        {% else %}
+          {% comment %} <p style="color: green;">In stock</p> {% endcomment %}
+        {% endif %}
+      </div>
+    </div>
+    <span
+      class="os-pc-variant-title"
+      data-variant-id="{{ os_product.selected_or_first_available_variant.id }}"
+      data-variant-quantity="{{ varNum }}"
+    >
+      Add To Basket
+    </span>
+    {% comment %}
+      {% if os_product.available == true %}
+      <div class="os-pc-variants">
+      {% if os_product.options.size == 1 %}
+      {% for option in os_product.options_with_values %}
+      {% for variant in os_product.variants %}
+      {% if variant.available == true %}
+      <span class="os-pc-variant-title" data-variant-id="{{ variant.id }}">
+      {% if variant.title == "Default Title" %}
+      One Size
+      {% else %}
+      {{ variant.title }}
+      {% endif %}
+      </span>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+      <span class="os-pc-cart-icon">{% render 'os-icon-cart' %}</span>
+      {% endif %}
+      </div>
+      {% endif %}
+    {% endcomment %}
+  </div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  const variantContainer = document.querySelector('.os-pc-quick-variant-container');
+  const overflowIndicators = document.querySelector('.os-pc-quick-overflow-indicators');
+
+  function checkOverflow() {
+    const isOverflowing = variantContainer.scrollWidth > variantContainer.clientWidth;
+    if (isOverflowing) {
+      overflowIndicators.style.display = 'flex'; // Show indicators
+    } else {
+      overflowIndicators.style.display = 'none'; // Hide indicators
+    }
+  }
+
+  // Check overflow on page load
+  checkOverflow();
+
+  // Optionally, check overflow on window resize
+  window.addEventListener('resize', checkOverflow);
+});
+</script>

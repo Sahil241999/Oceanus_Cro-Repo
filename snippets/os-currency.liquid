@@ -1,0 +1,119 @@
+{% if localization.available_countries.size > 1 %}
+  <localization-form>
+    {% form 'localization' %}
+      <div class="disclosure">
+        <button type="button" class="disclosure__button" aria-expanded="false" aria-controls="CountryList">
+          <span>{% comment %}{{ localization.country.currency.iso_code }}{% endcomment %}{{ localization.country.currency.symbol }}</span>
+          {% comment %}<span class="os-icon-caret">{% render 'icon-caret' %}</span>{% endcomment %}
+        </button>
+
+        <ul id="CountryList" role="list" class="disclosure__list" hidden>
+
+          {% comment %}
+              or country == 'United Kingdom'
+              or country == 'United States'
+              or country == 'France'
+              or country == 'Australia'
+              or country == 'Egypt'
+              or country == 'Canada'
+              or country == 'Germany'
+              or country == 'Israel'
+              or country == 'Spain'
+              or country == 'Saudi Arabia'
+              or country == 'Italy'
+              or country == 'Switzerland'
+              or country == 'Qatar'
+              or country == 'Kuwait'
+              or country == 'Isle of Man'
+              or country == 'Romania'
+              or country == 'Russia'
+              or country == 'Netherlands'
+              or country == 'Caribbean Netherlands'
+              or country == 'Mexico'
+              or country == 'Belgium'
+              or country == 'Bahrain'
+              or country == 'Oman'
+              or country == 'Greece'
+              or country == 'Austria'
+              or country == 'Norway'
+              or country == 'Sweden'
+              or country == 'Japan'
+              or country == 'Thailand'
+              or country == 'Hong Kong SAR'
+          {% endcomment %}
+
+
+
+
+
+          {% for country in localization.available_countries %}
+            {% if country == 'United Arab Emirates'
+              or country == 'United Kingdom'
+              or country == 'United States'
+              or country == 'France'
+              or country == 'Australia'
+              or country == 'Egypt'
+              or country == 'Canada'
+              or country == 'Germany'
+              or country == 'Israel'
+              or country == 'Spain'
+              or country == 'Saudi Arabia'
+              or country == 'Italy'
+              or country == 'Switzerland'
+              or country == 'Qatar'
+              or country == 'Kuwait'
+              or country == 'Isle of Man'
+              or country == 'Romania'
+              or country == 'Russia'
+              or country == 'Netherlands'
+              or country == 'Caribbean Netherlands'
+              or country == 'Mexico'
+              or country == 'Belgium'
+              or country == 'Bahrain'
+              or country == 'Oman'
+              or country == 'Greece'
+              or country == 'Austria'
+              or country == 'Norway'
+              or country == 'Sweden'
+              or country == 'Japan'
+              or country == 'Thailand'
+              or country == 'Hong Kong SAR'
+             %}
+              <li class="disclosure__item" tabindex="-1">
+                <a href="#"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                  {% comment %}{{ country.currency.iso_code }} ({{ country.currency.symbol }}){% endcomment %}{{ country }} ({{ country.currency.symbol }})
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}
+{% if localization.available_languages.size > 1 %}
+  <localization-form>
+    {% form 'localization' %}
+      <div class="disclosure">
+        <button type="button" class="disclosure__button" aria-expanded="false" aria-controls="LanguageList">
+          {{ localization.language.endonym_name | capitalize }}
+          {% render 'icon-caret' %}
+        </button>
+
+        <ul id="LanguageList" role="list" class="disclosure__list" hidden>
+          {% for language in localization.available_languages %}
+            <li class="disclosure__item" tabindex="-1">
+              <a href="#"{% if language.iso_code == localization.language.iso_code %} aria-current="true"{% endif %} hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}" data-value="{{ language.iso_code }}">
+                {{ language.endonym_name | capitalize }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}

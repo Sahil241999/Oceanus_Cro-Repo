@@ -1,0 +1,202 @@
+{% style %}
+
+  #klaviyo-main-wrapper {
+    position: relative;
+    max-width: 370px;
+  }
+
+  #klaviyo-main-wrapper .form-wrapper {
+    background-color: #FFEDDF;
+    padding: 50px;
+    border-radius: 40px;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-shadow: -4px 18px 41px -20px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -4px 18px 41px -20px rgba(0, 0, 0, 0.75);
+    box-shadow: -4px 18px 41px -20px rgba(0, 0, 0, 0.75);
+  }
+
+  #klaviyo-main-wrapper .form-wrapper .close {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    right: 10px;
+    top: 10px;
+    cursor: pointer
+  }
+
+  #klaviyo-main-wrapper .form-wrapper .close svg {
+    width: 10px;
+    height: 10px
+  }
+
+  #klaviyo-main-wrapper .form-wrapper:before,
+  #klaviyo-main-wrapper .form-wrapper:after {
+    content: '';
+    background-image: url('{{ "q-left.png" | asset_url }}');
+    width: 55px;
+    height: 27px;
+    display: block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    left: 15px;
+    top: 15px
+  }
+
+  #klaviyo-main-wrapper .form-wrapper:after {
+    background-image: url('{{ "q-right.png" | asset_url }}');
+    left: auto;
+    top: auto;
+    right: 15px;
+    bottom: 15px
+  }
+
+  .klaviyo-content h2 {
+    font-family: 'CornerStoreJF'!important;
+    line-height: 1!important;
+    font-size: 34px!important;
+    text-align: center!important;
+    color: var(--os-ac1)!important;
+    font-weight: 100!important;
+  }
+
+  #klaviyo-main-wrapper .form-wrapper input[type="email"],
+  #klaviyo-main-wrapper .form-wrapper input[type="text"] {
+    font-size: 14px;
+    line-height: 20px;
+    padding: 2px 0;
+    border: 0;
+    border-bottom: 1px solid #ffe2d2;
+    margin-bottom: 10px;
+    background: transparent;
+    font-family: ' ';
+    box-shadow: none;
+    color: #58bfb8;
+    height: auto
+  }
+
+  #klaviyo-main-wrapper .form-wrapper input::-webkit-input-placeholder {
+    color: var(--os-ac1);
+    opacity: 1;
+    font-family: 'DIN Condensed';
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase
+  }
+
+  #klaviyo-main-wrapper .form-wrapper input::-moz-placeholder {
+    color: var(--os-ac1);
+    opacity: 1;
+    font-family: 'DIN Condensed';
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase
+  }
+
+  #klaviyo-main-wrapper .form-wrapper input:-ms-input-placeholder {
+    color: var(--os-ac1);
+    opacity: 1;
+    font-family: 'DIN Condensed';
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase
+  }
+
+  #klaviyo-main-wrapper .form-wrapper input:-moz-placeholder {
+    color: var(--os-ac1);
+    opacity: 1;
+    font-family: 'DIN Condensed';
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase
+  }
+
+  #klaviyo-main-wrapper .form-wrapper button[type="button"] {
+    font-size: 20px;
+    line-height: 22px;
+    padding: 2px 0;
+    border: 0;
+    border-bottom: 1px solid var(--os-ac1);
+    background: transparent;
+    font-family: 'DIN Condensed';
+    box-shadow: none;
+    color: var(--os-ac1);
+    height: auto;
+    text-transform: uppercase;
+    display: table;
+    margin: 0 auto;
+    width: auto;
+    height: auto
+  }
+
+  .klaviyo-content p,
+  .klaviyo-content p *,
+  #klaviyo-main-wrapper .form-wrapper .Column__FormColumn-z5j99u-0 > .needsclick:last-of-type .ql-editor p *,
+  #klaviyo-main-wrapper .form-wrapper .Column__FormColumn-z5j99u-0 > .needsclick:last-of-type .ql-editor p,
+  #klaviyo-main-wrapper .klaviyo-form span {
+    font-family: 'DIN Condensed' !important;
+    box-shadow: none;
+    color: var(--os-ac1) !important;
+    text-transform: uppercase;
+    font-size: 13px;
+    text-align: center
+  }
+
+  .klaviyo-content p a {
+    text-decoration: underline
+  }
+
+  .klaviyo-content p,
+  #klaviyo-main-wrapper .form-wrapper .Column__FormColumn-z5j99u-0 > .needsclick:last-of-type .ql-editor p + p {
+    margin-top: 15px
+  }
+
+  @media screen and (max-width: 992px) {
+    #klaviyo-main-wrapper {
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    #klaviyo-main-wrapper {
+      max-width: 100%;
+    }
+
+    #klaviyo-main-wrapper .form-wrapper {
+      padding-top: 50px;
+      width: 100%;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    #klaviyo-main-wrapper .form-wrapper .klaviyo-content {
+      width: 100%;
+    }
+
+    .klaviyo-content h2 {
+      font-size: 1.6rem !important;
+    }
+  }
+{% endstyle %}
+
+
+<div id="klaviyo-main-wrapper">
+  <div class="form-wrapper">
+    <div class="klaviyo-content">
+      <h2>
+        Sign Up To Our Newsletter
+      </h2>
+      <div class="klaviyo-sign-up">
+        <div class="klaviyo-form-Wg5vsc"></div>
+      </div>
+    </div>
+  </div>
+</div>

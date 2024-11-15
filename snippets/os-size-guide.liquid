@@ -1,0 +1,784 @@
+<style>
+   table {
+     display: flex;
+     table-layout: fixed;
+     align-items: center;
+     justify-content: center;
+     margin: 0.29rem 0 1.3rem 0;
+     font-size: 1rem !important;
+    }
+
+    tr{
+     background: #F7DADC;
+    }
+    tr:first-child{
+      background: #FCF2EB;
+      color: black;
+    } 
+  
+  
+    tbody{
+      border: 1px  solid #f0f0f0;
+      width: 100%;
+      text-align: center;
+    }
+
+    th{
+      width: 7%;
+    }
+  
+    .size-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    }
+
+   .size-form-btn{
+    background: #ff8fbd;
+    padding: 0.88rem;
+    font-family: CornerStoreJF;
+    border: white;
+    color: black;
+   }
+  
+    #main-tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .size-chart-tabs__title {
+        padding: 8.6px 20px;
+        text-transform: uppercase;
+        font-size: 16px;
+        text-align: center;
+        font-family: Century Gothic;
+        cursor: pointer;
+        color: black;
+        font-weight: 600;
+        border-bottom: 1px solid transparent;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .active-size-chart__title {
+        color: white;
+        background: #FF87BF;
+        border: #ff8fbd;
+    }
+
+    #size-chart-overlay {
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        z-index: 12;
+    }
+
+    #main-size-chart-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+   #size-chart-wrapper::before,
+ #size-chart-wrapper::after {
+  content: '';
+  width: 50px;
+  height: 25px;
+  display: block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+}
+
+  #size-chart-wrapper::before {
+  background-image: url('https://cdn.shopify.com/s/files/1/0008/2962/0282/files/SIZE_GUIDE_ICON_5b71aede-c7a9-4470-a05c-9ce12acbefd2.png?v=1730523701');
+  left: 15px;
+  top: 15px;
+}
+
+ #size-chart-wrapper::after {
+  background-image: url('{{ "q-right.png" | asset_url }}');
+  right: 15px;
+  bottom: 15px;
+}
+
+    #size-chart-wrapper {
+        margin: 0 auto;
+        width: 100%;
+        border-radius: 12px;
+        max-width: 550px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 0.9rem 0.8rem 0.9rem;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 2147483647;
+        /* background: white; */
+        background-color: #FFEDDF;
+        animation: fadeIn 1s normal 1;
+        transform: translate(-50%, -50%);
+    }
+
+    .size-chart-tabs,
+    .measurement-chart-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        font-family: Century Gothic;
+        gap: 0.59rem;
+    }
+
+    .size-chart-tabs__label,
+    .measurement-chart-tabs__label {
+        padding: 12px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid rgb(180, 187, 195);
+        width: 15%;
+        text-align: center;
+        font-family: Century Gothic;
+    }
+
+    .size-chart-tabs__radio,
+    .measurement-chart-tabs__radio {
+        display: none;
+    }
+
+    .size-chart-tabs__content,
+    .measurement-chart-tabs__content {
+        order: 1;
+        width: 100%;
+        /* line-height: 1.5; */
+        font-size: 0.9rem;
+        display: none;
+    }
+
+    .size-chart-tabs__radio:checked + .size-chart-tabs__label,
+    .measurement-chart-tabs__radio:checked + .measurement-chart-tabs__label {
+        font-weight: bold;
+        color: #ffffff;
+        background: #ff8fbd;
+        border: 0;
+    }
+
+    .size-chart-tabs__radio:checked + .size-chart-tabs__label + .size-chart-tabs__content,
+    .measurement-chart-tabs__radio:checked + .measurement-chart-tabs__label + .measurement-chart-tabs__content {
+        display: initial;
+    }
+
+    .size-chart-tabs__title,
+    .measurement-chart-tabs__title {
+        text-transform: uppercase;
+        /* margin-bottom: 0.33rem; */
+        font-size: 14px;
+        text-align: center;
+        font-family: Century Gothic;
+    }
+
+    .size-row {
+        padding: 8px;
+    }
+
+    .size-table {
+        margin-top: 10px;
+    }
+
+    .size-table-col {
+        width: 100px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .size-row .size-table-col:first-child {
+        font-weight: 600;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .size-chart-wrapper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .measurement-chart {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        display: none;
+    }
+
+    .measurement-chart img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .size-chart-wrapper img {
+        width: 100%;
+        height: 100%;
+    }
+
+    #close-icon {
+        height: 23px;
+        width: 23px;
+        position: absolute;
+        top: 14px;
+        right: 14px;
+    }
+
+    #chart-btn {
+        padding: 1rem;
+    }
+
+    @media (max-width: 550px) {
+        .size-chart-tabs__title {
+            font-size: 10px;
+        }
+       .size-chart-tabs,
+       .measurement-chart-tabs{
+            gap: .47rem;
+        }
+    }
+
+    @media (max-width: 464px) {
+        .size-chart-tabs__title {
+            font-size: 13.5px;
+        }
+
+        .size-chart-tabs__label,
+       .measurement-chart-tabs__label {
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        .size-chart-tabs__label,
+        .measurement-chart-tabs__label{
+            padding: 6px;
+        }
+
+        .size-chart-tabs,
+        .measurement-chart-tabs {
+            gap: .37rem;
+        }
+    }
+
+    @media (max-width: 362px) {
+        .size-chart-tabs__title {
+            font-size: 11.5px;
+        }
+
+        .size-chart-tabs__label, 
+      .measurement-chart-tabs__label {
+            font-size: 9px;
+            font-weight: 600;
+        }
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .hide {
+        display: none !important;
+    }
+
+    .show {
+        display: block !important;
+    }
+</style>
+
+<div id="size-chart-overlay"></div>
+<div id="main-size-chart-container">
+  <div id="size-chart-wrapper">
+    <div>
+    {% comment %}
+    <span style="position: absolute;top: 14px; left: 14px;"><b>Size Chart</b></span>
+    {% endcomment %}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      id="close-icon"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+    </div>
+    <div id="main-tabs">
+       <div style="display: flex; flex:1; margin-bottom: 0.67rem; border-radius: 16px;">
+        <p style="border: 1px solid rgb(180, 187, 195); border-top-left-radius: 16px; border-bottom-left-radius: 16px; flex:1;" class="size-chart-tabs__title active-size-chart__title" id="size-chart-tabs__title-1">Size Chart</p>
+        <p style="border: 1px solid rgb(180, 187, 195); border-top-right-radius: 16px; border-bottom-right-radius: 16px; flex:1; " class="size-chart-tabs__title" id="size-chart-tabs__title-2">Conversion</p>
+       </div>
+    </div>
+
+    <div class="measurement-chart">
+      <div class="measurement-chart-tabs">
+        <input type="radio" name="measurement-size-chart-tabs" id="measurement-chart-xs" class="measurement-chart-tabs__radio" checked>
+        <label for="measurement-chart-xs" class="measurement-chart-tabs__label">XS</label>
+        <div class="measurement-chart-tabs__content">
+          <div class="size-chart-wrapper">
+            <div> 
+               <table>
+               <tr>
+                 <th>EU</th>
+                 <th>UK</th>
+                 <th>US</th>
+                <th>AU</th>
+                </tr>
+                <tr>
+                <td>34</td>
+                <td>6</td>
+                <td>2</td>
+                <td>6</td>
+               </tr>
+              </table>
+            </div> 
+              {% if product.variants[0].available == true %}
+              <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[0].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+              </form>    
+             {% endif %}
+          </div>
+        </div>
+        <input type="radio" name="measurement-size-chart-tabs" id="measurement-chart-s" class="measurement-chart-tabs__radio">
+        <label for="measurement-chart-s" class="measurement-chart-tabs__label">S</label>
+        <div class="measurement-chart-tabs__content">
+          <div class="size-chart-wrapper">
+            <div> 
+               <table>
+               <tr>
+                 <th>EU</th>
+                 <th>UK</th>
+                 <th>US</th>
+                <th>AU</th>
+                </tr>
+                <tr>
+                <td>36</td>
+                <td>8</td>
+                <td>4</td>
+                <td>8</td>
+               </tr>
+              </table>
+            </div>
+               {% if product.variants[1].available == true %}
+              <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[1].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>
+              {% endif %}
+          </div>
+        </div>
+        <input type="radio" name="measurement-size-chart-tabs" id="measurement-chart-m" class="measurement-chart-tabs__radio">
+        <label for="measurement-chart-m" class="measurement-chart-tabs__label">M</label>
+        <div class="measurement-chart-tabs__content">
+          <div class="size-chart-wrapper">
+           <div> 
+               <table>
+               <tr>
+                 <th>EU</th>
+                 <th>UK</th>
+                 <th>US</th>
+                <th>AU</th>
+                </tr>
+                <tr>
+                <td>38</td>
+                <td>10</td>
+                <td>6</td>
+                <td>10</td>
+               </tr>
+              </table>
+           </div>
+               {% if product.variants[2].available == true %}
+              <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[2].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>  
+              {% endif %}
+          </div>
+        </div>
+        <input type="radio" name="measurement-size-chart-tabs" id="measurement-chart-l" class="measurement-chart-tabs__radio">
+        <label for="measurement-chart-l" class="measurement-chart-tabs__label">L</label>
+        <div class="measurement-chart-tabs__content">
+          <div class="size-chart-wrapper">
+           <div> 
+             <table>
+               <tr>
+                 <th>EU</th>
+                 <th>UK</th>
+                 <th>US</th>
+                <th>AU</th>
+                </tr>
+                <tr>
+                <td>40</td>
+                <td>12</td>
+                <td>8</td>
+                <td>12</td>
+               </tr>
+              </table>
+           </div>
+               {% if product.variants[3].available == true %}
+              <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[3].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>    
+              {% endif %}
+          </div>
+        </div>
+        <input type="radio" name="measurement-size-chart-tabs" id="measurement-chart-xl" class="measurement-chart-tabs__radio">
+        <label for="measurement-chart-xl" class="measurement-chart-tabs__label">XL</label>
+        <div class="measurement-chart-tabs__content">
+          <div class="size-chart-wrapper">
+           <div> 
+             <table>
+               <tr>
+                 <th>EU</th>
+                 <th>UK</th>
+                 <th>US</th>
+                <th>AU</th>
+                </tr>
+                <tr>
+                <td>42</td>
+                <td>14</td>
+                <td>10</td>
+                <td>14</td>
+               </tr>
+              </table>
+           </div>
+               {% if product.variants[4].available == true %}
+              <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[4].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>     
+              {% endif %}
+          </div>
+        </div>
+        <input type="radio" name="measurement-size-chart-tabs" id="measurement-chart-xxl" class="measurement-chart-tabs__radio">
+        <label for="measurement-chart-xxl" class="measurement-chart-tabs__label">XXL</label>
+        <div class="measurement-chart-tabs__content">
+          <div class="size-chart-wrapper">
+           <div>
+             <table>
+               <tr>
+                 <th>EU</th>
+                 <th>UK</th>
+                 <th>US</th>
+                <th>AU</th>
+                </tr>
+                <tr>
+                <td>44</td>
+                <td>16</td>
+                <td>12</td>
+                <td>16</td>
+               </tr>
+              </table>
+           </div>
+               {% if product.variants[5].available == true %}
+              <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[5].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>   
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="size-chart-tabs">
+      <input type="radio" name="sizechart-size-chart-tabs" id="size-chart-xs" class="size-chart-tabs__radio" checked>
+      <label for="size-chart-xs" class="size-chart-tabs__label">XS</label>
+      <div class="size-chart-tabs__content">
+        <div class="size-chart-wrapper">
+             <div> 
+              <table>
+                   <tr>
+                     <th></th>
+                     <th>IN</th>
+                     <th>CM</th>
+                   </tr>
+                   <tr>
+                    <th>Bust</th>
+                    <td>31.5"</td>
+                    <td>80</td>
+                 </tr>
+                 <tr>
+                  <th>Waist</th>
+                  <td>25.2"</td>
+                  <td>64</td>
+                 </tr>
+              <tr>
+                <th>Hip</th>
+                 <td>34.6"</td>
+                 <td>88</td>
+                 </tr>
+               </table>
+            </div>
+            {% if product.variants[0].available == true %}
+            <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[0].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>     
+          {% endif %}
+        </div>
+      </div>
+      <input type="radio" name="sizechart-size-chart-tabs" id="size-chart-s" class="size-chart-tabs__radio">
+      <label for="size-chart-s" class="size-chart-tabs__label">S</label>
+      <div class="size-chart-tabs__content">
+        <div class="size-chart-wrapper">
+            <div> 
+              <table>
+                   <tr>
+                     <th></th>
+                     <th>IN</th>
+                     <th>CM</th>
+                   </tr>
+                   <tr>
+                    <th>Bust</th>
+                    <td>33.1"</td>
+                    <td>84</td>
+                 </tr>
+                 <tr>
+                  <th>Waist</th>
+                  <td>26.8"</td>
+                  <td>68</td>
+                 </tr>
+              <tr>
+                <th>Hip</th>
+                 <td>36.2"</td>
+                 <td>92</td>
+                 </tr>
+               </table>
+            </div>
+             {% if product.variants[1].available == true %}
+            <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[1].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>   
+            {% endif %}
+        </div>
+      </div>
+      <input type="radio" name="sizechart-size-chart-tabs" id="size-chart-m" class="size-chart-tabs__radio">
+      <label for="size-chart-m" class="size-chart-tabs__label">M</label>
+      <div class="size-chart-tabs__content">
+        <div class="size-chart-wrapper">
+           <div> 
+             <table>
+                   <tr>
+                     <th></th>
+                     <th>IN</th>
+                     <th>CM</th>
+                   </tr>
+                   <tr>
+                    <th>Bust</th>
+                    <td>34.6"</td>
+                    <td>88</td>
+                 </tr>
+                 <tr>
+                  <th>Waist</th>
+                  <td>28.3"</td>
+                  <td>72</td>
+                 </tr>
+              <tr>
+                <th>Hip</th>
+                 <td>37.8"</td>
+                 <td>96</td>
+                 </tr>
+               </table>
+            </div>
+           {% if product.variants[2].available == true %}
+            <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[2].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>     
+             {% endif %}
+        </div>
+      </div>
+      <input type="radio" name="sizechart-size-chart-tabs" id="size-chart-l" class="size-chart-tabs__radio">
+      <label for="size-chart-l" class="size-chart-tabs__label">L</label>
+      <div class="size-chart-tabs__content">
+        <div class="size-chart-wrapper">
+           <div> 
+             <table>
+                   <tr>
+                     <th></th>
+                     <th>IN</th>
+                     <th>CM</th>
+                   </tr>
+                   <tr>
+                    <th>Bust</th>
+                    <td>36.2"</td>
+                    <td>92</td>
+                 </tr>
+                 <tr>
+                  <th>Waist</th>
+                  <td>29.9"</td>
+                  <td>76</td>
+                 </tr>
+              <tr>
+                <th>Hip</th>
+                 <td>39.4"</td>
+                 <td>100</td>
+                 </tr>
+               </table>
+            </div>
+           {% if product.variants[3].available == true %}
+            <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[3].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>     
+            {% endif %}
+        </div>
+      </div>
+      <input type="radio" name="sizechart-size-chart-tabs" id="size-chart-xl" class="size-chart-tabs__radio">
+      <label for="size-chart-xl" class="size-chart-tabs__label">XL</label>
+      <div class="size-chart-tabs__content">
+        <div class="size-chart-wrapper">
+          <div> 
+            <table>
+                   <tr>
+                     <th></th>
+                     <th>IN</th>
+                     <th>CM</th>
+                   </tr>
+                   <tr>
+                    <th>Bust</th>
+                    <td>37.8"</td>
+                    <td>96</td>
+                 </tr>
+                 <tr>
+                  <th>Waist</th>
+                  <td>31.5"</td>
+                  <td>80</td>
+                 </tr>
+              <tr>
+                <th>Hip</th>
+                 <td>40.9"</td>
+                 <td>104</td>
+                 </tr>
+               </table>
+            </div>
+             {% if product.variants[4].available == true %}
+            <form class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[4].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>    
+            {% endif %}
+        </div>
+      </div>
+      <input type="radio" name="sizechart-size-chart-tabs" id="size-chart-xxl" class="size-chart-tabs__radio">
+      <label for="size-chart-xxl" class="size-chart-tabs__label">XXL</label>
+      <div class="size-chart-tabs__content">
+        <div class="size-chart-wrapper">
+          <div> 
+            <table>
+                   <tr>
+                     <th></th>
+                     <th>IN</th>
+                     <th>CM</th>
+                   </tr>
+                   <tr>
+                    <th>Bust</th>
+                    <td>39.4"</td>
+                    <td>100</td>
+                 </tr>
+                 <tr>
+                  <th>Waist</th>
+                  <td>33.1"</td>
+                  <td>84</td>
+                 </tr>
+              <tr>
+                <th>Hip</th>
+                 <td>42.5"</td>
+                 <td>108</td>
+                 </tr>
+               </table>
+            </div>
+             {% if product.variants[5].available == true %}
+            <form class="size-form" class="size-form" method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{product.variants[5].id}}" />
+              <input type="hidden" name="quantity" value="1" />
+              <input class="size-form-btn" type="submit" value="Add To Basket" class="btn" />
+            </form>     
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const chart = document.getElementById('size-chart-wrapper');
+  const openChart = document.getElementById('chart-btn');
+  const closeChart = document.getElementById("close-icon");
+  const chartOverlay = document.getElementById('size-chart-overlay');
+
+  openChart.addEventListener("click", () => {
+      chart.style.display = "flex";
+      chartOverlay.style.display = "block";
+  })
+
+  closeChart.addEventListener("click", () => {
+      chart.style.display = "none";
+      chartOverlay.style.display = "none";
+  });
+
+  chartOverlay.addEventListener("click", () => {
+      chart.style.display = "none";
+      chartOverlay.style.display = "none";
+  });
+
+  const measurementChart = document.querySelector(".measurement-chart");
+  const sizeChartTabs = document.querySelector(".size-chart-tabs");
+  const sizeChartTabsTitle1 = document.getElementById("size-chart-tabs__title-1");
+  const sizeChartTabsTitle2 = document.getElementById("size-chart-tabs__title-2");
+
+  sizeChartTabsTitle1.addEventListener("click", () => {
+      sizeChartTabs.classList.remove("hide");
+      measurementChart.classList.remove("show");
+
+      sizeChartTabsTitle1.classList.add("active-size-chart__title");
+      sizeChartTabsTitle2.classList.remove("active-size-chart__title");
+  });
+
+  sizeChartTabsTitle2.addEventListener("click", () => {
+      sizeChartTabs.classList.add("hide");
+      measurementChart.classList.add("show");
+
+      sizeChartTabsTitle2.classList.add("active-size-chart__title");
+      sizeChartTabsTitle1.classList.remove("active-size-chart__title");
+  });
+</script>

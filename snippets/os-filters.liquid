@@ -1,0 +1,319 @@
+
+<style>
+.am-filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.filter-group {
+  display: flex;
+  width: 100%;
+}
+
+.filter-group-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 1rem;
+}
+
+.filter-group-summary svg {
+  position: static;
+  color: black;
+  transition: 0.2s ease;
+}
+
+.filter-group[open] svg {
+  transform: rotate(180deg);
+}
+
+.filter-group[open] .filter-group-summary {
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+.filter-group-display__header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.445rem;
+}
+
+.am-f-label {
+  color: black;
+}
+
+.active-filters {
+  margin: 1rem 0rem 3rem 0rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.active-filters__remove-filter {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0,0,0,0.2);
+  background-color: var(--am-color2);
+  color: var(--am-color1);
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.active-filters__clear {
+  display: none;
+}
+
+.active-filters__remove-filter:hover {
+  border-color: rgba(0,0,0,1);
+}
+
+.active-filters__remove-filter span {
+  display: flex;
+  align-items: center;
+}
+
+.am-close-icon-span {
+  padding: 0.5rem;
+}
+
+.active-filters__remove-filter span svg {
+  width: 1rem;
+  color: var(--am-color1);
+}
+
+
+.filter-group-display {
+  margin-top: 1.5rem;
+}
+
+.filter-group-display__list-item {
+  display: flex;
+}
+
+.am-filter-label  {
+  padding: 0.71rem 0.71rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.am-filter-label span {
+  display: flex;
+  align-items: center;
+}
+
+.am-filter-label:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.am-filter-label input[type="checkbox"] {
+  margin-right: 0.75rem;
+}
+
+
+.filter-group-display__price-range {
+  display: flex;
+  flex-direction: column;
+}
+
+.am-filter-price-containter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.am-filter-price-input {
+  border-radius: 0rem;
+  border: 1px solid rgba(0,0,0,0.2);
+  padding: 1rem 1rem;
+}
+
+.am-filter-price-input:focus {
+  border-color: var(--am-color1);
+}
+
+
+.filter-group-display__submit {
+  text-align: center;
+  margin: 1rem 0rem 0rem 0rem;
+}
+
+.filter-group-display__submit input {
+  padding: 1rem;
+  background-color: var(--os-ac1);
+  color: var(--bg-color);
+  border: none;
+  cursor: pointer;
+}
+
+
+/* mobile filter */
+#am-mobile-filters-div {
+  position: fixed;
+  top: 0rem;
+  left: 0rem;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  display: none;
+  background-color: white;
+  z-index: 3;
+  flex-direction: column;
+  padding: 2rem 0rem;
+  overflow: scroll;
+}
+
+#am-mobile-filters-div .page-width {
+  width: 100%;
+  position: relative;
+  padding-top: 4rem;
+}
+
+#c-cgm-filter-trigger {
+  width: 75%;
+  margin: 0rem auto 1rem auto;
+  background-color: var(--am-color2);
+  color: var(--am-color1);
+  padding: 1rem 1.5rem;
+  border-radius: 0rem;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+#am-mobile-filters-div .am-mobile-title {
+  margin-bottom: 1rem;
+}
+
+#am-mobile-filters-div #amm-filters-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+#am-mobile-filters-div #amm-filters-close svg {
+  width: 2.5rem;
+  color: var(--am-color1);
+}
+
+#am-mobile-filters-div .c-cg-sorting {
+  margin-bottom: 4rem;
+}
+
+#am-mobile-filters-div .c-cg-sorting .c-cg-top-title {
+  display: none;
+}
+
+
+#sort-by {
+  color: #0DA296 !important;
+}
+.os-cp-sorting-select option{
+  color: black;
+}
+
+@media (max-width: 760px) {
+ #sort-by {
+    color: black !important;
+  }
+  }
+</style>
+
+<form class="am-filter-form">
+  {%- for filter in collection.filters -%}
+    <details class="filter-group" open>
+      <summary class="filter-group-summary">
+        <div>
+          <span class="am-f-label">{{ filter.label }}</span>
+
+          {% comment %}{%- if filter.active_values.size > 0 -%}
+            <span>({{ filter.active_values.size }})</span>
+          {%- endif -%}{% endcomment %}
+        </div>
+        <span>{% render 'icon-caret' %}</span>
+      </summary>
+
+      <div class="filter-group-display">
+        <div class="filter-group-display__header">
+         {%- if filter.active_values.size > 0 -%}
+          <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
+            <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
+          {%- endif -%}
+        </div>
+
+        {%- case filter.type -%}
+          {%- when 'boolean' or 'list' -%}
+            <div class="filter-group-display__list">
+              {%- for filter_value in filter.values -%}
+                <div class="filter-group-display__list-item">
+                  <label class="am-filter-label" for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
+                  <span><input type="checkbox"
+                    name="{{ filter_value.param_name }}"
+                    value="{{ filter_value.value }}"
+                    id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                    {% if filter_value.active -%}checked{%- endif %}
+                    {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                  >{{ filter_value.label }}</span><span>{{ filter_value.count }}</span></label>
+                </div>
+              {%- endfor -%}
+              {% comment %}
+              <div class="filter-group-display__submit">
+                <input type="submit" value="Apply">
+              </div>
+               {% endcomment %}
+            </div>
+          
+        
+          {%- when 'price_range' -%}
+            <div class="filter-group-display__price-range">
+              <div class="am-filter-price-containter">
+                <div class="filter-group-display__price-range-from">
+                  {% comment %}<span>{{ cart.currency.symbol }}</span>{% endcomment %}
+  
+                  <input name="{{ filter.min_value.param_name }}" class="am-filter-price-input"
+                    id="Filter-{{ filter.min_value.param_name }}"
+                    {% if filter.min_value.value -%}
+                      value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                    {%- endif %}
+                    type="number"
+                    placeholder="{{ cart.currency.symbol }}0"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  >
+  
+                  {% comment %}<label for="Filter-{{ filter.min_value.param_name }}">From</label>{% endcomment %}
+                </div>
+                <div>-</div>
+                <div class="filter-group-display__price-range-to">
+                  {% comment %}<span>{{ cart.currency.symbol }}</span>{% endcomment %}
+  
+                  <input name="{{ filter.max_value.param_name }}" class="am-filter-price-input"
+                    id="Filter-{{ filter.max_value.param_name }}"
+                    {% if filter.max_value.value -%}
+                      value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                    {%- endif %}
+                    type="number"
+                    placeholder="{{ cart.currency.symbol }}{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  >
+  
+                  {% comment %}<label for="Filter-{{ filter.max_value.param_name }}">To</label>{% endcomment %}
+                </div>
+              </div>
+                  {% comment %}
+              <div class="filter-group-display__submit">
+                <input type="submit" value="Apply">
+              </div>
+          {% endcomment %}
+            </div>
+        {%- endcase -%}
+      </div>
+    </details>
+  {%- endfor -%}
+    <div class="filter-group-display__submit">
+        <input type="submit" value="Apply">
+    </div>
+</form>

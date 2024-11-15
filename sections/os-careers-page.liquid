@@ -1,0 +1,259 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+}
+
+#{{ section.id }} a {
+  color: var(--os-ac1);
+}
+
+@media (min-width: {{ settings.breakpoint3 }}px) {
+  #{{ section.id }} .page-width {
+    min-height: {{ section.settings.section_min_height }}vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+#{{ section.id }} .os-section-top {
+  align-items: {{ section.settings.top_alignment }};
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+#{{ section.id }} .os-cp-wrapper {
+  width: {{ section.settings.container_width }}%;
+  margin: 0px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+#{{ section.id }} .os-cp-heading {
+  margin: 1rem 0rem 0rem 0rem;
+}
+
+#{{ section.id }} .os-cp-block {
+  display: flex;
+  width: 100%;
+  transition: all 1s ease-in-out;
+  max-height: 70px;
+	overflow: hidden;
+}
+
+#{{ section.id }} .os-cp-block[open] {
+  max-height: 3000px;
+}
+
+#{{ section.id }} .os-cp-block-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#{{ section.id }} .os-cp-block-question span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s ease;
+}
+
+#{{ section.id }} .os-cp-block-question span.active {
+  transform: rotate(180deg);
+}
+
+#{{ section.id }} .os-cp-block-question span svg {
+  width: 1rem;
+  position: static;
+  height: auto;
+}
+
+#{{ section.id }} .os-cp-block-answer {
+  margin: 0.5rem 0rem 0.5rem 0rem;
+}
+
+@media (max-width: 989px) {
+  #{{ section.id }} .os-cp-wrapper {
+    width: 100%;
+  }
+}
+
+ @media (max-width: 720px) {
+  #{{ section.id }} {
+  padding-top: {{ section.settings.padding_top1 }}rem;
+  padding-bottom: {{ section.settings.padding_bottom1 }}rem;
+}
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    {% if section.settings.heading != empty %}
+      <div class="os-section-top">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        <div>{{ section.settings.subheading }}</div>
+      </div>
+    {% endif %}
+    <div class="os-cp-wrapper">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'Role' %}
+            <details class="os-cp-block">
+              <summary class="os-cp-block-question">
+                <h3>{{ block.settings.role_heading }}</h3>
+                <span>{% render 'icon-caret' %}</span>
+              </summary>
+              <div class="os-cp-block-answer">{{ block.settings.role_description }}</div>
+            </details>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<script>
+  document.querySelectorAll(".os-cp-block summary").forEach(role => {
+    role.addEventListener("click", () => {
+      role.querySelector("span").classList.toggle("active");
+    });
+  });
+</script>
+
+
+{% schema %}
+  {
+    "name": "OS Careers Page",
+    "blocks": [
+      {
+        "name": "Role",
+        "type": "Role",
+        "limit": 50,
+        "settings": [
+          {
+            "type": "text",
+            "id": "role_heading",
+            "label": "Role heading",
+            "default": "Creative Design Intern"
+          },
+          {
+            "type": "richtext",
+            "id": "role_description",
+            "label": "Role description",
+            "default": "<p>'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare.'</p>"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Careers"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "<p>My paragraph</p>"
+      },
+      {
+        "type": "select",
+        "id": "top_alignment",
+        "label": "Top Alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "flex-start",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "flex-end",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "container_width",
+        "label": "Container width",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 60,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "section_min_height",
+        "label": "Section min height",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 50,
+        "unit": "vh"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_top1",
+        "label": "Mobile Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom1",
+        "label": "Mobile Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Careers Page"
+      }
+    ]
+  }
+{% endschema %}

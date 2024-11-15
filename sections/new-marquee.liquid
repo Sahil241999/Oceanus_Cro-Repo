@@ -1,0 +1,335 @@
+<style>
+  .marquee {
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+    font-weight: 600;
+  }
+
+  .marquee-content__wrapper {
+    display: flex;
+  }
+
+  #{{ section.id }} .os-section-top {
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  #{{ section.id }} .marquee-content {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-around;
+    min-width: 100%;
+    align-items: center;
+    gap: {{ section.settings.gap }}rem;
+  }
+
+  #{{ section.id }} .marquee-content__separator {
+    padding-bottom: 5px;
+  }
+
+  #{{ section.id }} .marquee-image {
+    height: 50px;
+    width: auto;
+  }
+
+  #{{ section.id }} .marquee-content__text {
+    white-space: nowrap;
+  }
+
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - 1rem));
+    }
+  }
+
+  #{{ section.id }} .scroll {
+    animation: scroll {{ section.settings.speed }}s linear infinite;
+  }
+
+  #{{ section.id }}.marquee {
+    background-color: {{ section.settings.bg }};
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.desktop_font_size }}px;
+    padding: calc({{ section.settings.desktop_padding }}px + 5px) 0 {{ section.settings.desktop_padding }}px 0;
+    margin-bottom: {{ section.settings.margin_botton }}px;
+    letter-spacing: {{ section.settings.desktop_text_spacing }}px;
+    {% if section.settings.capitalise_text %}
+      text-transform: uppercase;
+    {% endif %}
+  }
+
+  #{{ section.id }} .reverse {
+    animation-direction: reverse;
+  }
+
+  @media screen and (max-width: 768px) {
+    #{{ section.id }}.marquee {
+      font-size: {{ section.settings.desktop_font_size }}px;
+      padding: calc({{ section.settings.mobile_padding }}px + 5px) 0 {{ section.settings.mobile_padding }}px 0;
+      letter-spacing: {{ section.settings.mobile_text_spacing }}px;
+    }
+
+    #{{ section.id }} .marquee-image {
+      height: 25px;
+      width: auto;
+    }
+
+    #{{ section.id }} .marquee-content {
+      gap: {{ section.settings.mobile_gap }}rem;
+    }
+  }
+
+  {% if section.settings.toggle_pause_on_hover %}
+    #{{ section.id }} .marquee-content {
+      animation-play-state: running;
+    }
+    #{{ section.id }}:hover .marquee-content {
+      animation-play-state: paused;
+    }
+  {% endif %}
+</style>
+
+{% capture marquee_content %}
+  <div class="marquee-content scroll {%if section.settings.direction == "right"%}reverse{%endif%}">
+    {%for i in (1..5)%}
+      {% for block in section.blocks %}
+          {% if block.settings.image %}
+            {{ block.settings.image |  image_url: width: 200 |  image_tag: width: 200, height: "auto", class: "marquee-image" }}
+          {% else %}
+            <div class="marquee-content__text">{{ block.settings.text }}</div>
+          {% endif %}
+        {% if section.settings.emoji %}
+          <div class="marquee-content__separator">{{ section.settings.emoji }}</div>
+        {% endif %}
+      {% endfor %}
+    {%endfor%}
+  </div>
+{% endcapture %}
+
+<div class="marquee" id="{{ section.id }}">
+  {% if section.settings.heading != empty %}
+    <div class="page-width">
+      <div class="os-section-top">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        <div>{{ section.settings.subheading }}</div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="marquee-content__wrapper">
+    {{ marquee_content }}
+    {{ marquee_content }}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "New Marquee",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "header",
+        "content": "Colours"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background Color",
+        "default": "#F1A3C4"
+      },
+      {
+        "type": "range",
+        "id": "bg_opacity",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "unit": "%",
+        "label": "Background opacity",
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Font Sizes"
+      },
+      {
+        "type": "range",
+        "id": "mobile_font_size",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "px",
+        "label": "Mobile Font Size",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "desktop_font_size",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "px",
+        "label": "Desktop Font Size",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Padding"
+      },
+      {
+        "type": "range",
+        "id": "mobile_padding",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "desktop_padding",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "mobile_text_spacing",
+        "min": 0,
+        "max": 10,
+        "step": 0.5,
+        "unit": "px",
+        "label": "Mobile Text Spacing",
+        "default": 0.5
+      },
+      {
+        "type": "range",
+        "id": "desktop_text_spacing",
+        "min": 0,
+        "max": 10,
+        "step": 0.5,
+        "unit": "px",
+        "label": "Desktop Text Spacing",
+        "default": 0.5
+      },
+      {
+        "type": "range",
+        "id": "margin_botton",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px",
+        "label": "Margin bottom",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Additional Settings"
+      },
+      {
+        "type": "number",
+        "id": "speed",
+        "label": "Marquee Speed",
+        "default": 30
+      },
+      {
+        "type": "select",
+        "id": "direction",
+        "label": "Marquee Direction",
+        "default": "left",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left"
+          }, {
+            "label": "Right",
+            "value": "right"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "toggle_pause_on_hover",
+        "label": "Toggle Pause on Hover",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "capitalise_text",
+        "label": "Capitalise Text",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "emoji",
+        "label": "Emoji",
+        "default": "🚚"
+      },
+      {
+        "type": "range",
+        "id": "gap",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "rem",
+        "label": "Gap between items",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "mobile_gap",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "rem",
+        "label": "Gap between items on Mobile",
+        "default": 1
+      }
+    ],
+    "blocks": [
+      {
+        "type": "marquee_strip",
+        "name": "Marquee Strip",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "If Image is selected, the text will not be displayed"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "New Marquee"
+      }
+    ]
+  }
+{% endschema %}

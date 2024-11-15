@@ -1,0 +1,509 @@
+ <style>
+    .footer-block__details-content {
+          display: block;
+      }
+  @media (max-width: 749px) {
+      .osf-block {
+          margin: 0;
+      }
+      .osf-block-heading {
+          position: relative;
+          margin: 0;
+          padding: 1.5rem 0;
+          cursor: pointer;
+      }
+      .osf-block-heading::after {
+          content: "+";
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 20px;
+          text-align: center;
+      }
+      .osf-block-heading:not(.block-collapsed)::after {
+          content: "-";
+      }
+      .osf-block-heading.block-collapsed + .footer-block__details-content {
+          display: none;
+      }
+      .osf-block-heading + .footer-block__details-content {
+          display: flex;
+      }
+  }
+</style>
+
+
+{% style %}
+  #{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+
+    background-image: url({{ "footer-main-bg.webp" |  asset_url  }});
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 105%;
+  }
+  #{{ section.id }} .osf-inner {
+    padding-top: {{ section.settings.padding_top }}rem;
+    {% if template.name == "product" %}
+      padding-bottom: {{ section.settings.padding_bottom | times: 2 }}rem;
+    {% else %}
+      padding-bottom: {{ section.settings.padding_bottom }}rem;
+    {% endif %}
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+
+    background-image: url({{ "footer-bg.webp" |  asset_url  }});
+
+    background-size: contain;
+  }
+
+  #{{ section.id }} .osf-grid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 2rem;
+  }
+
+  #{{ section.id }} .page-width{
+      padding: 1.8rem 1.5rem;
+  }
+
+  #{{ section.id }} .osf-block-heading {
+    font-size: 17.8px;
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+  }
+
+   #{{ section.id }} .osf-block p,
+   #{{ section.id }} .osf-block a{
+     font-size:14.2px;
+   }
+
+  #{{ section.id }} .osf-block-heading,
+  #{{ section.id }} .osf-block-link,
+  #{{ section.id }} .osf-block,
+  #{{ section.id }} .osf-bottom,
+  #{{ section.id }} .os-socials-div svg,
+  #{{ section.id }} .os-button {
+    color: {{ section.settings.text_color }};
+  }
+
+  .osf-block-wrapper {
+    display: grid;
+    grid-template-columns: 130px 330px 130px 1fr;
+    gap: 1.7rem;
+  }
+
+  #{{ section.id }} .osf-block-link:hover {
+    text-decoration: underline;
+  }
+
+  #{{ section.id }} .osf-block-menu-div {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  #{{ section.id }} .osf-input-form {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  #{{ section.id }} .osf-input-form > * {
+    font-size: {{ settings.desktop_font_size }}rem;
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+  }
+
+  #{{ section.id }} .osf-input-form > input {
+    width: 100%;
+    padding: 1rem 1rem;
+    border: none;
+    border-radius: 0rem;
+    color: #000;
+    background-color: #eee;
+    /* max-width: 300px; */
+  }
+
+  #{{ section.id }} .os-socials-div {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  #{{ section.id }} .osf-bottom {
+    margin-top: 2.5rem;
+    display: flex;
+    font-size: 13.5px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  #{{ section.id }} .osf-bottom a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  .osf-working-hours {
+    margin-top: 1rem;
+  }
+
+  .osf-london_address{
+    display: flex;
+    gap: 1rem;
+  }
+
+  @media (max-width: 1400px) {
+     #{{ section.id }} .osf-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      gap: 1rem;
+    }
+
+    #{{ section.id }} .osf-block-link,
+    #{{ section.id }} .osf-block-heading {
+      font-size: 16px;
+    }
+
+    #{{ section.id }} .osf-block-heading {
+      margin-bottom: 1rem;
+    }
+
+     #{{ section.id }} .osf-block-wrapper {
+    grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+   #{{ section.id }} .osf-block-wrapper {
+     display: flex;
+     flex-direction: column;
+     gap: 0.2rem;
+  }
+
+   #{{ section.id }} .osf-block-heading {
+      margin-bottom: 0.22rem;
+      padding: 0.77rem 0;
+    }
+    
+   .osf-london_address{
+     flex-direction: column;
+     width: 100%;
+     gap: 0.71rem;
+   }
+
+  .osf-london_address-img{
+     height: 30rem;
+  }
+  }
+{% endstyle %}
+
+<section id="{{ section.id }}">
+  <div class="page-width osf-inner">
+    <div class="osf-grid">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'Email' %}
+            {% if customer %}
+              
+            {% else %}
+              <div class="osf-block" style="margin: auto;">
+                {% render 'klaviyo-customer-form' %}
+              </div>
+            {% endif %}
+
+          <div class="osf-block-wrapper">
+              
+          {% when 'Menu' %}
+            <div class="osf-block">
+              <p class="osf-block-heading">{{ block.settings.menu_heading }}</p>
+              <div class="osf-block-menu-div footer-block__details-content">
+                {% for link in block.settings.menu.links %}
+                  <a class="osf-block-link" href="{{ link.url }}">{{ link.title }}</a>
+                {% endfor %}
+                {% if block.settings.menu_heading == 'Customer Service' %}
+                  <div class="osf-working-hours">Monday - Sunday 10:00am - 7pm BST</div>
+                  <a class="osf-block-link" href="mailto:customerservices@oceanusswimwear.com"
+                    ><strong>customerservices@oceanusswimwear.com</strong></a
+                  >
+                  <a class="osf-block-link" href="https://wa.me/447999836562"
+                    ><strong>WhatsApp: +44 7999 836562</strong></a
+                  >
+                {% endif %}
+              </div>
+            </div>
+
+          {% when 'Contact' %}
+            <div class="osf-block">
+              <p class="osf-block-heading">{{ block.settings.contact_heading }}</p>
+              <div class="osf-block-menu-div footer-block__details-content">
+                {% for link in block.settings.contact_menu.links %}
+                  <a class="osf-block-link" href="{{ link.url }}">{{ link.title }}</a>
+                {% endfor %}
+              </div>
+              {% if section.settings.show_social_media == true %}{% render 'os-social-media' %}{% endif %}
+            </div>
+
+          {% when 'Address' %}
+           <div class="osf-block">
+  <p class="osf-block-heading">
+    <a href="/pages/our-stores" style="color: black; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Address</a>
+  </p>
+  <div>
+    <div class="osf-block-menu-div footer-block__details-content">
+      <div>
+        <!-- First Address Block with Anchor Tag -->
+        <a href="{{ block.settings.link1 }}" style="text-decoration: none; color: inherit;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+          <div class="osf-london_address">
+            <div>
+              <img
+                class="osf-london_address-img"
+                style="object-fit: cover; width: -webkit-fill-available; min-width: 80px;"
+                src="{{ block.settings.image_store | image_url: width: 1000 }}"
+                width="170"
+                height="130"
+              >
+            </div>
+            <div>
+              {{ block.settings.address }}
+            </div>
+          </div>
+        </a>
+
+        <!-- Second Address Block with Anchor Tag -->
+        <a href="{{ block.settings.link2 }}" style="text-decoration: none; color: inherit;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+          <div class="osf-london_address">
+            <div>
+              <img
+                class="osf-london_address-img"
+                style="object-fit: cover; width: -webkit-fill-available; min-width: 80px;"
+                src="{{ block.settings.image_store2 | image_url: width: 1000 }}"
+                width="170"
+                height="130"
+              >
+            </div>
+            <div>
+              {{ block.settings.address2 }}
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+            
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+    <div class="osf-bottom">
+      <p>
+        ©
+        <script>
+          new Date().getFullYear()>1111&&document.write(new Date().getFullYear());
+        </script>
+        {{ section.settings.footer_copyright }}
+      </p>
+      <!--
+        <p>© <script>new Date().getFullYear()>1111&&document.write(new Date().getFullYear());</script> {{ section.settings.footer_copyright }} | Maintained and Marketed by <a href="https://www.decodehouse.com/" target="_blank">Decodehouse</a></p>
+      -->
+      <div>
+        {%- for type in shop.enabled_payment_types -%}
+          <span>
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          </span>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.innerWidth < 768) {
+          var headings = document.getElementsByClassName('osf-block-heading');
+
+          for (var i = 0; i < headings.length; i++) {
+              headings[i].addEventListener('click', function() {
+                  this.classList.toggle('block-collapsed');
+                  var content = this.nextElementSibling;
+                  if (content.style.display === 'flex' || content.style.display === '') {
+                      content.style.display = 'none';
+                  } else {
+                      content.style.display = 'flex';
+                  }
+              });
+
+              headings[i].classList.add('block-collapsed');
+              var content = headings[i].nextElementSibling;
+              if (content) {
+                  content.style.display = 'none';
+              }
+          }
+      }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "OS Footer",
+  "blocks": [
+    {
+      "name": "Email",
+      "type": "Email",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "email_heading",
+          "label": "Heading",
+          "default": "My heading"
+        },
+        {
+          "type": "richtext",
+          "id": "email_paragraph",
+          "label": "Paragraph",
+          "default": "<p>Sign up to our emails and get 10% off full price styles in your next order.</p>"
+        }
+      ]
+    },
+    {
+      "name": "Menu",
+      "type": "Menu",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_heading",
+          "label": "Heading",
+          "default": "My heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "type": "Contact",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "contact_heading",
+          "label": "Heading",
+          "default": "My heading"
+        },
+        {
+          "type": "link_list",
+          "id": "contact_menu",
+          "label": "Menu"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_media",
+          "label": "Show Social media Icons",
+          "default": false
+        }
+      ]
+    },
+    {
+      "name": "Address",
+      "type": "Address",
+      "limit": 1,
+      "settings": [
+         {
+          "type": "image_picker",
+          "id": "image_store",
+          "label": "Image Picker Store"
+        },
+         {
+          "type": "image_picker",
+          "id": "image_store2",
+          "label": "Image Picker Store"
+        },
+        {
+          "type": "url",
+          "id": "link1",
+          "label": "Store Page Url"
+        },
+        {
+          "type": "richtext",
+          "id": "address",
+          "label": "Address"
+        },
+        {
+          "type": "url",
+           "id": "link2",
+           "label": "Store Page Url"
+        },
+         {
+          "type": "richtext",
+          "id": "address2",
+          "label": "Address"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "footer_copyright",
+      "label": "Footer bottom text",
+      "default": "OCEANUS, TM & PLAYBOY, ENTERPRISE INTERNATIONAL, INC. ALL RIGHTS RESERVED"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#000"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    }
+  ]
+}
+{% endschema %}

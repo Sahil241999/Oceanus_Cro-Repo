@@ -1,0 +1,252 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.3.0/swiper-bundle.min.js"></script>
+{{ 'os-product-page.css' | asset_url | stylesheet_tag }}
+{% style %}
+  .os_product_detail_wrapper {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width:575px) {
+    .os_product_detail_wrapper {
+        padding: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px 0 {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+      }
+  }
+{% endstyle %}
+
+<section id="{{ section.id }}" class="os_product_detail_wrapper">
+  <div class="page-width">     
+    <div class="row">
+      <div class="col-xl-7 col-12">
+        <div class="os_product_slider">
+          <div class="swiper os_product_slider_thumb">
+          <div class="swiper-wrapper">
+            {% for image in product.media %}
+              {% assign imageNo = forloop.index0 %}
+              <div class="swiper-slide os_product_slider_thumb_image">
+                <img width="auto" height="auto" alt="{{ product.images[imageNo].alt | escape }}" src="{{ product.images[imageNo] | image_url }}">
+              </div>  
+            {% endfor %}
+          </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+          <div class="swiper os_product_slider_preview">
+            <div class="swiper-wrapper">
+            {% for image in product.media %}
+              {% assign imageNo = forloop.index0 %}
+              <div class="swiper-slide">
+              <div class="os_product_slider_preview_image">
+                <img width="auto" height="auto" loading="eager" alt="{{ product.images[imageNo].alt | escape }}" src="{{ product.images[imageNo] | image_url }}">
+              </div>  
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-12">
+        <div class="os_product_detail_inner">  
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'title' %}
+                <h1 class="h3 os_product_detail_title">{{ product.title }}</h1>
+              {% when 'price' %}
+                <div class="os_product_detail_price">
+                  <p class="h2 regular_price">{{ product.price | money }}</p>
+                  {% if product.compare_at_price != blank %}
+                    <p class="h4 text-decoration-line-through compare_at_price">{{ product.compare_at_price | money }}</p>
+                  {% endif %}  
+                </div>
+              {% when 'variant' %}
+<!--                 <div class="os_detail_variants_block">
+                  <p class="os_detail_variants_block_title">Color:</p>
+                  <div class="os_product_detail_color_block">
+                      <div class="os_product_detail_color">
+                        <input class="os_product_detail_color_input" checked data-available="" id="color" type="radio" name="color" value="white">
+                        <label class="os_product_detail_color_label" for="color">White</label>
+                      </div>
+                      <div class="os_product_detail_color">
+                        <input class="os_product_detail_color_input" data-available="" id="color" type="radio" name="color" value="white">
+                        <label class="os_product_detail_color_label" for="color">Black</label>
+                      </div>
+                  </div>
+                </div> -->
+                <div class="os_detail_variants_block os_product_detail_size_block_wrap">
+                <p class="os_detail_variants_block_title">Size:</p>
+                  <div class="os_product_detail_size_block">
+                  {% for variant in product.variants %}
+                    <div class="os_product_detail_size">
+                      <input class="os_product_detail_size_input" data-inventory="{{variant.inventory_quantity}}" {% if forloop.first %}checked{% endif %} data-available="{{ variant.available }}" id="{{ variant.id }}" type="radio" name="size" value="{{ variant.title }}">
+                      <label class="os_product_detail_size_label" for="{{ variant.id }}">{{ variant.title }}</label>
+                    </div>
+                  {% endfor %}
+                  </div>
+                <p class="os_detail_variants_block_note os_detail_variants_block_note_size">Not sure about the size?</p>
+                </div>
+              {% when 'quantity' %}
+                <div class="os_detail_variants_block os_product_detail_qty_wrap">
+                  <p class="os_detail_variants_block_title">Quantity:</p>
+                  <div class="os_product_detail_qty_block">
+                  <quantity-input class="quantity os_product_detail_qty">
+                      <button class="quantity__button os_product_detail_qty_btn os_product_detail_qty_btn_minus" name="minus" type="button">{% render 'icon-minus' %}</button>
+                      <input class="os_product_detail_qty_input quantity_input" type="number" name="quantity" id="Quantity-template--16617594912995__main" min="1" value="1" form="product-form-template--16617594912995__main">
+                      <button class="quantity__button os_product_detail_qty_btn os_product_detail_qty_btn_plus" name="plus" type="button">{% render 'icon-plus' %}</button>
+                  </quantity-input>
+                  <div class="os_product_detail_qty_note">{% render 'icon-fire' %}<span>Only 1 Piece in stock</span></div>
+                  </quantity-input>
+                </div>
+              {% when 'addtocart' %}
+                <div class="os_product_detail_btns_wrap">
+                  <button class="os_product_detail_btn os_add_to_cart_btn btn btn-primary" data-variant-id="{{ product.selected_or_first_available_variant.id }}"><span>Add To Cart</span></button>
+                  <button class="os_product_detail_btn btn-img btn btn-light">{% render 'icon-heart' %}<span>Add To Wishlist</span></button>
+                </div>
+             {% endcase %} 
+          {% endfor %} 
+          <div class="os_product_detail_accordion accordion">
+            <div class="accordion_item">
+              <button type="button" class="accordion_btn">
+                Description 
+                <i class="icon icon-plus"></i>
+              </button>
+              <div class="accordion_content">
+                {{ product.description }}
+              </div>
+            </div>
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'size' %}
+              <div class="accordion_item">
+                <button type="button" class="accordion_btn">
+                  {{ block.settings.title }} 
+                  <i class="icon icon-plus"></i>
+                </button>
+                <div class="accordion_content">
+                  {{ block.settings.size }}
+                </div>
+              </div>
+              {% endcase %}
+            {% endfor %}  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  var osProductThumb = new Swiper(".os_product_slider_thumb", {
+      spaceBetween: 16,
+      slidesPerView: 3,
+      freeMode: true,
+      watchSlidesProgress: true,
+       navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        599: {
+          slidesPerView: 4,
+        },
+        768: {
+          slidesPerView: 5,
+          spaceBetween: 16,
+          direction: "vertical",
+        }
+      },
+    });
+    var osProductPreview = new Swiper(".os_product_slider_preview", {
+      slidesPerView: 1,
+      spaceBetween: 10,
+      thumbs: {
+        swiper: osProductThumb,
+      },
+      breakpoints: {
+        768: {
+          direction: "vertical",
+        }
+      },
+    });
+</script>
+{% schema %}
+  {
+    "name": "Main Product",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "default": 104,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "default": 76,
+        "unit": "px"
+      }
+    ],
+    "blocks":[
+      {
+        "type":"title",
+        "name":"Title",
+        "limit": 1
+      },
+      {
+        "type":"price",
+        "name":"Price",
+        "limit": 1
+      },
+      {
+        "type":"variant",
+        "name":"Variant",
+        "limit": 1
+      },
+      {
+        "type":"quantity",
+        "name":"Quantity",
+        "limit": 1
+      },      
+      
+      {
+        "type":"addtocart",
+        "name":"Add To Cart",
+        "limit": 1
+      },
+      {
+        "type":"size",
+        "name":"Accordion",
+        "settings":[
+          {
+            "type":"text",
+            "id":"title",
+            "label":"Title"
+          },
+          {
+            "type":"html",
+            "id":"size",
+            "label":"Content"
+          }
+        ]
+      }
+      
+    ]
+  }
+{% endschema %}
+
+<script type="text/javascript">
+var _learnq = _learnq || [];
+	document.getElementById("os-pp-atc").addEventListener('click',function (){
+ 		_learnq.push(['track', 'Added to Cart', item]);
+	});</script>

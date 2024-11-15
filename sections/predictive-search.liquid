@@ -1,0 +1,50 @@
+{% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{%- if predictive_search.performed -%}
+  {% assign first_column_results_size = predictive_search.resources.queries.size | plus: predictive_search.resources.collections.size | plus: predictive_search.resources.pages.size | plus: predictive_search.resources.articles.size
+  %}
+  <div id="predictive-search-results" role="listbox">
+    {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
+      <div class="predictive-search__results-groups-wrapper{% unless predictive_search.resources.products.size > 0 %} predictive-search__results-groups-wrapper--no-products{% endunless %}{% unless predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 %} predictive-search__results-groups-wrapper--no-suggestions{% endunless %}">
+      {%- endif -%}
+      {%- if predictive_search.resources.products.size > 0 or predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
+        <div class="predictive-search__result-group">
+          {%- if predictive_search.resources.products.size > 0 -%}
+            <div>
+              <h2 id="predictive-search-products" class="predictive-search__heading">
+                {{- 'templates.search.products' | t -}}
+              </h2>
+              <ul
+                id="predictive-search-results-products-list"
+                class="predictive-search__results-list list-unstyled"
+                role="group"
+                aria-labelledby="predictive-search-products">
+                {%- for product in predictive_search.resources.products -%}
+                  {% render 'os-product-card'
+                    , os_product: product %}
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {% if predictive_search.resources.products.size > 0 %}
+    <div class="predictive-search-results__button">
+      <button type="submit" class="os-pp-atc">View All Results</button>
+    </div>
+  {% endif %}
+
+
+  <span data-predictive-search-live-region-count-value>
+    {% liquid
+      assign total_results = predictive_search.resources.products.size | plus: first_column_results_size
+      if total_results == 0
+        echo 'templates.search.no_results' | t: terms: predictive_search.terms
+      endif
+    %}
+  </span>
+{%- endif -%}

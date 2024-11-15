@@ -1,0 +1,304 @@
+{% style %}
+  #{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}rem;
+    padding-bottom: {{ section.settings.padding_bottom }}rem;
+  }
+
+  #{{ section.id }} .os-section-top {
+    align-items: {{ section.settings.top_alignment }};
+    margin-bottom: 7rem;
+  }
+
+  #{{ section.id }} .os-wtbp-wrapper {
+    position: relative;
+  }
+
+  #{{ section.id }} .c-tt-tab-top {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 100%;
+    height: 100%;
+  }
+
+  #{{ section.id }} .c-tt-tt-each {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    transition: 0.3s ease;
+    color: var(--body-text);
+  }
+
+  #{{ section.id }} .c-tt-tt-each:hover {
+    transform: scale(1.1);
+    z-index: 1;
+  }
+
+  #{{ section.id }} .c-tt-tt-each.active {
+    transform: scale(1.1);
+  }
+
+  #{{ section.id }} .c-tt-tt-each .os-wtbp-heading {
+    text-align: center;
+  }
+
+  #{{ section.id }} .c-tt-tt-each .os-wtbp-heading.small {
+    display: none;
+  }
+
+  #{{ section.id }} .c-tt-tc-main {
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3rem;
+    text-align: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  #{{ section.id }} .c-tt-tc-main.active {
+    display: flex! important;
+
+  }
+
+  @media (max-width: {{ settings.breakpoint1 }}px) {
+    #{{ section.id }} .c-tt-tt-each img {
+      height: 150px;
+    }
+  }
+
+  @media (max-width: {{ settings.breakpoint2 }}px) {
+    #{{ section.id }} .os-section-top {
+      margin-bottom: 5rem;
+    }
+
+    #{{ section.id }} .c-tt-tt-each img {
+      height: 120px;
+    }
+  }
+
+  @media (max-width: {{ settings.breakpoint3 }}px) {
+    #{{ section.id }} .os-section-top {
+      margin-bottom: 4rem;
+    }
+
+    #{{ section.id }} .c-tt-tt-each .os-wtbp-heading {
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    #{{ section.id }} .c-tt-tt-each .os-wtbp-heading.small {
+      display: block;
+    }
+
+    #{{ section.id }} .c-tt-tt-each img {
+      height: 70px;
+    }
+  }
+
+
+  @media (max-width: {{ settings.breakpoint4 }}px) {
+    #{{ section.id }} .os-section-top {
+      margin-bottom: 3rem;
+    }
+
+    #{{ section.id }} .c-tt-tt-each img {
+      height: 50px;
+    }
+  }
+{% endstyle %}
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    {% if section.settings.heading != empty %}
+      <div class="os-section-top">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        <div>{{ section.settings.subheading }}</div>
+      </div>
+    {% endif %}
+    <div class="os-wtbp-wrapper">
+      {{ section.settings.main_image | image_url: width: 1400 | image_tag: height: 'auto' }}
+      <div class="c-tt-tab-top">
+        {% for block in section.blocks %}
+          <a
+            href="#os-wtbp-bottom"
+            class="c-tt-tt-each{% if forloop.index == 1 %} active{% endif %}"
+            style="
+              top: {{ block.settings.pin_top }};
+              bottom: {{ block.settings.pin_bottom }};
+              left: {{ block.settings.pin_left }};
+              right: {{ block.settings.pin_right }};
+            "
+          >
+            <h3 class="os-wtbp-heading">{{ block.settings.tab_heading }}</h3>
+            <h3 class="os-wtbp-heading small">{{ block.settings.tab_heading_small }}</h3>
+            {% if block.settings.tab_pin -%}
+              {{- block.settings.tab_pin | image_url: height: 200 | image_tag: height: 'auto' -}}
+            {%- endif %}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="os-wtbp-bottom" class="c-tt-tab-content">
+      {% for block in section.blocks %}
+        <div class="c-tt-tc-main{% if forloop.index == 1 %} active{% endif %}">
+          <h2>{{ block.settings.tab_heading }} Locations</h2>
+          <div>{{ block.settings.tab_paragraph }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  var tabs = document.querySelectorAll(".c-tt-tt-each");
+  var contents = document.querySelectorAll('.c-tt-tc-main');
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      contents.forEach((content) => {
+        content.classList.remove('active');
+      });
+      tabs.forEach((tab) => {
+        tab.classList.remove('active');
+      });
+
+      contents[index].classList.add('active');
+      tabs[index].classList.add('active');
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "OS Where To Buy Page",
+  "blocks": [
+    {
+      "name": "Tab",
+      "type": "Tab",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "tab_pin",
+          "label": "Pin image"
+        },
+        {
+          "type": "text",
+          "id": "tab_heading",
+          "label": "Tab Heading",
+          "default": "North America"
+        },
+        {
+          "type": "text",
+          "id": "tab_heading_small",
+          "label": "Tab Heading small",
+          "default": "NA"
+        },
+        {
+          "type": "richtext",
+          "id": "tab_paragraph",
+          "label": "Tab Paragraph",
+          "default": "<p>My paragraph</p>"
+        },
+        {
+          "type": "text",
+          "id": "pin_top",
+          "label": "Pin Position top",
+          "default": "0px"
+        },
+        {
+          "type": "text",
+          "id": "pin_bottom",
+          "label": "Pin Position bottom",
+          "default": "auto"
+        },
+        {
+          "type": "text",
+          "id": "pin_left",
+          "label": "Pin Position left",
+          "default": "0px"
+        },
+        {
+          "type": "text",
+          "id": "pin_right",
+          "label": "Pin Position right",
+          "default": "auto"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trusted by the best"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>My paragraph</p>"
+    },
+    {
+      "type": "select",
+      "id": "top_alignment",
+      "label": "Top Alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Map Image"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    }
+  ],
+  "presets": [
+    {
+      "name": "OS Where To Buy Page"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,175 @@
+<style>
+   .custom-img-txt-container {
+        display: none;
+   }
+  
+   .custom-img-txt-container-mobile {
+         margin: 0 10px;
+         margin-bottom: 1.9rem;
+   }
+
+   .custom-equal-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+   }
+  
+   .custom-text-button-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-left: 2rem;
+    }
+
+   .custom-img-txt-info h2 {
+        font-size: 2.8rem; 
+   }
+
+   .custom-img-txt-info p, .custom-text-button {
+        font-size: 1.3rem; 
+   }
+  
+   @media only screen and (min-width: 800px) {
+     .custom-img-txt-container-mobile {
+         display: none;
+     }
+  
+     .custom-img-txt-container {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        width: 100%;
+     }
+
+     .custom-img-txt-container-inner {
+        display: flex;
+        width: 100%;
+     }
+     
+     {% if section.settings.image_order %}
+        #{{section.id}} {
+           order: 1;
+        }
+     {% endif %}
+   
+     .custom-image-text-container {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+     }
+
+     .custom-img-txt-info, #custom-image-adjust {
+        flex: 1;
+        padding: 2rem 1.6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+     }
+
+     #custom-image-adjust iframe,
+     #custom-image-adjust img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+     }
+
+     .custom-img-txt-container {
+        margin: 0;
+     }
+ }
+</style>
+
+<div class="page-width"> 
+<div class="custom-img-txt-container">
+   <div class="custom-img-txt-container-inner">
+      <div id="{{ section.id }}" class="custom-image-text-container custom-equal-container">  
+         <div class="custom-img-txt-info">
+            <h2 style="text-align: center; font-family: 'Neue Haas Display Medium'; margin-left: 2rem; border-top:0; border-bottom:0;">{{ section.settings.heading }}</h2>
+            <p style="margin-left: 2rem; text-align: center;">{{ section.settings.paragraph }}</p>
+            <div class="custom-text-button-wrapper">
+               <a class="custom-text-button" href="{{ section.settings.cta_url }}" target="__blank" style="color:black; max-width: fit-content; text-decoration: none;"><u>{{ section.settings.cta_para }}</u></a>
+            </div>
+         </div>
+      </div>
+      <div id="custom-image-adjust" class="custom-image equal-container">
+         {% if section.settings.map_url %}
+            <iframe src="{{ section.settings.map_url }}" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+         {% else %}
+            <img src="{{ section.settings.image | img_url: 'master' }}" alt="Image or Map" />
+         {% endif %}
+      </div>
+   </div>
+</div>
+</div>
+<div class="page-width">
+<div class="custom-img-txt-container-mobile">
+   <div class="custom-img-txt-container-inner">
+      <div id="{{ section.id }}" class="custom-image-text-container">  
+         <div class="custom-image">
+            {% if section.settings.map_url %}
+               <iframe src="{{ section.settings.map_url }}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            {% else %}
+               <img id="custom-text-image" src="{{ section.settings.image | img_url: 'master' }}" width="100%"> 
+            {% endif %}
+         </div>
+         <div style="padding: 2rem 1.6rem;">
+            <h2 style="border-top:0; font-family: 'Neue Haas Display Medium'; border-bottom:0;">{{ section.settings.heading }}</h2>
+            <p>{{ section.settings.paragraph }}</p>
+            <a href="{{ section.settings.cta_url }}" target="__blank" style="color:black; max-width: fit-content; text-decoration: none;"><u>{{ section.settings.cta_para }}</u></a>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+{% schema %}
+{
+  "name": "Text-Image",
+  "settings": [
+     {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Fallback Image"
+    },
+    {
+      "type": "url",
+      "id": "map_url",
+      "label": "Google Map Embed URL",
+    },
+    {
+      "type": "checkbox",
+      "id": "image_order",
+      "label": "Swap Image and Text Order",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "heading here"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph",
+      "label": "Paragraph",
+      "default": "text here"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Store Location Url"
+    },
+    {
+      "type": "text",
+      "id": "cta_para",
+      "label": "Label",
+      "default": "text here"
+    }
+  ],
+  "presets": [{
+    "name": "Store-Section",
+    "category": "custom"
+  }]
+}
+{% endschema %}
+

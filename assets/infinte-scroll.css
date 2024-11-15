@@ -1,0 +1,42 @@
+<style>
+  .load__more--container {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    margin-top: 3rem; 
+  }
+
+  .load__more--spinner {
+    display: none; 
+    width: 35px;
+    height: 35px;
+    border: 5px solid #ff8fbd;
+    border-top: 5px solid #f3e9ea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+    margin-top: 3rem;
+  }
+
+  .load__more--btn {
+    padding: 5px 10px;
+    background: #ff8fbd;
+    color: #fff;
+    max-width: 200px;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 3rem;
+    cursor: pointer;
+    visibility: hidden;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>

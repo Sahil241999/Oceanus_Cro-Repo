@@ -1,0 +1,204 @@
+{% comment %}
+  Recently Viewed Products Section
+  - Displays a grid of recently viewed products
+  - Stores and retrieves product data using localStorage
+  - Customizable title and number of products through theme settings
+{% endcomment %}
+
+<style>
+  .os-recently-viewed {
+  margin-bottm: 2rem;
+}
+
+.os-recently-title h2 {
+  font-size: 44pt !important;
+  border-top: 1px solid #d2d2d2;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+   #{{ section.id }} .logo-container-img{
+     margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+     width: 70px;
+   }
+
+.os-recent-products-block {
+  display: grid;
+  gap: var(--grid-desktop-horizontal-spacing, 20px);
+}
+
+@media only screen and (min-width: 750px) { 
+  .os-recent-products-block {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media only screen and (max-width: 749px) {
+  .os-recent-products-block {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+    #{{ section.id }} .logo-container-img{
+     margin-top: 1rem;
+    margin-bottom: 1rem;
+     width: 70px;
+   }
+}
+
+.os-product {
+  cursor: pointer;
+}
+
+.os-product-img img {
+  aspect-ratio: 3/5;
+  object-fit: cover;
+}
+
+
+.os-product-title {
+  margin: 10px 0 5px;
+}
+
+.os-product-title a {
+  color: black;
+  text-decoration: none;
+}
+
+.os-product-price {
+  margin: 0;
+  color: #000;
+} 
+</style>
+
+<section class="os-recently-viewed page-width{% if section.settings.full_width %} page-width-desktop{% endif %}" id="RecentlyViewed-{{ section.id }}">
+     {% if section.settings.show_logo %}
+      <div class="logo-container" style="margin-top: 1rem; margin-bottom: 1rem;">
+        <img class="logo-container-img" src="{{ section.settings.logo1 | img_url: 'master' }}" alt="Logo 1" width="90px">
+      </div>
+    {% else %}
+    <div class="os-recently-title">
+      <h2 class="title inline-richtext h2 scroll-trigger animate--slide-in">{{ section.settings.title }}</h2>
+    </div>
+      {% endif %}
+
+  <div class="os-recent-products-block">
+  </div>
+</section>
+
+<script>
+  // Constants
+  const OS_STORAGE_KEY = 'os_recently_viewed';
+  const OS_MAX_PRODUCTS = {{ section.settings.products_to_show }};
+
+  // Helper functions
+  function getStoredProducts() {
+    return JSON.parse(localStorage.getItem(OS_STORAGE_KEY)) || [];
+  }
+
+  function setStoredProducts(products) {
+    localStorage.setItem(OS_STORAGE_KEY, JSON.stringify(products));
+  }
+
+  function getCurrentProductData() {
+    return {
+      productTitle: {{ product.title | json }},
+      productImg: {{ product.featured_image | img_url: 'master' | json }},
+      productPrice: {{ product.price | money | json }},
+      productUrl: {{ product.url | json }}
+    };
+  }
+
+  // Main functions
+  function osUpdateRecentlyViewedProducts() {
+    const currentProduct = getCurrentProductData();
+    let recentProducts = getStoredProducts();
+
+    // Remove the current product if it already exists in the list
+    recentProducts = recentProducts.filter(product => product.productUrl !== currentProduct.productUrl);
+
+    // Add the current product to the beginning of the list
+    recentProducts.unshift(currentProduct);
+
+    // Limit the list to OS_MAX_PRODUCTS
+    recentProducts = recentProducts.slice(0, OS_MAX_PRODUCTS);
+
+    setStoredProducts(recentProducts);
+  }
+
+  function osRenderRecentlyViewedProducts() {
+    const recentProducts = getStoredProducts();
+    const container = document.querySelector('#RecentlyViewed-{{ section.id }} .os-recent-products-block');
+
+    if (!container || recentProducts.length === 0) return;
+
+    const productsHTML = recentProducts.map(product => `
+      <div class="os-product">
+        <div class="os-product-img">
+          <a href="${product.productUrl}"><img src="${product.productImg}" alt="${product.productTitle}"/></a>
+        </div>
+        <h3 class="os-product-title">
+          <a href="${product.productUrl}">${product.productTitle}</a>
+        </h3>
+        <p class="os-product-price">${product.productPrice}</p>
+      </div>
+    `).join('');
+
+    container.innerHTML = productsHTML;
+  }
+
+  
+
+  // Event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    osUpdateRecentlyViewedProducts();
+    osRenderRecentlyViewedProducts();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Recently Viewed Products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Recently Viewed",
+      "label": "Title"
+    },
+      {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show Logos",
+      "default": false
+    },
+        {
+      "type": "image_picker",
+      "id": "logo1",
+      "label": "Logo 1"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently Viewed Products"
+    }
+  ]
+}
+{% endschema %}

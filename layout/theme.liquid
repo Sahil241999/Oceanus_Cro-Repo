@@ -1,0 +1,342 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+<meta name="google-site-verification" content="wZIYjhY4LSWzavPPy8top9_mRVLABAOBwGNDJscRZOk" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Oceanusthelable",
+      "url": "https://oceanusthelabel.com/",
+      "logo": "https://oceanusthelabel.com/cdn/shop/files/OCEANUSlogo-animation-ezgif.com-crop-min.gif?v=1728649310&width=400",
+      "sameAs": [
+        "https://www.instagram.com/oceanus",
+        "https://www.facebook.com/Oceanusswim/",
+        "https://x.com/oceanusswim"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+44 7999 836562",
+        "contactType": "Whatsapp"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "8 Newburgh Street Carnaby",
+        "addressLocality": "London",
+        "postalCode": "W1F 7RJ",
+        "addressCountry": "UK"
+      },
+      "description": "Shop Oceanus Swimwear for premium, ocean-inspired swimwear. Discover stylish and comfortable beachwear. Exclusive offers available. Dive into summer now!",
+      "founders": [
+        {
+          "@type": "Person",
+          "name": "Hannah Attalah"
+        }
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "Oceanusthelabel",
+        "logo": "https://oceanusthelabel.com/cdn/shop/files/OCEANUSlogo-animation-ezgif.com-crop-min.gif?v=1728649310&width=400"
+      }
+     }
+  </script>
+
+  <script type="application/ld+json">
+      {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://oceanusthelabel.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://oceanusthelabel.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+   </script>
+
+
+    {% if template contains 'collection' %}
+      {{ 'infinte-scroll.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'infinite-scroll.js.js' | asset_url}}"></script>
+    {% endif %}
+
+    {% # cart page %}
+    {% if template == 'cart' %}
+      <script>
+        window.location.replace("/?opencart=true");
+      </script>
+    {% endif %}
+
+    {% # Slick Slider %}
+    <link rel="stylesheet" type="text/css" href="{{ 'slick.css' | asset_url }}"/>
+    <link rel="stylesheet" href="{{ 'photoswipe.css' | asset_url }}">
+
+    {% # fonts %}
+    {% render 'os-fonts' %}
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+ 
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {% comment %}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {% endcomment %}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    <script src="{{ '1main.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    {{ content_for_header }}
+
+    {% render 'os-theme-style' %}
+    {% if template.name == 'page' %}
+      <style>
+        body {
+          {% if template.suffix == 'collections' %}
+            background-image: url("{{ 'collection-bg.jpg' | asset_url }}");
+            background-attachment: scroll !important;
+          {% endif %}
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          overflow-x: hidden;
+        }
+      </style>
+    {% endif %}
+
+    {% if template.name == 'product' %}
+      <style>
+        @media screen and (max-width: 992px) {
+          #dummy-chat-button-iframe {
+            bottom: 65px !important;
+          }
+        }
+      </style>
+    {% endif %}
+
+
+    {{ '1custom.css' | asset_url | stylesheet_tag }}
+
+    {%- unless settings.type_body_font.system? -%}
+      <link href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin />
+    {%- endunless -%}
+    {%- unless settings.type_header_font.system? -%}
+      <link href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin />
+    {%- endunless -%}
+    {%- unless settings.type_paragraph_font.system? -%}
+      <link href="{{ settings.type_paragraph_font | font_url }}" type="font/woff2" crossorigin />
+    {%- endunless -%}
+
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    if (Shopify.designMode) {
+      document.documentElement.classList.add('shopify-design-mode');
+    }
+    </script>
+    {% # jQuery %}
+    {% comment %}<script src ="{{ 'f22.iife.js' | asset_url }}" type="module" async ></script>{% endcomment %}
+    <script src="{{ 'jquery-3.6.3.min.js' | asset_url }}"></script>
+    <script type="text/javascript" src="{{ 'slick.min.js' | asset_url }}"></script>
+    {% if template contains 'product' %}
+      <script type="text/javascript" src="{{ 'jquery.zoom.min.js' | asset_url }}" defer=”defer”></script>
+    {% endif %}    
+    <script type="text/javascript" defer>if(typeof window.hulkappsWishlist === 'undefined') {
+      window.hulkappsWishlist = {};
+      }
+      window.hulkappsWishlist.baseURL = '/apps/advanced-wishlist/api';
+      window.hulkappsWishlist.hasAppBlockSupport = '1';
+      </script>
+
+      
+    <script>
+      window.freeShippingAmount = {{ shop.metaobjects.free_shipping.free_shipping.amount.value }};
+      window.cartAmount = {{ cart.total_price }};
+    </script>
+    
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "fqzunv9gcj");
+    </script>
+    <script>
+    !function () {var reb2b = window.reb2b = window.reb2b || [];
+    if (reb2b.invoked) return;reb2b.invoked = true;reb2b.methods = ["identify", "collect"];
+    reb2b.factory = function (method) {return function () {var args = Array.prototype.slice.call(arguments);
+    args.unshift(method);reb2b.push(args);return reb2b;};};
+    for (var i = 0; i < reb2b.methods.length; i++) {var key = reb2b.methods[i];reb2b[key] = reb2b.factory(key);}
+    reb2b.load = function (key) {var script = document.createElement("script");script.type = "text/javascript";script.async = true;
+    script.src = "https://s3-us-west-2.amazonaws.com/b2bjsstore/b/" + key + "/reb2b.js.gz";
+    var first = document.getElementsByTagName("script")[0];
+    first.parentNode.insertBefore(script, first);};
+    reb2b.SNIPPET_VERSION = "1.0.1";reb2b.load("X0NW1GHGJEO4");}();
+  </script>
+<script type="text/javascript">if(typeof window.hulkappsWishlist === 'undefined') {
+        window.hulkappsWishlist = {};
+        }
+        window.hulkappsWishlist.baseURL = '/apps/advanced-wishlist/api';
+        window.hulkappsWishlist.hasAppBlockSupport = '1';
+        </script>
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "n5o11y4oa7");
+</script>
+</head>
+<body class="{{ template.name | handle }} gradient template-{{ template.name | handle }}">
+  {% section 'custom-fonts' %}
+
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{ "accessibility.skip_to_text" | t }}
+    </a>
+
+    {% render 'os-cart' %}
+
+
+
+   {% section 'os-whatsapp-section' %}
+
+
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+      <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
+    </ul>
+
+    {% render 'os-theme-script' %}
+  {% render 'hulkappsWishlistPopup' %}
+
+  {{'custom.js' | asset_url | script_tag}}
+<!-- WPD Start -->
+                {% if customer.tags.size > 0 and template != 'cart' %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      let checkoutbtninterval = setInterval(function(){
+                        var x=document.querySelectorAll("input[name='checkout'], button[name='checkout'], input[name='goto_pp'], button[name='goto_pp'], input[name='goto_gc'], button[name='goto_gc'], [href$='checkout']");
+                        var WPD_RedirectToCart = function(e) {
+                          	e.stopPropagation();
+                            e.preventDefault();
+                            window.location = '/cart';
+                            };
+                            for (var i = 0; i < x.length; i++) {
+                                x[i].addEventListener('click', WPD_RedirectToCart, false);
+                            }
+                        },500)
+                });
+              </script>
+               {% endif %}
+         
+
+               {% if customer.tags.size > 0 and template == 'cart' %}
+                 {% include 'wcp_cart' %}
+               {% endif %}
+               <!-- WPD End -->
+              {% section 'notifier-cart' %}
+<script>
+// Function to update the alt attribute
+function updateAltAttribute() {
+    
+    var images = document.getElementsByTagName('img');
+
+    for (var i = 0; i < images.length; i++) {
+        var image = images[i];
+        var src=image.src;
+
+      var filenameWithExt = src.split('/').pop().split('#')[0].split('?')[0];
+            var filename = filenameWithExt.split('.')[0];             
+            image.alt = filename;
+    }
+}
+
+// Call the function when the document is ready
+document.addEventListener("DOMContentLoaded", updateAltAttribute);
+
+ document.addEventListener('DOMContentLoaded', () => {
+  // List of specific pages where the h2 to h1 transformation should occur
+  const specificPages = [
+    '/',
+    '/apps/advanced-wishlist',
+    '/pages/about-us',
+    '/pages/bespoke-custom-designs',
+    '/pages/careers',
+    '/pages/collections',
+    '/pages/faq',
+    '/pages/our-stores',
+    '/pages/sustainability'
+  ];
+
+  const currentPage = window.location.pathname;
+
+  if (specificPages.includes(currentPage) || currentPage === '') {
+    let firstH2;
+
+    if (currentPage === '/' || currentPage === '') {
+      // On the homepage, target the first h2 with the class 'section-title'
+      firstH2 = document.querySelector('h2.section-title');
+    } else {
+      // On other pages, target the first h2 element
+      firstH2 = document.querySelector('h2');
+    }
+
+    if (firstH2) {
+      // Create a new h1 element
+      const newH1 = document.createElement('h1');
+      
+      // Copy the contents of the h2 to the new h1
+      newH1.innerHTML = firstH2.innerHTML;
+
+      // Copy the classes from the h2 to the h1
+      newH1.className = firstH2.className;
+
+      // Copy the inline styles from the h2 to the h1
+      newH1.style.cssText = firstH2.style.cssText;
+
+      // Replace the h2 with the new h1
+      firstH2.parentNode.replaceChild(newH1, firstH2);
+    }
+  }
+});
+
+
+</script>
+
+  </body>
+</html>
+
+<script type="text/javascript" defer>
+var _learnq = _learnq || [];
+	document.getElementById("os-pp-atc")?.addEventListener('click',function (){
+ 		_learnq.push(['track', 'Added to Cart', item]);
+	});
+</script>
+{{'best-sellers-recommend.js' | asset_url | script_tag}}

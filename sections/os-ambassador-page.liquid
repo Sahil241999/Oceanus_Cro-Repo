@@ -1,0 +1,227 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+}
+
+#{{ section.id }} .os-ap-grid {
+  width: {{ section.settings.container_width }}%;
+  margin: 0px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+#{{ section.id }} .os-ap-grid-left {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+}
+
+#{{ section.id }} .os-ap-grid-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#{{ section.id }} .os-ap-top {
+  margin-bottom: 2rem;
+}
+
+#{{ section.id }} .os-ap-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+#{{ section.id }} .os-ap-form-names {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+#{{ section.id }} .os-ap-input-div {
+  display: flex;
+}
+
+#{{ section.id }} .os-ap-input-container {
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: transparent;
+  color: var(--body-text);
+  padding: 1.5rem 2rem;
+  width: 100%;
+}
+
+#{{ section.id }} .os-ap-input-container::placeholder {
+  color: rgba(0,0,0,0.5);
+  font-style: italic;
+}
+
+#{{ section.id }} .os-ap-input-container:focus {
+  border-color: rgba(0,0,0,1);
+}
+
+#{{ section.id }} .os-ap-submit {
+  background-color: var(--os-ac1);
+  padding: 1rem 1rem;
+}
+
+@media (max-width: 989px) {
+  #{{ section.id }} .os-ap-grid {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  #{{ section.id }} .os-ap-form-names {
+    grid-template-columns: 1fr;
+  }
+}
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    <div class="os-ap-grid">
+      <div class="os-ap-grid-left">
+        <div class="os-ap-top">
+          <h1>{{ section.settings.heading }}</h1>
+        </div>
+        {% form 'contact', class: 'os-ap-form' %}
+          {% if form.posted_successfully? %}
+            <p class="os-ap-form-success">{{ section.settings.success_message }}</p>
+          {% else %}
+            {{ form.errors | default_errors }}
+          {% endif %}
+          <div class="os-ap-form-names">
+            <input class="os-ap-input-container" name="contact[first-name]" tpye="text" required="required" placeholder="{{ section.settings.placeholder1 }}">
+            <input class="os-ap-input-container" name="contact[last-name]" tpye="text" required="required" placeholder="{{ section.settings.placeholder2 }}">
+          </div>
+          <div class="os-ap-input-div">
+            <input class="os-ap-input-container" name="contact[email]" type="email" required="required" placeholder="{{ section.settings.placeholder3 }}">
+          </div>
+          <div class="os-ap-input-div">
+            <input class="os-ap-input-container" name="contact[Instagram]" type="text" required="required" placeholder="{{ section.settings.placeholder4 }}">
+          </div>
+          <div class="os-ap-input-div">
+            <input class="os-ap-input-container" name="contact[Tiktok]" type="text" required="required" placeholder="{{ section.settings.placeholder5 }}">
+          </div>
+          <div class="os-ap-form-bottom">
+            <button class="os-button os-ap-submit" type="submit" value="Create">{{ section.settings.button_text }}<span>{% render 'icon-caret' %}</span></button>
+          </div>
+        {% endform %}
+      </div>
+      <div class="os-ap-grid-right">
+        <img width="auto" height="auto" src="{{ section.settings.image | image_url }}">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Brand Ambassador Page",
+    "settings": [
+      {
+        "type": "text",
+        "id": "success_message",
+        "label": "Success Message",
+        "default": "Thank you! We'll be in touch soon."
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Brand Ambassador Form"
+      },
+      {
+        "type": "range",
+        "id": "container_width",
+        "label": "Container width",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 60,
+        "unit": "%"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text",
+        "default": "Submit"
+      },
+      {
+        "type": "header",
+        "content": "Placeholders"
+      },
+      {
+        "type": "text",
+        "id": "placeholder1",
+        "label": "First Name Placeholder",
+        "default": "First name"
+      },
+      {
+        "type": "text",
+        "id": "placeholder2",
+        "label": "Last Name Placeholder",
+        "default": "Surname"
+      },
+      {
+        "type": "text",
+        "id": "placeholder3",
+        "label": "Email Placeholder",
+        "default": "Email"
+      },
+      {
+        "type": "text",
+        "id": "placeholder4",
+        "label": "Instagram",
+        "default": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "placeholder5",
+        "label": "Tiktok",
+        "default": "Tiktok"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Brand Ambassador Page"
+      }
+    ]
+  }
+{% endschema %}

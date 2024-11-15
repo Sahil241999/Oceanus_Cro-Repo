@@ -1,0 +1,295 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+}
+
+#{{ section.id }} .os-section-top {
+  align-items: {{ section.settings.top_alignment }};
+}
+
+
+#{{ section.id }} .os-cp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+#{{ section.id }} .os-cp-collection {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  transition: all .3s ease;
+}
+
+#{{ section.id }} .os-cp-collection:hover {
+  transform: translateY(-3px);
+}
+
+#{{ section.id }} .os-co-image-link {
+  display: flex;
+  position: relative;
+}
+
+#{{ section.id }} .os-co-image-link .os-cp-main-image {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4/2.5;
+  object-fit: cover;
+}
+
+#{{ section.id }} .os-cp-frame-icon-div {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#{{ section.id }} .os-cp-frame-icon-div img {
+  width: 100%;
+}
+
+@media (max-width:{{ settings.breakpoint2 }}px) {
+  #{{ section.id }} .os-cp-grid {
+    grid-template-columns: auto;
+    gap: 1rem;
+  }
+
+  #{{ section.id }} .os-co-image-link {
+    transform: unset !important;
+  }
+
+  #{{ section.id }} .os-cp-frame-icon-div {
+    padding: 0.5rem;
+    top: 0% !important;
+    left: 0% !important;
+    right: auto !important;
+  }
+
+  #{{ section.id }} .os-cp-collection:nth-child(even) .os-cp-frame-icon-div{
+    left: auto !important;
+    right: 0% !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #{{ section.id }} {
+  padding-top: {{ section.settings.padding_top1 }}rem;
+  padding-bottom: {{ section.settings.padding_bottom1 }}rem;
+}
+}
+
+@media screen and (max-width: 576px) {
+  #{{ section.id }} .os-co-image-link .os-cp-main-image {
+    aspect-ratio: 1/1;
+  }
+
+  #{{ section.id }} .os-cp-frame-icon-div {
+    max-width: 150px;
+  }
+}
+
+
+{% endstyle %}
+
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+   {% if section.settings.heading != empty %}
+  <div class="os-section-top">
+    {% if section.settings.show_logo %}
+      <div class="logo-container">
+        <img class="logo-container-img" src="{{ section.settings.logo1 | img_url: 'master' }}" alt="Logo 1" width="200px">
+      </div>
+    {% else %}
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+    {% endif %}
+    <div>{{ section.settings.subheading }}</div>
+  </div>
+{% endif %}
+
+    <div class="os-cp-grid">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'Collection' %}
+            <div class="os-cp-collection">
+                {% if block.settings.icon_image %}
+                  <div class="os-cp-frame-icon-div" style="width: {{ block.settings.icon_width }}px; left: {{ block.settings.icon_position_x }}%; top: {{ block.settings.icon_position_y }}%;">
+                    {{ block.settings.icon_image | image_url: width: 500 | image_tag: loading: 'lazy', height: 'auto' }}
+                  </div>
+                {% endif %}
+                <a class="os-co-image-link" href="{{ block.settings.collection_url }}">
+                  {{ block.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', height: 'auto', class: 'os-cp-main-image' }}
+                </a>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Collections Page",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "blocks": [
+      {
+        "name": "Collection",
+        "type": "Collection",
+        "limit": 50,
+        "settings": [
+          {
+            "type": "url",
+            "id": "collection_url",
+            "label": "Collection Link"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Main Image"
+          },
+          {
+            "type": "checkbox",
+            "id": "left_image",
+            "label": "Left frame image?",
+            "default": false,
+            "info": "If the curved option is selected"
+          },
+        {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show Logos",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "logo1",
+      "label": "Logo 1"
+    },
+          {
+            "type": "image_picker",
+            "id": "icon_image",
+            "label": "Icon Image"
+          },
+          {
+            "type": "range",
+            "id": "icon_position_y",
+            "label": "Icon Position Y",
+            "min": -100,
+            "max": 100,
+            "step": 2,
+            "default": -10,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "icon_position_x",
+            "label": "Icon Position X",
+            "min": -100,
+            "max": 100,
+            "step": 2,
+            "default": -10,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "icon_width",
+            "label": "Icon width",
+            "min": 0,
+            "max": 1000,
+            "step": 10,
+            "default": 200,
+            "unit": "px"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Collections"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "<p>My paragraph</p>"
+      },
+      {
+        "type": "select",
+        "id": "top_alignment",
+        "label": "Top Alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "flex-start",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "flex-end",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_top1",
+        "label": "Mobile Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom1",
+        "label": "Mobile Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Collections Page"
+      }
+    ]
+  }
+{% endschema %}

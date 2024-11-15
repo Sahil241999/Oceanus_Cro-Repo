@@ -1,0 +1,283 @@
+<style>
+  
+  .custom__subcollections__container{
+    --border-clr: {{section.settings.border_color}};
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1rem 1rem;
+    width: 100%;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .custom__subcollections{
+    display: flex;
+    justify-content: {% if section.blocks.size > 11 %} flex-start{% else %} center{% endif %};
+    gap: 2.5rem;
+    overflow: auto;
+  }
+  .custom__subcollections::-webkit-scrollbar{
+    height: 0;
+  }
+  .custom__subcollection{
+    text-decoration: none;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom__subcol__image{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: relative;
+    padding: 6px;
+  }
+  .subcol__shadow{
+    -webkit-box-shadow: 1px 3px 6px -1px rgba(0,0,0,0.32);
+    -moz-box-shadow: 1px 3px 6px -1px rgba(0, 0, 0, 0.32);
+    box-shadow: 1px 3px 6px -1px rgba(0,0,0,0.32);
+  }
+  
+  .cs__circle{
+    width: 100%;
+    height: 100%;
+    display: block !important;
+    border: 2.5px solid var(--border-clr);
+    border-radius: 50%; 
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .custom__subcollection:hover .custom__subcol__image img{
+    transform: scale(1.05);
+  }
+  .custom__subcol__image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.1s ease-in-out;
+    border-radius: 50%;
+  }
+
+  .custom__subcol__title{
+    font-size: 13.4px;
+    color: #000;
+  }
+
+  /* type 1 - dashed ratating borders */
+   .custom__subcollection[data-animation-type="type1"] .cs__circle{
+      border: 2.5px dashed var(--border-clr);
+      border-radius: 50%; 
+      animation: spin 20s linear infinite;
+  }
+  .custom__subcollection[data-animation-type="type1"]:hover .cs__circle{
+    animation: spin 5s linear infinite;
+  }
+  .custom__subcollection[data-animation-type="type1"]:hover .custom__subcol__image img{
+    transform: none;
+  }
+  /* ------ ----- ------ */
+
+  /* type 2 - dashed constant borders  */
+   .custom__subcollection[data-animation-type="type2"] .cs__circle{
+     border: 2.5px dashed var(--border-clr);
+     animation: none;
+   }
+  .custom__subcollection[data-animation-type="type2"]:hover .cs__circle{
+    border: 2.5px dashed var(--border-clr);
+    animation: spin 5s linear infinite;
+  }
+  .custom__subcollection[data-animation-type="type2"]:hover .custom__subcol__image img{
+    transform: none;
+  }
+  /* ------ ----- ------ */
+
+  /* type 3 - solid contant borders, ratate on hover  */
+   .custom__subcollection[data-animation-type="type3"] .cs__circle{
+     border: 2.5px solid var(--border-clr);
+     animation: none;
+   }
+  .custom__subcollection[data-animation-type="type3"]:hover .cs__circle{
+    border: 2.5px dashed var(--border-clr);
+    animation: spin 5s linear infinite;
+  }
+  .custom__subcollection[data-animation-type="type3"]:hover .custom__subcol__image img{
+    transform: none;
+  }
+  /* ------ ----- ------ */
+  
+  
+  /* type 4 - solid ratating borders with gradient*/
+  .custom__subcollection[data-animation-type="type4"] .cs__circle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: spin 8s linear infinite;
+    background: linear-gradient(90deg, var(--border-clr) 90%, transparent 100%);
+    background-clip: padding-box;
+    border: none;
+  }
+  
+  .custom__subcollection[data-animation-type="type4"] .custom__subcol__image img{
+    width: 93%;
+    height: 94%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  /* ------ ----- ------ */
+
+  /* type 5 - no border */
+  .custom__subcollection[data-animation-type="type5"] .cs__circle{
+    border: 0;
+  }
+  .custom__subcollection[data-animation-type="type5"]:hover .custom__subcol__image img{
+    transform: none;
+  }
+  /* ------ ----- ------ */
+  
+  /* type 6 - thin border */
+  .custom__subcollection[data-animation-type="type6"] .cs__circle{
+    border: 1px solid var(--border-clr);
+  }
+  .custom__subcollection[data-animation-type="type6"]:hover .custom__subcol__image img{
+    transform: none;
+  }
+  /* ------ ----- ------ */
+  
+  @keyframes spin { 
+    100% { 
+      transform: rotate(360deg);
+    }
+  }
+  @media screen and (max-width: 768px){
+    .custom__subcollections__container{
+       padding: 1rem 0.18rem;
+   }
+    
+    .custom__subcollections{
+      justify-content: {% if section.blocks.size > 3 %} flex-start{% else %} center{% endif %};
+      gap: 0.22rem;
+      /* padding-left: 1rem; */
+      padding-right: 1rem;
+    }
+    .custom__subcollection{
+      justify-content: space-between;
+      align-items: center;
+      width: max-content;
+      text-align: center;
+    }
+    .custom__subcol__image{
+      width: 85px;
+      height: 85px;
+    }
+   .custom__subcol__title{
+    font-size: 11.4px;
+    color: #000;
+  }
+  }
+</style>
+{% if section.blocks.size > 0 %}
+<div class="custom__subcollections__container">
+  <div class="custom__subcollections">
+    {% for block in section.blocks %}
+      <a class="custom__subcollection" data-animation-type="{{ block.settings.border_style }}" href="{{ block.settings.subcol_url }}">
+        <div class="custom__subcol__image {% if section.settings.show_shadow %}subcol__shadow{% endif %}">
+          <div class="cs__circle"></div>
+          <img src="{{ block.settings.subcol_image | img_url: '200x'}}" width="" height=""/>
+        </div>
+        <span class="custom__subcol__title">{{ block.settings.subcol_title }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Custom Subcollections",
+    "settings": [
+      {
+            "type": "color",
+            "id": "border_color",
+            "label": "Border Color",
+            "default": "#000"
+      },
+      {
+            "type": "checkbox",
+            "id": "show_shadow",
+            "label": "Add Shadow",
+            "default": false
+      }
+    ],
+    "max_blocks": 20,
+    "blocks": [
+      {
+        "type": "subcollection",
+        "name": "Subcollection",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "subcol_image",
+            "label": "Select Subcollection Image"
+          },
+          {
+            "type": "url",
+            "id": "subcol_url",
+            "label": "Subcollection Url"
+          },
+          {
+            "type": "text",
+            "id": "subcol_title",
+            "label": "Subcollection Title"
+          },
+          {
+            "type": "select",
+            "id": "border_style",
+            "options": [
+              {
+                "value": "type5",
+                "label": "No Border"
+              },
+              {
+                "value": "type6",
+                "label": "Thin"
+              },
+              {
+                "value": "type0",
+                "label": "Solid V1"
+              },
+              {
+                "value": "type3",
+                "label": "Solid V2"
+              },
+              {
+                "value": "type1",
+                "label": "Dashed V1"
+              },
+              {
+                "value": "type2",
+                "label": "Dashed V2"
+              },
+              {
+                "value": "type4",
+                "label": "Gradient"
+              }
+            ],
+            "default": "type5",
+            "label": "Border Style"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Subcollections"
+      }
+    ]
+  }
+{% endschema %}

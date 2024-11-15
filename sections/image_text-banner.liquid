@@ -1,0 +1,95 @@
+<style>
+  .Img_txt-ctnr {
+    position: relative;
+    text-align: center;
+  }
+  .imgp_mobile-image{
+    display: none;
+  }
+  .Img_p-ctnr {
+    font-size: 3rem;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: transparent;
+    padding: 10px;
+  }
+
+  .Img_p-ctnr img{
+    width: 100%;
+    max-height: 100vh;
+  }
+     @media (max-width: 700px) {
+     .Img_p-ctnr {
+    font-size: 2.56rem;
+     }
+   }
+  @media (max-width: 680px) {
+    .imgp_desktop-image{
+      display: none;
+    }
+    .imgp_mobile-image{
+    display: revert;
+  }
+    
+     .Img_p-ctnr {
+    font-size: 2.20rem;
+     }
+   }
+   @media (max-width: 530px) {
+     .Img_p-ctnr {
+    font-size: 1.90rem;
+     }
+   }
+  @media (max-width: 460px) {
+     .Img_p-ctnr {
+    font-size: 1.20rem;
+     }
+   }
+</style>
+<div class="Img_txt-ctnr">
+  <p class="Img_p-ctnr">{{ section.settings.text }}</p>
+  <img class="imgp_desktop-image" src="{{ section.settings.image_desktop | img_url: 'master' }}" width="100%" height="740px;">
+  <img class="imgp_mobile-image" src="{{ section.settings.image_mobile | img_url: 'master' }}" width="100%" height="400px;">
+</div>
+
+{% schema %}
+
+{
+  "name": "Section name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Choose Desktop Image"
+    },
+  {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Choose Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Enter Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text(center)"
+    }
+  ]
+}
+{% endschema %}
+
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+
+{% endjavascript %}

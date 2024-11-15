@@ -1,0 +1,204 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  background-color: {{ section.settings.bg_color }};
+}
+
+#{{ section.id }} .os-section-top {
+  align-items: {{ section.settings.top_alignment }};
+  margin-bottom: 1.5rem;
+}
+
+#{{ section.id }} .os-brand-inner {
+  display: flex;
+  justify-content: center;
+  margin: 0 -12px;
+}
+
+#{{ section.id }} .os-brand-link {
+  flex:auto;
+  padding: 0rem;
+  opacity: {{ section.settings.opacity }};
+  transition: 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#{{ section.id }} .os-brand-link img {
+  width: 100%;
+}
+
+#{{ section.id }} .os-brand-link:hover {
+  opacity: 1;
+}
+
+@media (max-width:{{ settings.breakpoint2 }}px) {
+
+  #{{ section.id }} {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  #{{ section.id }} .os-brand-link {
+    padding: 0rem !important;
+    flex: unset;
+    height: 40px;
+  }
+
+  #{{ section.id }} .os-brand-link img {
+    width: auto;
+    height: 100%;
+  }
+
+  #{{ section.id }} .os-brand-inner {
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    gap: 2rem;
+  }
+
+
+  #{{ section.id }} .os-brand-link img {
+    min-width: 100px !important;
+  }
+}
+{% endstyle %}
+
+
+<div id="{{ section.id }}">
+  <div class="page-width">
+    {% if section.settings.heading != empty %}
+      <div class="os-section-top">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        <div>{{ section.settings.subheading }}</div>
+      </div>
+    {% endif %}
+    <div class="os-brand-inner">
+      {% for block in section.blocks %}
+        <a class="os-brand-link" href="{{ block.settings.url }}" style="
+          padding-left: {{ block.settings.block_padding }}rem;
+          padding-right: {{ block.settings.block_padding }}rem;
+          ">
+          {{ block.settings.image | image_url: width: 250 |image_tag: loading: 'lazy', height: 'auto' }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "OS Brands Section",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Trusted by the best"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "<p>My paragraph</p>"
+      },
+      {
+        "type": "select",
+        "id": "top_alignment",
+        "label": "Top Alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "flex-start",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "flex-end",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+      {
+        "type": "range",
+        "id": "opacity",
+        "label": "Opacity",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "default": 0.2,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "logo",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Link"
+          },
+          {
+            "type": "range",
+            "id": "block_padding",
+            "label": "Block Padding",
+            "min": 0,
+            "max": 10,
+            "step": 0.2,
+            "default": 0,
+            "unit": "rem"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Brands Section"
+      }
+    ]
+  }
+{% endschema %}

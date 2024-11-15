@@ -1,0 +1,134 @@
+<div class="creative-elements">
+  {% for block in section.blocks %}
+    {% if block.settings.image %}
+      <style>
+        #creative-element-{{ block.id }}{
+          width: {{ block.settings.image_width }}px;
+          top: {{ block.settings.image_y_position }}%;
+
+          {% if block.settings.image_start_from_right %}
+          right: {{ block.settings.image_x_position }}%;
+          left: auto;
+          {% else %}
+          left: {{ block.settings.image_x_position }}%;
+          right: auto;
+          {% endif %}
+        }
+
+        @media screen and (max-width: 768px) {
+          #creative-element-{{ block.id }}{
+            width: {{ block.settings.image_mobile_width }}px;
+            top: {{ block.settings.image_mobile_y_position }}%;
+            {% if block.settings.image_mobile_start_from_right %}
+            right: {{ block.settings.image_mobile_x_position }}%;
+            left: auto;
+            {% else %}
+            left: {{ block.settings.image_mobile_x_position }}%;
+            right: auto;
+            {% endif %}
+          }
+        }
+      </style>
+      {% assign creative_element_id = "creative-element-" | append: block.id %}
+      {{ block.settings.image | image_url: width: block.settings.image_width | image_tag: width: block.settings.image_width, alt: "creative-element", class: "creative-element", id: creative_element_id }}
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "OS Creative Elements",
+    "class": "creative-elements-wrapper",
+    "blocks": [
+      {
+        "type": "creative_element",
+        "name": "Creative element",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "header",
+            "content": "Desktop"
+          },
+          {
+            "type": "range",
+            "id": "image_width",
+            "min": 0,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Image Width",
+            "default": 200
+          },
+          {
+            "type": "checkbox",
+            "id": "image_start_from_right",
+            "label": "Start horizontal position from the right",
+            "default": false
+          }, {
+            "type": "range",
+            "id": "image_x_position",
+            "min": -100,
+            "max": 100,
+            "step": 2,
+            "unit": "%",
+            "label": "Image Horizontal Position",
+            "default": 0
+          }, {
+            "type": "range",
+            "id": "image_y_position",
+            "min": -100,
+            "max": 100,
+            "step": 2,
+            "unit": "%",
+            "label": "Image Vertical Position",
+            "default": 0
+          }, {
+            "type": "header",
+            "content": "Mobile"
+          }, {
+            "type": "range",
+            "id": "image_mobile_width",
+            "min": 0,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Image Mobile Width",
+            "default": 150
+          }, {
+            "type": "checkbox",
+            "id": "image_mobile_start_from_right",
+            "label": "Start mobile horizontal position from the right",
+            "default": false
+          }, {
+            "type": "range",
+            "id": "image_mobile_x_position",
+            "min": -100,
+            "max": 100,
+            "step": 2,
+            "unit": "%",
+            "label": "Image Mobile Horizontal Position",
+            "default": 0
+          }, {
+            "type": "range",
+            "id": "image_mobile_y_position",
+            "min": -100,
+            "max": 100,
+            "step": 2,
+            "unit": "%",
+            "label": "Image Mobile Vertical Position",
+            "default": 0
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Creative Elements"
+      }
+    ]
+  }
+{% endschema %}

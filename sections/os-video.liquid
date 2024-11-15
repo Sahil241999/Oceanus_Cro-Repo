@@ -1,0 +1,218 @@
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  background-color: {{ section.settings.section_bg_color }};
+  {% if section.settings.background_image %}
+    background: url("{{ section.settings.background_image | image_url }}") no-repeat center center;
+    background-size: cover;
+  {% endif %}
+  min-height: {{ section.settings.section_min_height }}vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#{{ section.id }} .os-v-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#{{ section.id }} .os-v-video {
+  width: {{ section.settings.width }}%;
+  object-fit: {{ section.settings.video_fit }};
+  min-height: {{ section.settings.min_height }}vh;
+  background-color: {{ section.settings.bg_color }};
+}
+
+@media (max-width: 989px) {
+  #{{ section.id }} .os-v-video {
+    min-height: {{ section.settings.min_height_mobile }}vh;
+  }
+}
+{% endstyle %}
+
+
+{% liquid
+  assign vAutoplay = section.settings.autoplay
+  assign vLoop = section.settings.loop
+  assign vMuted = section.settings.muted
+  assign vControls = section.settings.controls
+  assign vPoster = section.settings.poster_image | image_url
+%}
+
+
+<section id="{{ section.id }}" class="mobile-only">
+  <div class="{% if section.settings.full_width == false %}page-width{% endif %}">
+    <div class="os-v-wrapper">
+      {{ section.settings.video | media_tag: autoplay: vAutoplay, loop: vLoop, muted: vMuted, controls: vControls, class: 'os-v-video', poster: vPoster }}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "OS Video",
+    "settings": [
+      {
+        "type": "video",
+        "id": "video",
+        "label": "Video Upload"
+      },
+      {
+        "type": "image_picker",
+        "id": "poster_image",
+        "label": "Poster Image"
+      },
+      {
+        "type": "header",
+        "content": "Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Video Background color",
+        "info": "Color for the empty space around the video. Type 'transparent' to leave blank."
+      },
+      {
+        "type": "header",
+        "content": "Video Size"
+      },
+      {
+        "type": "select",
+        "id": "video_fit",
+        "label": "Video Fit",
+        "default": "cover",
+        "options": [
+          {
+            "value": "cover",
+            "label": "Cover"
+          },
+          {
+            "value": "contain",
+            "label": "Contain"
+          },
+          {
+            "value": "fill",
+            "label": "Fill"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "width",
+        "label": "Video Width",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 100,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "min_height",
+        "label": "Video Min height",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0,
+        "unit": "vh"
+      },
+      {
+        "type": "range",
+        "id": "min_height_mobile",
+        "label": "Video Min height mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0,
+        "unit": "vh"
+      },
+      {
+        "type": "header",
+        "content": "Video Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Autoplay",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "loop",
+        "label": "Loop",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "muted",
+        "label": "Muted",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "controls",
+        "label": "Controls",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Full width?",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "section_min_height",
+        "label": "Section Min height",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0,
+        "unit": "vh"
+      },
+      {
+        "type": "color",
+        "id": "section_bg_color",
+        "label": "Section Background color"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding top",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding bottom",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "default": 2,
+        "unit": "rem"
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Video"
+      }
+    ]
+  }
+{% endschema %}

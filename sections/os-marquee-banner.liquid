@@ -1,0 +1,273 @@
+{% assign bgcolor = section.settings.background_color %}
+
+{% style %}
+#{{ section.id }}.marquee-banner {
+  position:relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: rgba({{ bgcolor.red }}, {{ bgcolor.green }}, {{ bgcolor.blue }}, {{ section.settings.background_opacity }});
+  padding: {{ section.settings.mobile_padding }}px;
+  margin-bottom: {{ section.settings.margin_botton }}rem;
+  z-index: 1;
+}
+
+#{{ section.id }} .marquee-banner__inner {
+  display: flex;
+  {%  if section.settings.direction == '-100%' %}
+    animation: scroll1 {{ section.settings.marquee_speed }}s linear infinite;
+  {% else %}
+    animation: scroll2 {{ section.settings.marquee_speed }}s linear infinite;
+  {% endif %}  
+}
+
+#{{ section.id }} .marquee-banner__text {
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  margin-left: 6px;
+  font-weight:600;
+  color: {{ section.settings.text_color }};
+  font-size: {{ section.settings.mobile_font_size }}px;
+  padding: 0 {{ section.settings.mobile_text_spacing }}px;
+  {% if section.settings.capitalise_text %}
+    text-transform: uppercase;
+  {% endif %}
+}
+#{{ section.id }} .marquee-banner__text::before {
+  content:"";
+  position:absolute;
+  top:50%;
+  left:0;
+  width:6px;
+  height:6px;
+  background-color:{{ section.settings.text_color }};
+  /*border-radius: 100%;*/
+  border-radius: 0rem;
+  transform: translateY(-50%);
+}
+{% if section.settings.toggle_pause_on_hover %}
+  #{{ section.id }} .marquee-banner__inner {
+    animation-play-state: running;
+  }
+  #{{ section.id }} .marquee-banner:hover .marquee-banner__inner {
+    animation-play-state: paused;
+  }
+{% endif %}
+
+@media (min-width: 1024px) {
+  #{{ section.id }}.marquee-banner {
+    padding: {{ section.settings.desktop_padding }}px;
+  }
+  #{{ section.id }} .marquee-banner__text {
+    font-size: {{ section.settings.desktop_font_size }}px;
+    padding: 0 {{ section.settings.desktop_text_spacing }}px;
+  }
+}
+{%  if section.settings.direction == '-100%' %}
+  @keyframes scroll1 {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d({{ section.settings.direction }}, 0, 0); }
+  }
+{% else %}
+  @keyframes scroll2 {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d({{ section.settings.direction }}, 0, 0); }
+  }  
+{% endif %}  
+{% endstyle %}
+
+{% if section.settings.enable_section != false %}
+  <section id="{{ section.id }}" class="marquee-banner">
+    {% for i in (1..5) %}
+      <div
+        class="marquee-banner__inner"
+        aria-hidden="true"
+      >
+        {% for block in section.blocks %}
+          {% if block.settings.text != blank %}
+            <span class="marquee-banner__text">
+              {{  block.settings.text }}
+            </span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </section>
+{% endif %}
+{% schema %}
+  {
+    "name": "OS Marquee Banner",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Colours"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background Colour"
+      },
+      {
+        "type": "range",
+        "id": "background_opacity",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "unit": "%",
+        "label": "Background opacity",
+        "default": 0.3
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "default": "#000000",
+        "label": "Text Colour"
+      },
+      {
+        "type": "header",
+        "content": "Font Sizes"
+      },
+      {
+        "type": "range",
+        "id": "mobile_font_size",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "px",
+        "label": "Mobile Font Size",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "desktop_font_size",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "px",
+        "label": "Desktop Font Size",
+        "default": 32
+      },
+      {
+        "type": "header",
+        "content": "Padding"
+      },
+      {
+        "type": "range",
+        "id": "mobile_padding",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "desktop_padding",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "mobile_text_spacing",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "px",
+        "label": "Mobile Text Spacing",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "desktop_text_spacing",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "px",
+        "label": "Desktop Text Spacing",
+        "default": 32
+      },
+      {
+        "type": "range",
+        "id": "margin_botton",
+        "min": 0,
+        "max": 10,
+        "step": 0.5,
+        "unit": "rem",
+        "label": "Margin bottom",
+        "default": 2
+      },
+      {
+        "type": "header",
+        "content": "Additional Settings"
+      },
+      {
+        "type": "range",
+        "id": "marquee_speed",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "sec",
+        "label": "Marquee Speed",
+        "default": 50
+      },
+      {
+        "type": "select",
+        "id": "direction",
+        "label": "Marquee Direction",
+        "default": "-100%",
+        "options": [
+          {
+            "label": "Left",
+            "value": "-100%"
+          },
+          {
+            "label": "Right",
+            "value": "100%"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "toggle_pause_on_hover",
+        "label": "Toggle Pause on Hover",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "capitalise_text",
+        "label": "Capitalise Text",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "marquee_strip",
+        "name": "Marquee Strip",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Marquee Banner"
+      }
+    ]
+  }
+{% endschema %}

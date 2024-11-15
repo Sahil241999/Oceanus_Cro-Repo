@@ -1,0 +1,1180 @@
+<script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+
+{% style %}
+  .os-header-container {
+    position: sticky;
+    top: 0rem;
+    z-index: 2;
+  }
+
+  #{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}rem;
+    padding-bottom: {{ section.settings.padding_bottom }}rem;
+    margin-top: {{ section.settings.margin_top }}rem;
+    margin-bottom: {{ section.settings.margin_bottom }}rem;
+    background-color: #faf2ec ;
+    width: 100%;
+  }
+
+  #{{ section.id }}:hover {
+    background-color: #faf2ec;
+    /* background: transparent; */
+  }
+
+  #{{ section.id }} .page-width{
+    padding: 0;
+  }
+
+  #{{ section.id }} .osh-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+  }
+
+   #{{ section.id }} .osh-middle:before {
+    content: "";
+    width: 158px;
+    height: 100%;
+    position: absolute;
+    display: block;
+    left: 0;
+    background: url("https://cdn.shopify.com/s/files/1/0008/2962/0282/files/White_swans_Emoji.webp?v=1730089707") no-repeat center;
+    background-size: contain;
+   }
+
+   #{{ section.id }} .osh-middle:after {
+    content: "";
+    width: 158px;
+    height: 100%;
+    position: absolute;
+    display: block;
+    right: 0;
+    background: url("https://cdn.shopify.com/s/files/1/0008/2962/0282/files/White_swans_Emoji.webp?v=1730089707") no-repeat center;
+    background-size: contain;
+   }
+
+  #{{ section.id }} .osh-mobile {
+    display: none;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  #{{ section.id }} .osh-mobile .oshm-menu svg {
+    width: 1.2rem;
+  }
+
+  #oshm-drawer-wrapper {
+    position: fixed;
+    left: 0rem;
+    top: 0rem;
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 0.2fr;
+    gap: 0rem;
+    z-index: 1;
+  }
+
+  #oshm-drawer-wrapper[open="true"] {
+    display: grid;
+  }
+
+  #oshm-drawer-wrapper[open="false"] {
+    display: none;
+  }
+
+  #oshm-drawer {
+    background-color: #FAF2EC;
+    padding: 1.5rem 0rem;
+  }
+
+  #oshm-close-div {
+    margin-bottom: 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0rem 2rem;
+  }
+
+  #oshm-close-div svg {
+    width: 1rem;
+  }
+
+  .oshm-menu-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem 2rem;
+    gap: 1rem;
+    margin: 2rem 0rem;
+  }
+
+  .oshm-menu-actions svg {
+    color: var(--body-text);
+    width: 1rem;
+  }
+
+  .oshm-menu-actions .osh-wishlist {
+    border: 1px solid rgba(var(--body-text-rgb),0.1);
+    padding: 0.3rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+  }
+
+  .oshm-menu-actions .osh-wishlist img {
+    height: 20px;
+  }
+
+  .oshm-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .oshm-menu-grid > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(var(--body-text-rgb),0.1);
+    padding: 0.3rem;
+  }
+
+  .oshm-lvl1-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .oshm-link-div {
+    display: flex;
+    width: 100%;
+  }
+
+  .oshm-link {
+    padding: 1rem 1.5rem 1rem 2rem;
+    color: black;
+  }
+
+  .oshm-lvl2-details {
+    width: 100%;
+  }
+
+  .oshm-lvl2-icon {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .oshm-lvl2-icon svg {
+    width: 1rem;
+  }
+
+  .oshm-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+    border: none;
+    border-radius: 0rem;
+    background-color: #FAF2EC;
+    padding: 1rem 2rem;
+  }
+
+  .oshm-button svg {
+    transform: rotate(180deg);
+    margin-right: 0.5rem;
+    width: 1rem;
+  }
+
+  .oshm-lvl2-link-div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .oshm-lvl2-page {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 100%;
+    background-color: #FAF2EC;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .oshm-lvl3-page {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 100%;
+    background-color: #FAF2EC;
+    height: 100vh;
+    z-index: 2;
+  }
+
+  #oshm-drawer-overlay {
+    display: block !important;
+    background-color: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10.5px);
+  }
+
+  #{{ section.id }} .osh-left {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content:center;
+  }
+
+  #{{ section.id }} .osh-middle {
+    display: flex;
+    align-items: center;
+    background: #F9DBF9;
+    width: 100%;
+    justify-content: center;
+  }
+
+  #{{ section.id }} .osh-logo {
+    /* height: {{ section.settings.logo_height }}rem; */
+    height: 68px !important;
+    padding-top: 0.3rem;
+    min-width: 185px;
+  }
+
+  #{{ section.id }} .osh-right {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+    gap: 1rem;
+    position: absolute;
+    top: 14%;
+    /* right: 5%; */
+    padding-right: 4rem;
+  }
+
+  #{{ section.id }} .osh-right > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-width: 20px;
+  }
+
+  #{{ section.id }} .osh-right * > span:not(.os-pc-variant-title) {
+    display: flex;
+  }
+
+  #{{ section.id }} .osh-right > a svg,
+  #{{ section.id }} #osh-cart-icon svg {
+    color: var(--body-text);
+    transition: 0.2s ease;
+    width: 1rem;
+  }
+
+  #{{ section.id }} #osh-cart-icon svg {
+    width: 17px;
+  }
+
+  #{{ section.id }} #osh-search[pressed] {
+    opacity: 0.5;
+  }
+
+  #{{ section.id }} #osh-searchbar {
+    display: none;
+    position: absolute;
+    top: 200%;
+    width: 100%;
+    left: 0rem;
+    background-color: var(--bg-color);
+    padding: 1.33rem 1rem 1.33rem 1rem;
+    border-bottom: 1px solid rgba(var(--body-text-rgb),0.1);
+
+  }
+
+  #{{ section.id }} .page-width {
+    width: 100%;
+  }
+
+  #{{ section.id }} #osh-searchbar[open] {
+    display: flex;
+  }
+
+  #{{ section.id }} #osh-searchbar > predictive-search {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #{{ section.id }} #osh-search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #{{ section.id }} #osh-searchbar #Search {
+    width: 60%;
+    padding: 0.75rem;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+
+  #{{ section.id }} #osh-searchbar #Search:focus {
+    border-color: rgba(0,0,0,1);
+  }
+
+  #{{ section.id }} #osh-searchbar #predictive-search {
+    width: 100%;
+    max-width: 990px;
+    overflow: auto;
+    max-height: 80dvh;
+  }
+
+  #{{ section.id }} #osh-searchbar #predictive-search-results {
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+
+  #{{ section.id }} .predictive-search__results-groups-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  #{{ section.id }} #osh-searchbar .predictive-search__heading {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+  }
+
+  #{{ section.id }} #predictive-search-option-search-keywords {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+  }
+
+  #{{ section.id }} #predictive-search-results-products-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  #{{ section.id }} #osh-searchbar .predictive-search__list-item,
+  #{{ section.id }} #osh-searchbar .predictive-search__item {
+    width: 100%;
+  }
+
+  #{{ section.id }} #osh-searchbar .predictive-search__item-heading,
+  #{{ section.id }} #osh-searchbar .os-button {
+    color: var(--body-text);
+  }
+
+  #{{ section.id }} .predictive-search__result-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .predictive-search__item-query-result {
+    display: flex;
+    gap: 5px;
+  }
+
+  #{{ section.id }} .osh-bubble {
+    position: absolute;
+    top: -2px;
+    left: -8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    background-color: var(--os-ac1);
+    font-size: 9px;
+    color: white;
+  }
+
+  #{{ section.id }} .osh-lvl1-div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .osh-lvl2-details,
+  .osh-lvl2-details summary {
+    height: 100%;
+  }
+
+  #{{ section.id }} .osh-lvl1-link {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem 0.5rem 0.5rem 0.5rem;
+    border-bottom: 3px solid transparent;
+    transition: 0.2s ease;
+    /* color: #8c9dd0; */
+    color: #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 1px;
+  }
+
+  #{{ section.id }} .osh-lvl1-link__red {
+    color: #b90e0a;
+  }
+
+  #{{ section.id }}  .osh-lvl1-link__wrapper {
+    height: 100%;
+  }
+
+  #{{ section.id }} .osh-lvl1-link:hover {
+    border-color: #8c9dd0;
+  }
+
+  #{{ section.id }} .osh-lvl1-link__red:hover {
+    border-color: #b90e0a;
+  }
+
+  #{{ section.id }} .osh-lvl2-div {
+    max-width: 100vw;
+    width: 100%;
+    padding: 1.5rem 0rem 1.5rem 0rem;
+    background-color: #FAF2EC;
+    position: absolute;
+    top: 100%;
+    left: 0rem;
+    z-index: 1;
+    cursor: default;
+    border-bottom: 1px solid rgba(var(--body-text-rgb),0.1);
+    border-top: 1px solid rgba(var(--body-text-rgb),0.1);
+  }
+
+  #{{ section.id }} .osh-lvl2-grid {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .osh-lvl2-image-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .osh-lvl2-image-div img {
+    max-height: 15rem;
+  }
+
+  .osh-lvl2-image-text {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.3);
+  }
+
+  .osh-lvl2-image-text > p {
+    color: #fff;
+  }
+
+  .osh-wishlist {
+    height:17px;
+  }
+
+  .osh-wishlist img {
+    width: auto;
+    height: 100%;
+  }
+
+  #{{ section.id }} .osh-lvl2-title {
+    color: black;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  #{{ section.id }} .osh-lvl3-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 10%;
+    align-items: flex-start;
+  }
+
+  #{{ section.id }} .osh-lvl3-div {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  #{{ section.id }} .osh-lvl3-link {
+    color: var(--body-text);
+    margin-right: auto;
+    font-weight: 300;
+  }
+
+  #{{ section.id }} .osh-lvl3-link:hover {
+    text-decoration: underline;
+  }
+
+  #{{ section.id }} .disclosure__button {
+    font-size: 21px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem;
+    gap: 0.25rem;
+    background-color: transparent;
+    border-radius: 0rem;
+    color: #000;
+    /* color: #8c9dd0; */
+    cursor: pointer;
+    font-weight: normal;
+    font-family: {{ settings.type_body_font.family }};
+  }
+
+  #{{ section.id }} .disclosure__button .os-icon-caret svg {
+    width: 0.75rem;
+    color: var(--body-text);
+  }
+
+  #{{ section.id }} .disclosure {
+    position: relative;
+  }
+
+  #{{ section.id }} .disclosure .disclosure__list:not([hidden]) {
+    max-height: 25rem;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    background-color: #fff;
+    padding: 0rem;
+    position: absolute;
+    right: -2rem;
+    top: 100%;
+    width: 7rem;
+    border: 1px solid rgba(var(--body-text-rgb),0.1);
+    z-index: 1;
+  }
+
+  #{{ section.id }} .disclosure .disclosure__list .disclosure__item {
+    width: 100%;
+    display: flex;
+  }
+
+  #{{ section.id }} .disclosure .disclosure__list .disclosure__item:hover {
+    background-color: #faf2ec;
+  }
+
+  #{{ section.id }} .disclosure .disclosure__list .disclosure__item > a {
+    color: black;
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+  }
+
+  #{{ section.id }}  .oshm-link-div__single-link,
+  #{{ section.id }}  .oshm-link-div__single-link .oshm-link {
+    width: 100%;
+  }
+
+  @media (max-width: 1200px) {
+    #{{ section.id }} .osh-lvl1-link {
+      font-size: 1rem;
+    }
+
+    #{{ section.id }} .osh-lvl1-link__wrapper,
+    #{{ section.id }} .osh-lvl2-details.morespace {
+      padding-left: 0.6rem;
+    }
+
+    #{{ section.id }} .osh-lvl2-details.morespace:last-child {
+      padding-right: 0.6rem;
+    }
+  }
+
+  @media (max-width: {{ settings.breakpoint2 }}px) {
+    #{{ section.id }} .osh-top {
+      display: grid;
+      grid-template-columns: 0.5fr 1fr 0.5fr;
+      gap: 0rem;
+    }
+
+     #{{ section.id }} .osh-top:before {
+    display: none;
+   }
+
+    #{{ section.id }} .osh-top:after {
+    display: none;
+   }
+
+    #{{ section.id }} .page-width {
+        padding: 0 3rem;
+   }
+
+    #{{ section.id }} .osh-mobile {
+      display: flex;
+    }
+
+    #{{ section.id }} .osh-left {
+      justify-content: center;
+    }
+
+    #{{ section.id }} .osh-middle {
+      display: none;
+    }
+
+    #{{ section.id }} .osh-right {
+          position: revert;
+           padding-right: 0;
+    }
+
+    #{{ section.id }} .osh-right > a svg {
+      width: 1.2rem;
+    }
+
+    #{{ section.id }} .osh-right .osh-account-link,
+    #{{ section.id }} .osh-right .osh-currency,
+    #{{ section.id }} .osh-right .osh-wishlist {
+      display: none;
+    }
+
+    #{{ section.id }} #osh-searchbar {
+      padding: 1rem 0.5rem;
+      top: 100%;
+    }
+
+    #{{ section.id }} #osh-searchbar #Search {
+      width: 100%;
+    }
+
+    #{{ section.id }} .osh-logo {
+      height: 52px !important;
+    padding-top: 0.3rem;
+      min-width: auto;
+    }
+
+    #{{ section.id }} #predictive-search-results-products-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+{% endstyle %}
+
+<style>
+  .morespace:first-child{
+    padding-left : 3rem;
+  }
+    .morespace{
+    padding-left : 1.5rem;
+  }
+
+   .morespace:last-child{
+    padding-right : 2rem;
+  }
+  #sections--16974900625635__235bd67a-dcfe-4754-87b5-677ed039b477 .osh-lvl2-div{
+     background-color: #faf2ec;
+  }
+  #sections--16974900625635__235bd67a-dcfe-4754-87b5-677ed039b477:hover{
+    background: #faf2ec !important;
+  }
+  @media screen and (min-width: 991px){
+
+    #{{ section.id }} {
+      transition: all 0.3s;
+      /*background-color: transparent;*/
+      /* position: absolute; */
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+     #{{ section.id }} .page-width {
+        padding: 0 10px;
+      }
+  }
+</style>
+
+<section id="{{ section.id }}">
+  <div class="page-width">
+    <div class="osh-top">
+      <div class="osh-mobile">
+        <div class="oshm-menu">
+          <span id="oshm-open">{% render 'icon-hamburger' %}</span>
+        </div>
+        <div id="oshm-drawer-wrapper" open="false">
+          <div id="oshm-drawer">
+            <div id="oshm-close-div">
+              <span id="oshm-close">{% render 'icon-close' %}</span>
+            </div>
+            <div class="oshm-menu-actions">
+              <a href="/apps/advanced-wishlist" class="osh-wishlist">
+                <img src="{{ 'heart.svg' | asset_url }}" width="40" height="40">
+              </a>
+              <div class="oshm-menu-grid">
+                <a href="/account" class="osh-account-link">
+                  <span>{% render 'os-icon-account' %}</span>
+                </a>
+                <div class="osh-currency">
+                  {% render 'os-currency' %}
+                </div>
+              </div>
+            </div>
+            <div id="oshm-navigation">
+              <div class="oshm-lvl1-div">
+                {% for link in section.settings.menu.links %}
+                  {% if link.links != blank %}
+                    <details class="oshm-lvl2-details">
+                      <summary class="oshm-link-div">
+                        <div class="oshm-link" href="{{ link.url }}">{{ link.title }}</div>
+                        <span class="oshm-lvl2-icon">{% render 'icon-arrow' %}</span>
+                      </summary>
+                      <div class="oshm-lvl2-page">
+                        <button class="oshm-button">
+                          {% render 'icon-arrow' -%}
+                          {{- link.title }}
+                        </button>
+                        <div class="oshm-lvl2-link-div">
+                          {% for childlink in link.links %}
+                            {% if childlink.links != blank %}
+                              {% if childlink.title == link.title %}
+                                {% for grandchildlink in childlink.links %}
+                                  <a href="{{ grandchildlink.url }}" class="oshm-link">{{ grandchildlink.title }}</a>
+                                {% endfor %}
+                              {% else %}
+                                <details class="oshm-lvl2-details">
+                                  <summary class="oshm-link-div">
+                                    <div class="oshm-link" href="{{ childlink.url }}">{{ childlink.title }}</div>
+                                    <span class="oshm-lvl2-icon">{% render 'icon-arrow' %}</span>
+                                  </summary>
+                                  <div class="oshm-lvl3-page">
+                                    <button class="oshm-button">
+                                      {% render 'icon-arrow' -%}
+                                      {{- childlink.title }}
+                                    </button>
+                                    <div class="">
+                                      {% for grandchildlink in childlink.links %}
+                                        <div class="oshm-link-div">
+                                          <a href="{{ grandchildlink.url }}" class="oshm-link">
+                                            {{- grandchildlink.title -}}
+                                          </a>
+                                        </div>
+                                      {% endfor %}
+                                    </div>
+                                  </div>
+                                </details>
+                              {% endif %}
+                            {% else %}
+                              <a href="{{ childlink.url }}" class="oshm-link">{{ childlink.title }}</a>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </details>
+                  {% else %}
+                    <div class="oshm-link-div oshm-link-div__single-link">
+                      <a href="{{ link.url }}" class="oshm-link">{{ link.title }}</a>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div id="oshm-drawer-overlay"></div>
+        </div>
+      </div>
+      <div class="osh-left">
+        <a href="/">
+          <img
+            class="osh-logo"
+            height="80"
+            width="auto"
+            alt="{{ section.settings.logo.alt | escape }}"
+            src="{{ section.settings.logo | image_url: width: 400 }}"
+          >
+        </a>
+      </div>
+      <div class="osh-middle">
+        <div class="osh-lvl1-div">
+          {% for link in section.settings.menu.links %}
+            {% if link.links != blank %}
+              <details class="osh-lvl2-details morespace ">
+                <summary>
+                  <a href="{{ link.url }}" class="osh-lvl1-link">{{ link.title }}</a>
+                </summary>
+                <div class="osh-lvl2-div">
+                  <div class="page-width">
+                    <div class="osh-lvl2-grid">
+                      {% for childlink in link.links %}
+                        {% if childlink.links != blank %}
+                          <div class="osh-lvl3-wrapper">
+                            <a href="{{ childlink.url }}" class="osh-lvl2-title">{{ childlink.title }}</a>
+                            <div class="osh-lvl3-div">
+                              {% for grandchildlink in childlink.links %}
+                                <a href="{{ grandchildlink.url }}" class="osh-lvl3-link">{{ grandchildlink.title }}</a>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        {% else %}
+                          {% if childlink.type == 'collection_link' or childlink.type == 'product_link' %}
+                            <!--
+                              {% assign featured_image = childlink.object.featured_image %}
+                              <a href="{{ childlink.url }}" class="osh-lvl2-image-div">
+                                <img
+                                  width="auto"
+                                  height="auto"
+                                  alt="{{ featured_image.alt | escape }}"
+                                  src="{{ featured_image | image_url: width: 300 }}"
+                                  loading="lazy"
+                                >
+                                <div class="osh-lvl2-image-text">
+                                  <p class="os-button">
+                                    {{ childlink.title -}}
+                                    <span>{% render 'icon-caret' %}</span>
+                                  </p>
+                                </div>
+                              </a>
+                            -->
+
+                          <div class="osh-lvl3-wrapper" style="position: relative;">
+                            <div style="position: relative;">
+                              <a href="{{ childlink.url }}" class="osh-lvl2-title" style="
+                                  position: absolute;
+                                  top: 0;
+                                  left: 0;
+                                  width: 100%;
+                                  height: 100%;
+                                  background-color: rgba(0, 0, 0, 0.29); /* Black with 50% opacity */
+                                  color: #fff; /* White text color for better contrast */
+                                  display: flex;
+                                  align-items: flex-end;
+                                  justify-content: center;
+                                  padding-bottom: 1.5rem;
+                                  font-weight: bold;
+                                  text-decoration: none;">
+                                <span>{{ childlink.title }}</span>
+                              </a>
+                              <div style="width: 190px; height: 295px; display: flex; text-align: center; justify-content: center;">
+                                {% assign lowercaseTitle = childlink.title | downcase %}
+                                {% if lowercaseTitle == 'nail stickers' %}
+                                  <img
+                                    src="https://cdn.shopify.com/s/files/1/0008/2962/0282/files/Nailsticker-1-_1_66041e7f-57e2-4d95-b326-a527a4d99701_1.png?v=1717607581"
+                                    alt=""
+                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                  >
+                                {% elsif lowercaseTitle == 'footwear' %}
+                                  <img
+                                    src="https://cdn.shopify.com/s/files/1/0008/2962/0282/files/Restocked_Willow_embroidered_cow_boy_boots_wandering_coyote_x_oceanus_available_in_green_lilac_black_pink.jpg?v=1729128966"
+                                    alt=""
+                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                  >
+                                {% elsif lowercaseTitle == 'kohl kreatives x oceanus stickers' %}
+                                  <img
+                                    src="https://cdn.shopify.com/s/files/1/0008/2962/0282/files/KK-Oceanus-Render1_1_1.webp?v=1720682832"
+                                    alt=""
+                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                  >
+                                {% else %}
+                                  <img
+                                    src="{{ childlink.object.image.src | image_url: width: 500 }}"
+                                    alt=""
+                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                    loading="lazy"
+                                  >
+                                {% endif %}
+                              </div>
+                            </div>
+                          </div>
+                          
+
+                          {% else %}
+                            <!-- <a href="{{ childlink.url }}" class="osh-lvl2-title">{{ childlink.title }}</a> -->
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </details>
+            {% else %}
+              <div class="osh-lvl1-link__wrapper morespace">
+                {% assign activeLink = link.title | downcase %}
+                <a
+                  href="{{ link.url }}"
+                  class="osh-lvl1-link {% if activeLink == "Archive sale" %}osh-lvl1-link__red{% endif %}"
+                >
+                  {{- link.title -}}
+                </a>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="osh-right">
+        <a href="#" class="osh-search" id="osh-search">
+          <span>{% render 'os-icon-search' %}</span>
+        </a>
+        <div id="osh-searchbar">
+          <div class="">
+            <predictive-search>
+              <form action="{{ routes.search_url }}" method="get" role="search" id="osh-search-form">
+                {% comment %}<label for="Search">Search</label>{% endcomment %}
+                <input
+                  id="Search"
+                  type="search"
+                  name="q"
+                  value=""
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results"
+                  aria-controls="predictive-search-results"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  placeholder="Search Oceanus..."
+                >
+                <input name="options[prefix]" type="hidden" value="last">
+                <div id="predictive-search" tabindex="-1"></div>
+              </form>
+            </predictive-search>
+            {% comment %}
+              {%- if predictive_search.performed -%}
+                <div id="predictive-search-results">
+                  {%- if predictive_search.resources.products.size > 0 -%}
+                    <h3 id="predictive-search-products">
+                      Products
+                    </h3>
+                    <ul role="listbox" aria-labelledby="predictive-search-products">
+                      {%- for product in predictive_search.resources.products -%}
+                        <li role="option">
+                          <a href="{{ product.url }}">
+                            {{ product | image_url: width: 50 | image_tag }}
+                            <span>{{ product.title }}</span>
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                  <button>
+                    Search for “{{ predictive_search.terms }}”
+                  </button>
+                </div>
+              {%- endif -%}
+            {% endcomment %}
+          </div>
+        </div>
+        <a href="/account" class="osh-account-link">
+          <span>{% render 'os-icon-account' %}</span>
+        </a>
+        <a href="/apps/advanced-wishlist" class="osh-wishlist">
+          <img src="{{ 'heart.svg' | asset_url }}" width="40" height="40">
+        </a>
+        {% comment %}
+          <a href="#">
+            <span>{% render 'os-icon-heart' %}</span>
+            <span class="osh-bubble">0</span>
+          </a>
+        {% endcomment %}
+        <div id="osh-cart-icon">
+          <span>{% render 'os-icon-cart' %}</span>
+          <span
+            class="osh-bubble"
+            id="osh-cart-bubble"
+            {%- if cart == empty -%}
+              style="display: none;"
+            {%- endif -%}
+          >
+            {{- cart.item_count -}}
+          </span>
+        </div>
+        <div class="osh-currency">
+          {% render 'os-currency' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function() {
+
+    const searchBar = document.querySelector("#osh-searchbar");
+    const searchIcon = document.getElementById("osh-search");
+
+    const toggleSearch = () => {
+      searchBar.toggleAttribute("open");
+      searchIcon.toggleAttribute("pressed");
+      document.querySelector("#osh-search-form input").focus();
+    }
+
+    window.addEventListener('click', function(e){
+      if (searchBar.getAttribute("open") !== null && !searchBar.contains(e.target) && !searchIcon.contains(e.target) && e.target !== searchIcon){
+        toggleSearch();
+      }
+    });
+    searchIcon.addEventListener("click", toggleSearch);
+
+    class LocalizationForm extends HTMLElement {
+    constructor() {
+      super();
+      this.elements = {
+        input: this.querySelector('input[name="language_code"], input[name="country_code"]'),
+        button: this.querySelector('button'),
+        panel: this.querySelector('ul'),
+      };
+      this.elements.button.addEventListener('click', this.openSelector.bind(this));
+      this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+      this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+      this.querySelectorAll('a').forEach(item => item.addEventListener('click', this.onItemClick.bind(this)));
+    }
+
+    hidePanel() {
+      this.elements.button.setAttribute('aria-expanded', 'false');
+      this.elements.panel.setAttribute('hidden', true);
+    }
+
+    onContainerKeyUp(event) {
+      if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+      this.hidePanel();
+      this.elements.button.focus();
+    }
+
+    onItemClick(event) {
+      event.preventDefault();
+      const form = this.querySelector('form');
+      this.elements.input.value = event.currentTarget.dataset.value;
+      if (form) form.submit();
+    }
+
+    openSelector() {
+      this.elements.button.focus();
+      this.elements.panel.toggleAttribute('hidden');
+      this.elements.button.setAttribute('aria-expanded', (this.elements.button.getAttribute('aria-expanded') === 'false').toString());
+    }
+
+    closeSelector(event) {
+      const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+      if (event.relatedTarget === null || shouldClose) {
+        this.hidePanel();
+      }
+    }
+  }
+  customElements.define('localization-form', LocalizationForm);
+
+  });
+</script>
+<script>
+    const header = document.querySelector("#sections--16974900625635__235bd67a-dcfe-4754-87b5-677ed039b477");
+    window.addEventListener('scroll', function() {
+      var scrollPosition = window.scrollY;
+
+      // Change background color when scroll position is greater than some value (e.g., 200px)
+      //if (scrollPosition > 200) {
+      //    header.style.backgroundColor = '#faf2ec'; // Change to white (#ffffff)
+      //} else {
+      //   header.style.backgroundColor = 'transparent'; // Revert to transparent
+      //}
+  });
+</script>
+
+{% schema %}
+{
+  "name": "OS Header",
+  "class": "os-header-container",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo Height",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "unit": "rem"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Margin top",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 2,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Margin bottom",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 0,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 2,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 2,
+      "unit": "rem"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,205 @@
+{% style %}
+.os_slideshow_wrapper {
+  position:relative;
+}
+
+.os_slideshow_bg_img {
+  position: relative;
+  display: flex;
+  min-height: 70vh;
+  padding: 65px;
+}
+
+.os_slideshow_bg_img_overlay {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:var(--bs-black);
+  opacity: 0.2;
+}
+
+.os_slideshow_content_wrap {
+  position:relative;
+}
+
+.os_slideshow_content_wrap .btn_wrap {
+  margin-top:24px;
+}
+
+.os_slideshow_content_wrap h1, .os_slideshow_content_wrap h6, .os_slideshow_content_wrap p {
+  color:#fff;
+}
+
+.os_slideshow_content_wrap h6 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom:8px;
+}
+
+@media (max-width:991px){
+  .os_slideshow_bg_img {
+    padding: 35px;
+  }
+}
+
+@media (max-width:767px) {
+  .os_slideshow_bg_img {
+    padding: 25px;
+    min-height:400px;
+  }
+}
+{% endstyle %}
+<div id="{{ section.id }}" class="os_slideshow_wrapper section-{{ section.id }}-padding">
+  <div class="os_slideshow">
+    {% for block in section.blocks %}
+    <div class="os_slide">
+      <div class="os_slideshow_bg_img bg_cover bg_center {{ block.settings.x-position }} {{ block.settings.y-position }}" style="background-image:url({{ block.settings.image | image_url }})">
+      <div class="os_slideshow_bg_img_overlay"></div>
+        <div class="os_slideshow_content_wrap {{ block.settings.text-alignment }}">
+          <h6>{{ block.settings.subtitle }}</h6>
+          <h1>{{ block.settings.title }}</h1>
+          {{ block.settings.content }}
+          {% if block.settings.button_text %}
+            <div class="btn_wrap">
+              <a href="{{ block.settings.url }}" class="btn btn-white">{{ block.settings.button_text }}</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  jQuery(document).ready(function(){
+    jQuery('.os_slideshow').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 4000,
+      arrows: false,
+      dots: true,
+      speed: 900,
+      vertical: true,
+      verticalSwiping: true,
+      pauseOnHover:false,
+      swipe: false
+    });
+  });
+</script>
+{% schema %}
+  {
+    "name": "OS Slideshow",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "settings": [],
+    "blocks":[
+      {
+        "type":"grid",
+        "name":"Slide",
+        "settings":[
+          {
+            "type":"image_picker",
+            "id":"image",
+            "label":"Image"
+          },
+          {
+            "type":"text",
+            "id":"subtitle",
+            "label":"Sub Title"
+          },
+          {
+            "type":"text",
+            "id":"title",
+            "label":"Title"
+          },
+          {
+            "type":"richtext",
+            "id":"content",
+            "label":"Content"
+          },
+          {
+            "type":"text",
+            "id":"button_text",
+            "label":"Button Text"
+          },
+          {
+            "type":"url",
+            "id":"url",
+            "label":"Button Url"
+          },
+          {
+            "type": "select",
+            "options": [
+              {
+                "value": "text-start",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-end",
+                "label": "Right"
+              }
+            ],
+            "id": "text-alignment",
+            "label": "Text Alignment",
+            "default": "text-center"
+          },
+          {
+            "type": "select",
+            "options": [
+              {
+                "value": "justify-content-start",
+                "label": "Left"
+              },
+              {
+                "value": "justify-content-center",
+                "label": "Center"
+              },
+              {
+                "value": "justify-content-end",
+                "label": "Right"
+              }
+            ],
+            "id": "x-position",
+            "label": "Content X Position",
+            "default": "justify-content-start"
+          },
+          {
+            "type": "select",
+            "options": [
+              {
+                "value": "align-items-start",
+                "label": "Top"
+              },
+              {
+                "value": "align-items-center",
+                "label": "Middle"
+              },
+              {
+                "value": "align-items-end",
+                "label": "Bottom"
+              }
+            ],
+            "id": "y-position",
+            "label": "Content Y Position",
+            "default": "align-items-end"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "OS Slideshow"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,246 @@
+{% style %}
+  #{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}rem;
+    padding-bottom: {{ section.settings.padding_bottom }}rem;
+    position: relative;
+    display: flex;
+  }
+  
+  #{{ section.id }} .os-ib-content {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    z-index: 1;
+    justify-content: {{ section.settings.y_position }};
+    text-align: {{ section.settings.text_alignment }};
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.{{ section.settings.overlay }});
+    color: #ffffff;
+    padding-bottom: 4rem;
+  }
+  
+  #{{ section.id }} .page-width {
+    display: flex;
+    flex-direction: column;
+    align-items: {{ section.settings.x_position }};
+    width: 100%;
+    color: {{ section.settings.text_color }};
+  }
+  
+  #{{ section.id }} .os-ib-heading {
+    font-size: {{ section.settings.heading_size }}rem;
+  }
+  
+  #{{ section.id }} .os-ib-paragraph {
+    margin: 0.5rem 0rem 1rem 0rem;
+  }
+  
+  #{{ section.id }} .os-ib-img {
+    min-height: 30vh;
+    object-fit: cover;
+  }
+  
+  #{{ section.id }} .os-ib-img-mobile {
+    display: none;
+    width: 100%;
+  }
+  
+  .os-ib-img-mobile {
+    height: 80vh;
+    width: auto;
+    object-fit: cover;
+    object-position: center top;
+  }
+  
+  @media screen and (max-width: 768px) {
+    {% if section.settings.image_mobile %}
+      #{{ section.id }} .os-ib-img {
+        display: none;
+      }
+      #{{ section.id }} .os-ib-img-mobile {
+        display: block;
+      }
+    {% endif %}
+  
+    #{{ section.id }} .os-ib-content {
+      padding-bottom: 5rem;
+      justify-content: flex-end;
+    }
+  }
+  {% endstyle %}
+  
+  
+  <section id="{{ section.id }}" class="desktop-only">
+    {% if section.settings.image_mobile %}
+      <img src="{{ section.settings.image_mobile | image_url: width: 1200 }}" loading="eager" width="auto" height="auto" class='os-ib-img-mobile'/>
+    {% endif %}
+    {{ section.settings.image | image_url: width: 2000 | image_tag: width: 2000, height: 'auto', class: 'os-ib-img', loading: 'eager', widths: '300, 480, 640, 720, 900, 1024, 1440, 1680, 1900, 2200, 2500' }}
+    <a href="{{ section.settings.url }}" class="os-ib-content">
+      <div class="page-width">
+        <h2 class="os-ib-heading">{{ section.settings.title }}</h2>
+        <div class="os-ib-paragraph">{{ section.settings.content }}</div>
+        {% if section.settings.button_text %}
+          <p class="os-button">{{ section.settings.button_text }}<span>{% render 'icon-caret' %}</span></p>
+        {% endif %}
+      </div>
+    </a>
+  </section> 
+  
+  
+  {% schema %}
+    {
+      "name": "OS Image Banner",
+      "disabled_on": {
+        "groups": ["header", "footer"]
+      },
+      "settings":[
+        {
+          "type":"image_picker",
+          "id":"image",
+          "label":"Image"
+        },
+        {
+          "type":"image_picker",
+          "id":"image_mobile",
+          "label":"Mobile Image"
+        },
+        {
+          "type":"text",
+          "id":"title",
+          "label":"Title"
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "label": "Heading size desktop",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "default": 2.5,
+          "unit": "rem"
+        },
+        {
+          "type":"richtext",
+          "id":"content",
+          "label":"Content"
+        },
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Button Text"
+        },
+        {
+          "type":"url",
+          "id":"url",
+          "label":"Button Url"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "x_position",
+          "label": "Content X Position",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "y_position",
+          "label": "Content Y Position",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Middle"
+            },
+            {
+              "value": "flex-end",
+              "label": "Bottom"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "overlay",
+          "label": "Overlay opacity",
+          "min": 0,
+          "max": 99,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color"
+        },
+        {
+          "type": "header",
+          "content": "Section Padding"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "label": "Padding top",
+          "min": 0,
+          "max": 15,
+          "step": 1,
+          "default": 2,
+          "unit": "rem"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "label": "Padding bottom",
+          "min": 0,
+          "max": 15,
+          "step": 1,
+          "default": 2,
+          "unit": "rem"
+        }
+      ],
+      "presets": [
+        {
+          "name": "OS Image Banner"
+        }
+      ]
+    }
+  {% endschema %}

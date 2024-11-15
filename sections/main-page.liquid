@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="{{ 'section-main-page.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-main-page.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+{% style %}
+#{{ section.id }} {
+  padding-top: {{ section.settings.padding_top }}rem;
+  padding-bottom: {{ section.settings.padding_bottom }}rem;
+  overflow: hidden;
+}
+
+#{{ section.id }} .os-mp-title {
+  margin-bottom: 2rem;
+}
+{% endstyle %}
+
+<section id="{{ section.id }}">
+  <div class="page-width {% if template.suffix == 'lookbook' %} loopbook-wrap {% endif %}">
+    <h1 class="os-mp-title">{{ page.title | escape }}</h1>
+    <div class="rte entry-content">{{ page.content }}</div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "OS Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    }
+  ]
+}
+{% endschema %}

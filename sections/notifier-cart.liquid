@@ -1,0 +1,530 @@
+<style>
+/* Floating Cart Widget Styles */
+.cart_widget-float {
+  position: fixed;
+  bottom: 37px;
+  right: 25px;
+  z-index: 1;
+  display: none;
+  background: #FAF2EC;
+  border-radius: 30px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  align-items: center;
+}
+
+/* Container for multiple images */
+.cart-images-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-right: 8px;
+}
+
+/* Individual product image styling */
+.cart-product-img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: antiquewhite;
+  position: relative;
+  border: 2px solid #FAF2EC;
+  margin-right: -25px; /* Creates overlap effect */
+}
+
+/* Adjust the last image to not have margin */
+.cart-product-img:last-child {
+  margin-right: 0;
+}
+
+.cart-product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#osh-cart-bubble-1 {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  z-index: 10;
+  background-color: #FF8FBD;
+  color: white;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.view-cart-text {
+  color: #0DA296;
+  font-family: "Moniqa-Condensed";
+  padding: 8px 0 8px 12px; 
+  font-size: 14pt;
+  white-space: nowrap;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  margin: auto;
+  background: #fce4ec;
+  border: 1px solid #888;
+  position: absolute;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal-content-scroll {
+  height: 147px;
+  border-top: 1px solid #E1E1DA;
+  border-bottom: 1px solid #E1E1DA;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  top: -3px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  right: 3px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content-heading,
+.modal-content-scroll,
+.modal-content-buttons {
+  padding: 0 20px;
+}
+
+.modal-content-heading {
+  padding-top: 15px;
+  padding-bottom: 1rem;
+}
+
+.modal-content-buttons {
+  padding-bottom: 15px;
+}
+
+.cart-items {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.399rem;
+  align-items: center;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  min-width: 248px;
+  width: 100%;
+  gap: 0.441rem;
+}
+
+.cart-item img {
+  max-width: 120px;
+  max-height: 90px;
+  margin-right: 10px;
+}
+
+.cart-item-info {
+  display: flex;
+  font-size: 0.899rem;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cart-item-name,
+.cart-item-price {
+  margin: 2px 0;
+  text-align: left;
+}
+
+.checkout-button,
+.cancel {
+  background-color: #FF8FBD;
+  color: white;
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.cancel {
+  margin-top: 10px;
+  background: white;
+  color: black;
+}
+
+.checkout-button:hover {
+  background-color: #FF6F9B;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.cart-items::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.cart-items {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Mobile Specific Styles */
+@media (max-width: 768px) {
+  .cart_widget-float {
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    right: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+  }
+
+  .cart-images-container {
+    max-width: none;
+  }
+
+  .cart-product-img {
+    width: 45px;
+    height: 45px;
+    margin-right: -20px; /* Slightly less overlap for mobile */
+  }
+
+  .view-cart-text {
+   /* padding: 8px 0 8px 20px; Adjusted padding for mobile */
+    display: block;
+  }
+}
+
+@media (max-width: 440px) {
+  .modal-content {
+    max-width: 350px;
+  }
+  
+  .cart-item img {
+    max-width: 100px;
+  }
+  
+  .cart-item-info {
+    font-size: 0.849rem;
+  }
+}
+
+/* Optional: Add hover effect for cart widget */
+/* .cart_widget-float:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+  transition: all 0.3s ease;
+} */
+</style>
+
+<!-- Cart Widget HTML -->
+<!-- Cart Widget Container -->
+<div class="cart_widget-float" id="chatLink"></div>
+
+<!-- Modal HTML -->
+<div id="cartModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-content-heading">
+      <span class="close">&times;</span>
+      <div>
+        <h3>Wait! Don't Leave Empty-Handed!</h3>
+        <p style="font-size: 0.68rem; margin: 5px 15px 0px 15px;">Checkout now & get 10% off on your purchase</p>
+      </div>
+    </div>
+    <div class="modal-content-scroll">
+      <div style="display: flex; padding-top: 10px; justify-content: space-between;">
+        <h3>Cart Items</h3>
+        <div id="notifier_arrowicon" style="gap: 0.50rem; display: flex;">
+          <div class="notifier-arrow-prev" style="cursor: pointer;">
+            <img src="{{ 'slick-prev.svg' | asset_url }}" width="35" height="auto">
+          </div>
+          <div class="notifier-arrow-next" style="cursor: pointer;">
+            <img src="{{ 'slick-next.svg' | asset_url }}" width="35" height="auto">
+          </div>
+        </div>
+      </div>
+      <div id="cart-items" class="cart-items"></div>
+    </div>
+    <div class="modal-content-buttons">
+      <button class="checkout-button" id="checkoutButton">Checkout</button>
+      <div class="cancel" id="cancelButton">Cancel</div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // DOM Elements
+  var cartWidget = document.getElementById('chatLink');
+  var modal = document.getElementById('cartModal');
+  var span = document.getElementsByClassName('close')[0];
+  var checkoutButton = document.getElementById('checkoutButton');
+  var cancelButton = document.getElementById('cancelButton');
+  var cartItemsContainer = document.getElementById('cart-items');
+
+  // Create the initial structure dynamically
+  function createWidgetStructure() {
+  // Set the cart widget to be hidden initially
+  cartWidget.style.display = 'none';
+  
+  // Create bubble span
+  const cartBubble = document.createElement('span');
+  cartBubble.id = 'osh-cart-bubble-1';
+  cartBubble.style.display = 'none'; // Initially hidden
+  
+  // Create images container
+  const cartImagesContainer = document.createElement('div');
+  cartImagesContainer.id = 'cartImagesContainer';
+  cartImagesContainer.className = 'cart-images-container';
+  
+  // Create view cart text
+  const viewCartText = document.createElement('div');
+  viewCartText.className = 'view-cart-text';
+  viewCartText.textContent = 'View Cart';
+  viewCartText.style.display = 'none'; // Initially hidden
+  
+  // Clear existing content and append new elements
+  cartWidget.innerHTML = '';
+  cartWidget.appendChild(cartBubble);
+  cartWidget.appendChild(cartImagesContainer);
+  cartWidget.appendChild(viewCartText);
+}
+
+
+  function updateCartDisplay(cartItemCount, cartItems) {
+  const cartBubble = document.getElementById('osh-cart-bubble-1');
+  const cartImagesContainer = document.getElementById('cartImagesContainer');
+  const viewCartText = document.querySelector('.view-cart-text');
+
+  if (cartItemCount < 1) {
+    cartWidget.style.display = 'none'; // Hide widget if no items
+  } else {
+    // Update bubble
+    cartBubble.textContent = cartItemCount;
+    cartBubble.style.display = 'flex';
+    cartBubble.style.padding = '4px';
+    cartBubble.style.fontSize = '15px !important';
+    
+    // Update images
+    cartImagesContainer.innerHTML = ''; // Clear existing images
+    const maxImages = Math.min(cartItems.length, 3);
+    
+    for (let i = 0; i < maxImages; i++) {
+      const item = cartItems[i];
+      const imgContainer = document.createElement('div');
+      imgContainer.className = 'cart-product-img';
+      
+      const img = document.createElement('img');
+      img.src = item.featured_image.url;
+      img.alt = item.title;
+      
+      imgContainer.appendChild(img);
+      cartImagesContainer.appendChild(imgContainer);
+    }
+    
+    // Show the widget and view cart text
+    cartWidget.style.display = 'flex';
+    viewCartText.style.display = 'block';
+  }
+}
+
+
+  function updateModalCartItems(items) {
+    cartItemsContainer.innerHTML = ''; // Clear previous items
+    items.forEach(item => {
+      var cartItem = document.createElement('div');
+      cartItem.className = 'cart-item';
+
+      var img = document.createElement('img');
+      img.src = item.featured_image.url;
+
+      var info = document.createElement('div');
+      info.className = 'cart-item-info';
+
+      var name = document.createElement('div');
+      name.className = 'cart-item-name';
+      name.textContent = item.title;
+
+      var price = document.createElement('div');
+      price.className = 'cart-item-price';
+      price.textContent = formatMoney(item.price, format);
+
+      info.appendChild(name);
+      info.appendChild(price);
+      cartItem.appendChild(img);
+      cartItem.appendChild(info);
+      cartItemsContainer.appendChild(cartItem);
+    });
+  }
+
+  function fetchCartItemCount() {
+    fetch('/cart.js', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      var cartItemCount = data.item_count || 0;
+      updateCartDisplay(cartItemCount, data.items);
+
+      if (data.items.length !== 0) {
+        updateModalCartItems(data.items);
+        
+        if (!localStorage.getItem('cartTimestamp')) {
+          localStorage.setItem('cartTimestamp', Date.now());
+        }
+        
+        setTimeout(checkCartDuration, 30000);
+      } else {
+        localStorage.removeItem('cartTimestamp');
+      }
+
+      // Update arrow visibility
+      var notifierArrowIcon = document.getElementById('notifier_arrowicon');
+      if (notifierArrowIcon) {
+        notifierArrowIcon.style.display = data.items.length >= 2 ? 'flex' : 'none';
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  function checkCartDuration() {
+    var cartTimestamp = localStorage.getItem('cartTimestamp');
+    var cartPopUpShown = sessionStorage.getItem('cartPopUpShown');
+    
+    if (cartTimestamp && !cartPopUpShown) {
+      var currentTime = Date.now();
+      var timeElapsed = (currentTime - cartTimestamp) / 1000; // Time elapsed in seconds
+      if (timeElapsed > 30) { // 30 seconds
+        modal.style.display = 'block';
+        sessionStorage.setItem('cartPopUpShown', 'true');
+      }
+    }
+  }
+
+  function sendMessageToSlack() {
+    var slackWebhookUrl = "https://hooks.slack.com/services/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";
+    var payload = {
+      text: "Someone just used the floating icon to go back to the cart!!!"
+    };
+
+    fetch(slackWebhookUrl, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    })
+    .catch(error => console.error("Error:", error));
+  }
+
+  // Event Listeners
+  cartWidget.addEventListener('click', function(event) {
+    event.preventDefault();
+    sendMessageToSlack();
+    osOpenCart();
+  });
+
+  span.onclick = function() {
+    modal.style.display = 'none';
+  };
+
+  cancelButton.onclick = function() {
+    modal.style.display = 'none';
+  };
+
+  checkoutButton.onclick = function() {
+    window.location.href = '/checkout';
+  };
+
+  // Slider functionality
+  const notifierslider = document.getElementById('cart-items');
+  const notifierleftArrow = document.querySelector('.notifier-arrow-prev');
+  const notifierrightArrow = document.querySelector('.notifier-arrow-next');
+
+  let notifierscrollAmount = 0;
+  const notifierscrollStep = 260;
+
+  if (notifierleftArrow && notifierrightArrow) {
+    notifierleftArrow.addEventListener('click', function() {
+      notifierscrollAmount = Math.max(0, notifierscrollAmount - notifierscrollStep);
+      notifierslider.scrollTo({
+        top: 0,
+        left: notifierscrollAmount,
+        behavior: 'smooth'
+      });
+    });
+
+    notifierrightArrow.addEventListener('click', function() {
+      notifierscrollAmount += notifierscrollStep;
+      notifierslider.scrollTo({
+        top: 0,
+        left: notifierscrollAmount,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  };
+
+  // Create widget structure first
+  createWidgetStructure();
+  
+  // Then fetch cart data
+  fetchCartItemCount();
+  
+  // Set up polling for cart updates
+  setInterval(fetchCartItemCount, 3000);
+});
+</script>
+
+{% schema %}
+{
+  "name": "Cart-floating",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Cart Floating Widget",
+      "category": "Custom",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

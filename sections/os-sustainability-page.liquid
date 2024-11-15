@@ -1,0 +1,418 @@
+{% style %}
+  #{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}rem;
+    padding-bottom: {{ section.settings.padding_bottom }}rem;
+  }
+  
+  #{{ section.id }} .os-section-top {
+    align-items: {{ section.settings.top_alignment }};
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  
+  #{{ section.id }} .os-sp-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  #{{ section.id }} .os-sp-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 75%;
+    text-align: center;
+    background-color: {{ section.settings.card_bgcolor }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    padding: 50px;
+    color: {{ section.settings.card_text_color }};
+    position: relative;
+    transition: all 0.2s ease;
+    border-radius: 40px;
+  }
+  
+  #{{ section.id }} .os-sp-card h3 {
+    font-family: "CornerStoreJF";
+    font-size: 35px !important;
+    margin-bottom: 1rem;
+  }
+  
+  #{{ section.id }} .os-sp-card .os-sp-card-paragraph {
+    font-family: "Gill Sans";
+    font-size: 21px;
+  }
+
+{% if section.settings.toggle_decorative_images %}
+
+    .os-sp-card::before,
+.os-sp-card::after {
+  content: '';
+  width: 55px;
+  height: 27px;
+  display: block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+}
+
+.os-sp-card::before {
+  background-image: url('{{ "q-left.png" | asset_url }}');
+  left: 15px;
+  top: 6px;
+}
+
+.os-sp-card::after {
+  background-image: url('{{ "q-right.png" | asset_url }}');
+  right: 15px;
+  bottom: 15px;
+}
+    
+{% endif %}
+
+  .os-sp-card .icon.icon-index-1 {
+    /* background: url('{{ "bird-fly-new.png" | asset_url }}') no-repeat center; */
+    /* background-size: contain; */
+    width: 17dvh;
+    height: 15vh;
+    top: -30%;
+    left: -20%
+  }
+
+  .os-sp-card .icon.icon-index-2 {
+    background: url('{{ "duck-new.png" | asset_url }}') no-repeat center;
+    background-size: contain;
+    width: 15dvh;
+    height: 19dvh;
+    left: auto;
+    top: -27%;
+    right: -3%
+  }
+
+  .os-sp-card .icon.icon-index-3 {
+    /* background: url('{{ "female-fish.png" | asset_url }}') no-repeat center; */
+    background-size: contain;
+    width: 15dvh;
+    height: 17dvh;
+    left: -6%;
+    top: auto
+  }
+
+  .os-sp-card .icon.icon-index-0 {
+    background: url('{{ "fish-in-bowl.png" | asset_url }}') no-repeat center;
+    background-size: contain;
+    width: 15dvh;
+    height: 19vh;
+    top: -48%;
+    right: -2%;
+    left: auto
+  }
+
+
+  @media (min-width:{{ settings.breakpoint1 }}px) {
+    #{{ section.id }} .os-sp-card:hover {
+      transform: rotate(0deg) scale(1.1) !important;
+      z-index: 1;
+    }
+  }
+  
+  #{{ section.id }} .os-sp-card a {
+    color: var(--os-ac1);
+    text-decoration: underline;
+  }
+  
+  #{{ section.id }} .os-sp-card .os-sp-card-icon.os-sp-card-icon-left {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+  }
+  
+  #{{ section.id }} .os-sp-card .os-sp-card-icon.os-sp-card-icon-right {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .os-sp-card .icon {
+    position: absolute;
+  }
+  
+  @media (max-width:{{ settings.breakpoint1 }}px) {
+    #{{ section.id }} .os-sp-card {
+      width: 85%;
+    }
+  }
+  
+  @media (max-width:{{ settings.breakpoint2 }}px) {
+    #{{ section.id }} .os-sp-card {
+      width: 95%;
+      margin-left: 0rem !important;
+    }
+  
+    .os-sp-card .icon.icon-index-1 {
+      top:-17%;
+      left:-20%
+      }
+
+    .os-sp-card .icon.icon-index-2 {
+      height: 9dvh;
+      }
+  
+
+      .os-sp-card .icon.icon-index-3 {
+      bottom: 80%;
+      left: 0%;
+      height: 12dvh;
+      top:auto
+      }
+  
+      .os-sp-card .icon.icon-index-0 {
+      top:-45%;
+      height: 10dvh;
+      right:-2%
+      }
+  }
+  
+  @media (max-width:{{ settings.breakpoint3 }}px) {
+   #{{ section.id }} {
+    padding-top: {{ section.settings.padding_top1 }}rem;
+    padding-bottom: {{ section.settings.padding_bottom1 }}rem;
+  }
+    
+    #{{ section.id }} .os-section-top {
+      margin-bottom: 2rem;
+    }
+  
+    #{{ section.id }} .os-sp-card {
+      width: 100%;
+      padding: 2rem 1rem 2.5rem 1rem;
+    }
+  
+    #{{ section.id }} .os-sp-card .os-sp-card-icon img {
+      width: 45px;
+    }
+  
+    #{{ section.id }} .os-sp-card .os-sp-card-icon.os-sp-card-icon-left {
+      top: 1rem;
+      left: 1rem;
+    }
+  
+    #{{ section.id }} .os-sp-card .os-sp-card-icon.os-sp-card-icon-right {
+      bottom: 0.5rem;
+      right: 1rem;
+    }
+
+   #{{ section.id }} .os-sp-card h3 {
+     font-family: "CornerStoreJF";
+     font-size: 1rem !important;
+     margin-bottom: 1rem;
+    }
+  
+    .os-sp-card .icon.icon-index-1 {
+      top:-13%;
+      left:-13%
+      }
+  
+      .os-sp-card .icon.icon-index-2 {
+      top:-30%;
+      height: 9dvh;
+      right:-3%
+      }
+  
+      .os-sp-card .icon.icon-index-3 {
+      bottom:auto;
+      top:-23%;
+      height: 12dvh;
+      left:-5%
+      }
+  
+      .os-sp-card .icon.icon-index-0 {
+       top: -42%;
+       height: 10dvh;
+      right:-2%
+      }
+  }
+{% endstyle %}
+
+<section id="{{ section.id }}">
+  {% assign img = 'sustainability-banner.png' | asset_url %}
+  <img src={{ img }} />
+  <div class="page-width">
+    {% if section.settings.heading != empty %}
+      <div class="os-section-top">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        <div>{{ section.settings.subheading }}</div>
+      </div>
+    {% endif %}
+    <div class="os-sp-wrapper">
+      {% for block in section.blocks %}
+        {% assign loop_count = forloop.index | modulo: 4 %}
+        {% case block.type %}
+          {% when 'Card' %}
+            <div class="os-sp-card mid-text" style="
+              transform: rotate({{ block.settings.card_rotation }}deg);
+              margin-left: {{ block.settings.card_shift }}rem;
+              ">
+              {% if section.settings.icon_image %}
+                <span class="os-sp-card-icon os-sp-card-icon-left">{{ section.settings.icon_image | image_url: width: 100 | image_tag: loading: 'lazy', height: 'auto' }}</span>
+              {% endif %}
+              <span class="icon icon-index-{{ loop_count }}"></span>
+              <h3>{{ block.settings.card_heading }}</h3>
+              <div class="os-sp-card-paragraph">{{ block.settings.card_paragraph }}</div>
+              {% if section.settings.icon_image %}
+                <span class="os-sp-card-icon os-sp-card-icon-right">{{ section.settings.icon_image | image_url: width: 100 | image_tag: loading: 'lazy', height: 'auto' }}</span>
+              {% endif %}
+            </div>
+        {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+</section>
+
+
+  {% schema %}
+{
+  "name": "OS Sustainability Page",
+  "blocks": [
+    {
+      "name": "Card",
+      "type": "Card",
+      "limit": 50,
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_heading",
+          "label": "Card Heading",
+          "default": "Our Commitment"
+        }, {
+          "type": "richtext",
+          "id": "card_paragraph",
+          "label": "Card Paragraph",
+          "default": "<p>My paragraph</p>"
+        }, {
+          "type": "range",
+          "id": "card_rotation",
+          "label": "Card rotation",
+          "min": -10,
+          "max": 10,
+          "step": 1,
+          "default": 0,
+          "unit": "deg"
+        }, {
+          "type": "range",
+          "id": "card_shift",
+          "label": "Card x shift",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "default": 0,
+          "unit": "rem"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trusted by the best"
+    },
+     {
+      "type": "checkbox",
+      "id": "toggle_decorative_images",
+      "label": "Show Decorative Images",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>My paragraph</p>"
+    },
+    {
+      "type": "select",
+      "id": "top_alignment",
+      "label": "Top Alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        }, {
+          "value": "center",
+          "label": "Center"
+        }, {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_image",
+      "label": "Card icon image"
+    }, {
+      "type": "color",
+      "id": "card_bgcolor",
+      "label": "Card background color",
+      "default": "#fef6f9"
+    }, {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#F1A3C4"
+    }, {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#F1A3C4"
+    }, {
+      "type": "header",
+      "content": "Section Padding"
+    }, {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    }, {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    }, {
+      "type": "range",
+      "id": "padding_top1",
+      "label": "Mobile Padding top",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    }, {
+      "type": "range",
+      "id": "padding_bottom1",
+      "label": "Mobile Padding bottom",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 2,
+      "unit": "rem"
+    }
+  ],
+  "presets": [
+    {
+      "name": "OS Sustainability Page"
+    }
+  ]
+}{% endschema %}
